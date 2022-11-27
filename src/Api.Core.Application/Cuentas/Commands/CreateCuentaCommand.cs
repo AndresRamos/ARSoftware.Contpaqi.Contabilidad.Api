@@ -1,14 +1,14 @@
-﻿using Api.SharedKernel.Models;
+﻿using Api.SharedKernel.Requests;
 using MediatR;
 
 namespace Api.Core.Application.Cuentas.Commands;
 
 public sealed class CreateCuentaCommand : IRequest<Guid>
 {
-    public CreateCuentaCommand(Cuenta model)
+    public CreateCuentaCommand(CreateCuentaRequest apiRequest)
     {
-        Model = model;
+        ApiRequest = apiRequest;
     }
 
-    public Cuenta Model { get; }
+    public CreateCuentaRequest ApiRequest { get; }
 }

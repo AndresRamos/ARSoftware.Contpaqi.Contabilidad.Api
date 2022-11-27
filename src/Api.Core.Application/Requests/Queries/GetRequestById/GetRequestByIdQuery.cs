@@ -1,9 +1,9 @@
-﻿using Api.SharedKernel.Models;
+﻿using Api.SharedKernel.Common;
 using MediatR;
 
 namespace Api.Core.Application.Requests.Queries.GetRequestById;
 
-public class GetRequestByIdQuery : IRequest<Request?>
+public class GetRequestByIdQuery : IRequest<ApiRequestBase?>
 {
     public GetRequestByIdQuery(Guid id)
     {

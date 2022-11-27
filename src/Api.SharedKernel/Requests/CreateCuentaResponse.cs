@@ -1,13 +1,16 @@
-﻿namespace Api.SharedKernel.Models;
+﻿using Api.SharedKernel.Common;
+using Api.SharedKernel.Models;
 
-public sealed class CreateCuentaResponse : Response
+namespace Api.SharedKernel.Requests;
+
+public sealed class CreateCuentaResponse : ApiResponseBase
 {
     public Cuenta? Model { get; set; }
 
     public static CreateCuentaResponse CreateSuccess(Cuenta cuenta)
     {
         var response = new CreateCuentaResponse();
-        response.IsSuccess = true;
+        response.SetSuccess();
         response.Model = cuenta;
         return response;
     }
@@ -15,8 +18,7 @@ public sealed class CreateCuentaResponse : Response
     public static CreateCuentaResponse CreateFailed(string errorMessage)
     {
         var response = new CreateCuentaResponse();
-        response.IsSuccess = false;
-        response.ErrorMessage = errorMessage;
+        response.SetFailed(errorMessage);
         return response;
     }
 }

@@ -19,8 +19,9 @@ public sealed class CloseCompanyCommandHandler : IRequestHandler<CloseCompanyCom
     {
         _logger.LogInformation("Closing company.");
 
+        _logger.LogInformation("Empresa Abierta before CierraEmpresa: {EmpresaAbierta}", _sdkSesionService.EmpresaAbierta);
         _sdkSesionService.CierraEmpresa();
-        _logger.LogInformation("Empresa Abierta: {EmpresaAbierta}", _sdkSesionService.EmpresaAbierta);
+        _logger.LogInformation("Empresa Abierta after CierraEmpresa: {EmpresaAbierta}", _sdkSesionService.EmpresaAbierta);
 
         return Unit.Task;
     }

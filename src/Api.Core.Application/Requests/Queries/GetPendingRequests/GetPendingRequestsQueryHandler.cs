@@ -1,11 +1,11 @@
 ﻿using Api.Core.Application.Common;
-using Api.SharedKernel.Models;
+using Api.SharedKernel.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Core.Application.Requests.Queries.GetPendingRequests;
 
-public class GetPendingRequestsQueryHandler : IRequestHandler<GetPendingRequestsQuery, IEnumerable<Request>>
+public sealed class GetPendingRequestsQueryHandler : IRequestHandler<GetPendingRequestsQuery, IEnumerable<ApiRequestBase>>
 {
     private readonly IApplicationDbContext _context;
 
@@ -14,7 +14,7 @@ public class GetPendingRequestsQueryHandler : IRequestHandler<GetPendingRequests
         _context = context;
     }
 
-    public async Task<IEnumerable<Request>> Handle(GetPendingRequestsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<ApiRequestBase>> Handle(GetPendingRequestsQuery request, CancellationToken cancellationToken)
     {
         return await _context.Requests.Where(r => r.IsProcessed == false).ToListAsync(cancellationToken);
     }

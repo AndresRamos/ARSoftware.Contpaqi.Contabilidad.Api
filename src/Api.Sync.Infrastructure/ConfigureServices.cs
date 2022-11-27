@@ -25,7 +25,7 @@ public static class ConfigureServices
             client.BaseAddress = new Uri(config.Endpoint);
         });
 
-        serviceCollection.AddTransient<IRequestRepository, RequestRepository>();
+        serviceCollection.AddTransient<IApiRequestRepository, ApiRequestRepository>();
 
         serviceCollection.AddContpaqiContabilidadServices(configuration);
 
@@ -34,11 +34,9 @@ public static class ConfigureServices
 
     private static void AddContpaqiContabilidadServices(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        serviceCollection.AddDbContext<ContpaqiContabilidadGeneralesDbContext>(builder =>
-        {
-            string? connectionString = configuration.GetConnectionString("Contpaqi");
-            builder.UseSqlServer(connectionString);
-        }, ServiceLifetime.Transient, ServiceLifetime.Transient);
+        serviceCollection.AddDbContext<ContpaqiContabilidadGeneralesDbContext>(
+            builder => { builder.UseSqlServer(configuration.GetConnectionString("Contpaqi")); }, ServiceLifetime.Transient,
+            ServiceLifetime.Transient);
 
         serviceCollection.AddDbContext<ContpaqiContabilidadEmpresaDbContext>((provider, builder) =>
         {
@@ -52,8 +50,13 @@ public static class ConfigureServices
             builder.UseSqlServer(sqlConnectionStringBuilder.ToString());
         }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
-        serviceCollection.AddTransient<IEmpresaRepository, EmpresaRepository>();
-        serviceCollection.AddTransient<IPolizaRepository, PolizaRepository>();
+        serviceCollection.AddTransient<IAgrupadorSatRepository, AgrupadorSatRepository>();
         serviceCollection.AddTransient<ICuentaRepository, CuentaRepository>();
+        serviceCollection.AddTransient<IDiarioRepository, DiarioRepository>();
+        serviceCollection.AddTransient<IEmpresaRepository, EmpresaRepository>();
+        serviceCollection.AddTransient<IMonedaRepository, MonedaRepository>();
+        serviceCollection.AddTransient<IPolizaRepository, PolizaRepository>();
+        serviceCollection.AddTransient<ISegmentoNegocioRepository, SegmentoNegocioRepository>();
+        serviceCollection.AddTransient<ITipoPolizaRepository, TipoPolizaRepository>();
     }
 }

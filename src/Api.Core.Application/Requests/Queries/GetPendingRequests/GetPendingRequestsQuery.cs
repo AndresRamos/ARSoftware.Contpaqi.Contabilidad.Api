@@ -1,8 +1,8 @@
-﻿using Api.SharedKernel.Models;
+﻿using Api.SharedKernel.Common;
 using MediatR;
 
 namespace Api.Core.Application.Requests.Queries.GetPendingRequests;
 
-public class GetPendingRequestsQuery : IRequest<IEnumerable<Request>>
+public sealed class GetPendingRequestsQuery : IRequest<IEnumerable<ApiRequestBase>>
 {
 }

@@ -1,6 +1,8 @@
 ﻿using System.Text.Json;
 using Api.Core.Application.Common;
+using Api.SharedKernel.Common;
 using Api.SharedKernel.Models;
+using Api.SharedKernel.Requests;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Infrastructure.Persistence;
@@ -11,15 +13,15 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
     }
 
-    public DbSet<Request> Requests => Set<Request>();
-    public DbSet<Response> Responses => Set<Response>();
+    public DbSet<ApiRequestBase> Requests => Set<ApiRequestBase>();
+    public DbSet<ApiResponseBase> Responses => Set<ApiResponseBase>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Request>().UseTphMappingStrategy();
-        modelBuilder.Entity<Response>().UseTphMappingStrategy();
+        modelBuilder.Entity<ApiRequestBase>().UseTphMappingStrategy().ToTable("Requests");
+        modelBuilder.Entity<ApiResponseBase>().UseTphMappingStrategy().ToTable("Responses");
 
-        modelBuilder.Entity<Request>().HasOne(r => r.Response).WithOne().HasForeignKey<Response>(r => r.Id);
+        modelBuilder.Entity<ApiRequestBase>().HasOne(r => r.Response).WithOne().HasForeignKey<ApiResponseBase>(r => r.Id);
 
         modelBuilder.Entity<CreatePolizaRequest>()
             .Property(m => m.Model)

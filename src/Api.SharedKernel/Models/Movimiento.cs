@@ -13,9 +13,9 @@ public sealed class Movimiento
     public int Numero { get; set; }
 
     /// <summary>
-    ///     Tipo de movimiento: False = Cargo True = Abono
+    ///     Tipo de movimiento: Cargo = 1, Abono = 2
     /// </summary>
-    public int Tipo { get; set; }
+    public MovimientoTipo Tipo { get; set; }
 
     /// <summary>
     ///     Código identificador de la cuenta contable que afecta al movimiento.

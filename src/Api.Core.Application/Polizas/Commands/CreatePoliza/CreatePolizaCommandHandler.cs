@@ -1,5 +1,5 @@
 ﻿using Api.Core.Application.Common;
-using Api.SharedKernel.Models;
+using Api.SharedKernel.Requests;
 using MediatR;
 
 namespace Api.Core.Application.Polizas.Commands.CreatePoliza;
@@ -15,10 +15,12 @@ public sealed class CreatePolizaCommandHandler : IRequestHandler<CreatePolizaCom
 
     public async Task<Guid> Handle(CreatePolizaCommand request, CancellationToken cancellationToken)
     {
-        var crearPolizaRequest = new CreatePolizaRequest();
-        crearPolizaRequest.DateCreated = DateTime.Now;
-        crearPolizaRequest.Options = request.Options;
-        crearPolizaRequest.Model = request.Model;
+        var crearPolizaRequest = new CreatePolizaRequest
+        {
+            DateCreated = DateTime.Now,
+            Model = request.ApiRequest.Model,
+            Options = request.ApiRequest.Options
+        };
         _context.Requests.Add(crearPolizaRequest);
 
         await _context.SaveChangesAsync(cancellationToken);

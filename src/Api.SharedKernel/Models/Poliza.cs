@@ -1,7 +1,7 @@
 ﻿namespace Api.SharedKernel.Models;
 
 /// <summary>
-///     Model tha represents a CONTPAQi Contabilidad Poliza
+///     Model that represents a CONTPAQi Contabilidad Poliza
 /// </summary>
 public sealed class Poliza
 {

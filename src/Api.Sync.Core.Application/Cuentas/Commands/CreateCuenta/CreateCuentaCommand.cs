@@ -1,4 +1,4 @@
-﻿using Api.SharedKernel.Models;
+﻿using Api.SharedKernel.Requests;
 using MediatR;
 
 namespace Api.Sync.Core.Application.Cuentas.Commands.CreateCuenta;

@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
 using Api.Sync.Core.Application.Common;
+using Api.Sync.Core.Application.Common.Behaviors;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Services;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +15,10 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
+        serviceCollection.AddAutoMapper(Assembly.GetExecutingAssembly());
+        serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), ServiceLifetime.Transient);
         serviceCollection.AddMediatR(Assembly.GetExecutingAssembly());
+        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
         serviceCollection.Configure<ApiConfig>(configuration.GetSection(nameof(ApiConfig)));
         serviceCollection.Configure<ContabilidadConfig>(configuration.GetSection(nameof(ContabilidadConfig)));

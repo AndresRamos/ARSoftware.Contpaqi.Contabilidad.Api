@@ -1,14 +1,13 @@
 ﻿using Api.SharedKernel.Models;
 using FluentValidation;
 
-namespace Api.Core.Application.Polizas.Models;
+namespace Api.Core.Application.Polizas.Validators;
 
-public sealed class CreateMovimientoDtoValidator : AbstractValidator<Movimiento>
+public sealed class CreateMovimientoModelValidator : AbstractValidator<Movimiento>
 {
-    public CreateMovimientoDtoValidator()
+    public CreateMovimientoModelValidator()
     {
         RuleFor(m => m.Numero).NotEmpty();
-        RuleFor(m => m.Tipo).NotEmpty();
         RuleFor(m => m.Cuenta).NotEmpty();
         RuleFor(m => m.Importe).NotEmpty();
         RuleFor(m => m.Referencia).NotNull();

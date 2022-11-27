@@ -1,4 +1,4 @@
-using Api.SharedKernel.Models;
+using Api.SharedKernel.Common;
 using Api.Sync.Core.Application.Api.Commands.ProcessRequest;
 using Api.Sync.Core.Application.Api.Queries.GetPendingRequests;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Commands.CloseCompany;
@@ -31,24 +31,29 @@ public sealed class Worker : BackgroundService
             {
                 try
                 {
-                    IEnumerable<Request> requests = await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken);
+                    List<ApiRequestBase> requests = (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken)).ToList();
 
-                    foreach (Request request in requests)
+                    foreach (ApiRequestBase request in requests)
+                    {
+                        int requestIndex = requests.IndexOf(request) + 1;
+                        int requestsCount = requests.Count;
+                        _logger.LogInformation("Processing request [{requestIndex} of {requestsCount}]", requestIndex, requestsCount);
                         await _mediator.Send(new ProcessRequestCommand(request), stoppingToken);
+                    }
+
+                    TimeSpan timeSpan = TimeSpan.FromMinutes(10);
+                    _logger.LogInformation("Waiting {TimeSpan} for next run.", timeSpan);
+                    await Task.Delay(timeSpan, stoppingToken);
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, "Error ocurred.");
-                }
-                finally
-                {
-                    await Task.Delay(50000, stoppingToken);
+                    _logger.LogCritical(e, "Critical error ocurred.");
                 }
             }
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error ocurred.");
+            _logger.LogCritical(e, "Critical error ocurred.");
         }
         finally
         {

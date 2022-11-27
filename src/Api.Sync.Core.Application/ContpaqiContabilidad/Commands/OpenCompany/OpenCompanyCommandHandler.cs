@@ -24,8 +24,9 @@ public sealed class OpenCompanyCommandHandler : IRequestHandler<OpenCompanyComma
     {
         _logger.LogInformation("Opening company.");
 
+        _logger.LogInformation("Empresa Abierta before AbrirEmpresa: {EmpresaAbierta}", _sdkSesionService.EmpresaAbierta);
         _sdkSesionService.AbrirEmpresa(_contabilidadConfig.Empresa);
-        _logger.LogInformation("Empresa Abierta: {EmpresaAbierta}", _sdkSesionService.EmpresaAbierta);
+        _logger.LogInformation("Empresa Abierta after AbrirEmpresa: {EmpresaAbierta}", _sdkSesionService.EmpresaAbierta);
 
         return Unit.Task;
     }

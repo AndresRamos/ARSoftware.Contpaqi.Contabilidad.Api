@@ -1,4 +1,6 @@
-﻿using Api.SharedKernel.Models;
+﻿using System.Text.Json;
+using Api.SharedKernel.Models;
+using Api.SharedKernel.Requests;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -26,11 +28,9 @@ public class CreatePolizaCommandHandler : IRequestHandler<CreatePolizaCommand, C
 
     public async Task<CreatePolizaResponse> Handle(CreatePolizaCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("{@Request}", request.Request);
-
-        Guid apiRequestId = request.Request.Id;
-        CreatePolizaOptions options = request.Request.Options;
-        Poliza poliza = request.Request.Model;
+        Guid apiRequestId = request.ApiRequest.Id;
+        CreatePolizaOptions options = request.ApiRequest.Options;
+        Poliza poliza = request.ApiRequest.Model;
 
         var tipoPoliza = (ETIPOPOLIZA)int.Parse(poliza.Tipo);
 
@@ -49,48 +49,61 @@ public class CreatePolizaCommandHandler : IRequestHandler<CreatePolizaCommand, C
         int sdkResult = _sdkPoliza.crea();
         if (sdkResult == 0)
         {
-            throw new Exception(
-                $"Couldn't create poliza for request {apiRequestId}. Error: {_sdkPoliza.getCodigoError()} {_sdkPoliza.getMensajeError()} {_sdkPoliza.UltimoMsjError}");
+            string codigoError = _sdkPoliza.getCodigoError();
+            string mensajeError = _sdkPoliza.getMensajeError();
+            _logger.LogError("Couldn't create poliza. Error: {codigoError} - {mensajeError}", codigoError, mensajeError);
+            return CreatePolizaResponse.CreateFailed($"Couldn't create poliza. Error: {codigoError} - {mensajeError}");
         }
 
-        sdkResult = _sdkPoliza.buscaPorId(_sdkPoliza.Id);
-        if (sdkResult == 0)
-            throw new Exception($"Couldn't find poliza with ID {_sdkPoliza.Id}. Error: {_sdkPoliza.UltimoMsjError}");
-
-        foreach (string uuid in poliza.Uuids)
-            AsociarUuid(ETIPOASOCCFDI.TIPOASOC_POLIZA, _sdkPoliza.Guid, uuid);
-
-        foreach (Movimiento movimiento in poliza.Movimientos.OrderBy(m => m.Numero))
+        try
         {
-            _sdkMovimientoPoliza.iniciarInfo();
-            _sdkMovimientoPoliza.Guid = Guid.NewGuid().ToString().ToUpper();
-            _sdkMovimientoPoliza.NumMovto = movimiento.Numero;
-            _sdkMovimientoPoliza.TipoMovto = (ETIPOIMPORTEMOVPOLIZA)movimiento.Tipo;
-            _sdkMovimientoPoliza.CodigoCuenta = movimiento.Cuenta;
-            _sdkMovimientoPoliza.Importe = movimiento.Importe;
-            _sdkMovimientoPoliza.Referencia = movimiento.Referencia;
-            _sdkMovimientoPoliza.SegmentoNegocio = movimiento.SegmentoNegocio;
-            _sdkMovimientoPoliza.Concepto = movimiento.Concepto;
-            _sdkMovimientoPoliza.Diario = int.Parse(movimiento.Diario);
-
-            sdkResult = _sdkPoliza.creaMovimiento(_sdkMovimientoPoliza);
+            sdkResult = _sdkPoliza.buscaPorId(_sdkPoliza.Id);
             if (sdkResult == 0)
             {
-                string? mensajeError = _sdkPoliza.UltimoMsjError;
-                throw new Exception($"Couldn't create movimiento for poliza. Error: {mensajeError}.");
+                string codigoError = _sdkPoliza.getCodigoError();
+                string mensajeError = _sdkPoliza.getMensajeError();
+                throw new Exception(
+                    $"Couldn't find poliza with id {_sdkPoliza.Id}. This is critical since poliza was created succesfully. Error: {codigoError} - {mensajeError}");
             }
 
-            AsociarUuid(ETIPOASOCCFDI.TIPOASOC_MOVTOPOLIZA, _sdkMovimientoPoliza.Guid, movimiento.Uuid);
+            foreach (string uuid in poliza.Uuids)
+                AsociarUuid(ETIPOASOCCFDI.TIPOASOC_POLIZA, _sdkPoliza.Guid, uuid);
+
+            foreach (Movimiento movimiento in poliza.Movimientos.OrderBy(m => m.Numero))
+            {
+                _sdkMovimientoPoliza.iniciarInfo();
+                _sdkMovimientoPoliza.Guid = Guid.NewGuid().ToString().ToUpper();
+                _sdkMovimientoPoliza.NumMovto = movimiento.Numero;
+                _sdkMovimientoPoliza.TipoMovto = (ETIPOIMPORTEMOVPOLIZA)movimiento.Tipo;
+                _sdkMovimientoPoliza.CodigoCuenta = movimiento.Cuenta;
+                _sdkMovimientoPoliza.Importe = movimiento.Importe;
+                _sdkMovimientoPoliza.Referencia = movimiento.Referencia;
+                _sdkMovimientoPoliza.SegmentoNegocio =
+                    !string.IsNullOrWhiteSpace(movimiento.SegmentoNegocio) ? movimiento.SegmentoNegocio : string.Empty;
+                _sdkMovimientoPoliza.Concepto = movimiento.Concepto;
+                _sdkMovimientoPoliza.Diario = !string.IsNullOrWhiteSpace(movimiento.Diario) ? int.Parse(movimiento.Diario) : 0;
+
+                sdkResult = _sdkPoliza.creaMovimiento(_sdkMovimientoPoliza);
+                if (sdkResult == 0)
+                {
+                    string codigoError = _sdkPoliza.getCodigoError();
+                    string mensajeError = _sdkPoliza.getMensajeError();
+                    string movimientoJson = JsonSerializer.Serialize(movimiento, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+                    throw new Exception($"Couldn't create movimiento {movimientoJson} for poliza. Error: {codigoError} - {mensajeError}");
+                }
+
+                AsociarUuid(ETIPOASOCCFDI.TIPOASOC_MOVTOPOLIZA, _sdkMovimientoPoliza.Guid, movimiento.Uuid);
+            }
+        }
+        catch (Exception e)
+        {
+            DeletePoliza(_sdkPoliza.Id);
+            return CreatePolizaResponse.CreateFailed(e.Message);
         }
 
         Poliza? polizaContabilidad = await _polizaRepository.GetByIdAsync(_sdkPoliza.Id, cancellationToken);
 
-        return new CreatePolizaResponse
-        {
-            Id = request.Request.Id,
-            Model = polizaContabilidad,
-            IsSuccess = true
-        };
+        return CreatePolizaResponse.CreateSuccess(polizaContabilidad);
     }
 
     private void AsociarUuid(ETIPOASOCCFDI tipo, string guid, string uuid)
@@ -102,6 +115,16 @@ public class CreatePolizaCommandHandler : IRequestHandler<CreatePolizaCommand, C
 
         int result = _sdkAsocCfdi.crea();
         if (result == 0)
-            throw new Exception($"Couldn't associate UUID: {uuid}. Error: {_sdkAsocCfdi.getMensajeError()}");
+        {
+            string codigoError = _sdkAsocCfdi.getCodigoError();
+            string mensajeError = _sdkAsocCfdi.getMensajeError();
+            throw new Exception($"Couldn't associate UUID: {uuid} of type {tipo}. Error: {codigoError} - {mensajeError}");
+        }
+    }
+
+    private void DeletePoliza(int polizaId)
+    {
+        _sdkPoliza.buscaPorId(polizaId);
+        _sdkPoliza.borra();
     }
 }

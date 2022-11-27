@@ -19,8 +19,9 @@ public sealed class TerminateSdkCommandHandler : IRequestHandler<TerminateSdkCom
     {
         _logger.LogInformation("Terminating SDK.");
 
+        _logger.LogInformation("Conexion Inciada before TerminarConexion: {ConexionInciada}", _sdkSesionService.ConexionInciada);
         _sdkSesionService.TerminarConexion();
-        _logger.LogInformation("Conexion Inciada: {ConexionInciada}", _sdkSesionService.ConexionInciada);
+        _logger.LogInformation("Conexion Inciada after TerminarConexion: {ConexionInciada}", _sdkSesionService.ConexionInciada);
 
         return Unit.Task;
     }

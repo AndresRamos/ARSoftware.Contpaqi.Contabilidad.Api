@@ -1,7 +1,7 @@
 ﻿using Api.Core.Application.Requests.Commands.SetResponse;
 using Api.Core.Application.Requests.Queries.GetPendingRequests;
 using Api.Core.Application.Requests.Queries.GetRequestById;
-using Api.SharedKernel.Models;
+using Api.SharedKernel.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,9 +30,9 @@ public class RequestsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Request>> Get(Guid id)
+    public async Task<ActionResult<ApiRequestBase>> Get(Guid id)
     {
-        Request? request = await _mediator.Send(new GetRequestByIdQuery(id));
+        ApiRequestBase? request = await _mediator.Send(new GetRequestByIdQuery(id));
 
         if (request is null)
             return NotFound();
@@ -49,9 +49,9 @@ public class RequestsController : ControllerBase
     [HttpGet("pending")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<IEnumerable<Request>>> GetPendingRequests()
+    public async Task<ActionResult<IEnumerable<ApiRequestBase>>> GetPendingRequests()
     {
-        IEnumerable<Request> requests = await _mediator.Send(new GetPendingRequestsQuery());
+        IEnumerable<ApiRequestBase> requests = await _mediator.Send(new GetPendingRequestsQuery());
 
         return Ok(requests);
     }

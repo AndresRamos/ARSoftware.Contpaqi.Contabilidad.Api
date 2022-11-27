@@ -1,26 +1,14 @@
-﻿using Api.SharedKernel.Models;
+﻿using Api.SharedKernel.Requests;
 using MediatR;
 
 namespace Api.Core.Application.Polizas.Commands.CreatePoliza;
 
-/// <summary>
-///     Command to create a new poliza.
-/// </summary>
 public sealed class CreatePolizaCommand : IRequest<Guid>
 {
-    public CreatePolizaCommand(Poliza model, CreatePolizaOptions options)
+    public CreatePolizaCommand(CreatePolizaRequest apiRequest)
     {
-        Model = model;
-        Options = options;
+        ApiRequest = apiRequest;
     }
 
-    /// <summary>
-    ///     Poliza model.
-    /// </summary>
-    public Poliza Model { get; }
-
-    /// <summary>
-    ///     Create poliza command options.
-    /// </summary>
-    public CreatePolizaOptions Options { get; }
+    public CreatePolizaRequest ApiRequest { get; }
 }

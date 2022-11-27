@@ -1,4 +1,4 @@
-﻿using Api.Core.Application.Polizas.Models;
+﻿using Api.Core.Application.Polizas.Validators;
 using FluentValidation;
 
 namespace Api.Core.Application.Polizas.Commands.CreatePoliza;
@@ -7,6 +7,10 @@ public sealed class CreatePolizaCommandValidator : AbstractValidator<CreatePoliz
 {
     public CreatePolizaCommandValidator()
     {
-        RuleFor(m => m.Model).SetValidator(new CreatePolizaDtoValidator());
+        RuleFor(m => m.ApiRequest).NotNull();
+
+        RuleFor(m => m.ApiRequest.Model).NotNull();
+
+        RuleFor(m => m.ApiRequest.Model).SetValidator(new CreatePolizaModelValidator());
     }
 }

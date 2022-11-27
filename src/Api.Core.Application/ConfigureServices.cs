@@ -8,7 +8,7 @@ namespace Api.Core.Application;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddApplication(this IServiceCollection serviceCollection)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddAutoMapper(Assembly.GetExecutingAssembly());
         serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

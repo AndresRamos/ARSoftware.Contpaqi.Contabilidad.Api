@@ -1,14 +1,14 @@
-﻿using Api.SharedKernel.Models;
+﻿using Api.SharedKernel.Requests;
 using MediatR;
 
 namespace Api.Sync.Core.Application.Polizas.Commands.CreatePoliza;
 
 public sealed class CreatePolizaCommand : IRequest<CreatePolizaResponse>
 {
-    public CreatePolizaCommand(CreatePolizaRequest request)
+    public CreatePolizaCommand(CreatePolizaRequest apiRequest)
     {
-        Request = request;
+        ApiRequest = apiRequest;
     }
 
-    public CreatePolizaRequest Request { get; }
+    public CreatePolizaRequest ApiRequest { get; }
 }

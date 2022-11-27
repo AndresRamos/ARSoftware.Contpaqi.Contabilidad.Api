@@ -1,19 +1,20 @@
-﻿using Api.SharedKernel.Models;
+﻿using Api.SharedKernel.Common;
 using Api.Sync.Core.Application.Api.Interfaces;
+using MediatR;
 
 namespace Api.Sync.Core.Application.Api.Queries.GetPendingRequests;
 
-public sealed class GetPendingRequestsQueryHandler : MediatR.IRequestHandler<GetPendingRequestsQuery, IEnumerable<Request>>
+public sealed class GetPendingRequestsQueryHandler : IRequestHandler<GetPendingRequestsQuery, IEnumerable<ApiRequestBase>>
 {
-    private readonly IRequestRepository _requestRepository;
+    private readonly IApiRequestRepository _apiRequestRepository;
 
-    public GetPendingRequestsQueryHandler(IRequestRepository requestRepository)
+    public GetPendingRequestsQueryHandler(IApiRequestRepository apiRequestRepository)
     {
-        _requestRepository = requestRepository;
+        _apiRequestRepository = apiRequestRepository;
     }
 
-    public async Task<IEnumerable<Request>> Handle(GetPendingRequestsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<ApiRequestBase>> Handle(GetPendingRequestsQuery request, CancellationToken cancellationToken)
     {
-        return (await _requestRepository.GetPendingRequestsAsync(cancellationToken)).ToList();
+        return (await _apiRequestRepository.GetPendingRequestsAsync(cancellationToken)).ToList();
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Api.Core.Application.Common;
-using Api.SharedKernel.Models;
+using Api.SharedKernel.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +16,7 @@ public sealed class SetResponseCommandHandler : IRequestHandler<SetResponseComma
 
     public async Task<Unit> Handle(SetResponseCommand request, CancellationToken cancellationToken)
     {
-        Request? apiRequest = await _context.Requests.Where(r => r.Id == request.Id).FirstOrDefaultAsync(cancellationToken);
+        ApiRequestBase? apiRequest = await _context.Requests.Where(r => r.Id == request.Id).FirstOrDefaultAsync(cancellationToken);
 
         apiRequest.IsProcessed = true;
         apiRequest.Response = request.Response;

@@ -1,4 +1,4 @@
-﻿namespace Api.SharedKernel.Models;
+﻿namespace Api.SharedKernel.Requests;
 
 /// <summary>
 ///     Create poliza request options.

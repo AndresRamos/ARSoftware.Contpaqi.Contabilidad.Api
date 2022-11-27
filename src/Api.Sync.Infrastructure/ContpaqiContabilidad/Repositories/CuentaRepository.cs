@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Sync.Infrastructure.ContpaqiContabilidad.Repositories;
 
-public class CuentaRepository : ICuentaRepository
+public sealed class CuentaRepository : ICuentaRepository
 {
     private readonly ContpaqiContabilidadEmpresaDbContext _context;
     private readonly IMapper _mapper;
@@ -22,15 +22,37 @@ public class CuentaRepository : ICuentaRepository
     {
         Cuentas? cuentaContabilidad = await _context.Cuentas.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
-#if DEBUG
-        return null;
-#endif
+        if (cuentaContabilidad is null)
+            return null;
+
+        var cuenta = _mapper.Map<Cuenta>(cuentaContabilidad);
+
+        await GetAndSetRelationshipsAsync(cuenta, cuentaContabilidad, cancellationToken);
+
+        return cuenta;
+    }
+
+    public async Task<Cuenta?> GetByCodigoAsync(string codigo, CancellationToken cancellationToken)
+    {
+        Cuentas? cuentaContabilidad = await _context.Cuentas.FirstOrDefaultAsync(c => c.Codigo == codigo, cancellationToken);
 
         if (cuentaContabilidad is null)
             return null;
 
         var cuenta = _mapper.Map<Cuenta>(cuentaContabilidad);
 
+        await GetAndSetRelationshipsAsync(cuenta, cuentaContabilidad, cancellationToken);
+
+        return cuenta;
+    }
+
+    public async Task<bool> ExistsByCodigoAsync(string codigo, CancellationToken cancellationToken)
+    {
+        return await _context.Cuentas.AnyAsync(c => c.Codigo == codigo, cancellationToken);
+    }
+
+    private async Task GetAndSetRelationshipsAsync(Cuenta cuenta, Cuentas cuentaContabilidad, CancellationToken cancellationToken)
+    {
         cuenta.SegmentoNegocio =
             (await _context.SegmentosNegocio.FirstOrDefaultAsync(s => s.Id == cuentaContabilidad.IdSegNeg, cancellationToken))?.Codigo ??
             "";
@@ -41,7 +63,5 @@ public class CuentaRepository : ICuentaRepository
         cuenta.AgrupadorSat =
             (await _context.AgrupadoresSAT.FirstOrDefaultAsync(s => s.Id == cuentaContabilidad.IdAgrupadorSAT, cancellationToken))
             ?.Codigo ?? "";
-
-        return cuenta;
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Api.Core.Application.Common;
-using Api.SharedKernel.Models;
+using Api.SharedKernel.Requests;
 using MediatR;
 
 namespace Api.Core.Application.Cuentas.Commands;
@@ -15,7 +15,9 @@ public sealed class CreateCuentaCommandHandler : IRequestHandler<CreateCuentaCom
 
     public async Task<Guid> Handle(CreateCuentaCommand request, CancellationToken cancellationToken)
     {
-        var createCuentaRequest = CreateCuentaRequest.CreateNew(request.Model);
+        CreateCuentaRequest apiRequest = request.ApiRequest;
+
+        var createCuentaRequest = CreateCuentaRequest.CreateNew(apiRequest.Model);
 
         _context.Requests.Add(createCuentaRequest);
 

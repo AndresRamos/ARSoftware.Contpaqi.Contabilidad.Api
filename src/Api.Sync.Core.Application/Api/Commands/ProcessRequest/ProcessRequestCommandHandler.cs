@@ -1,7 +1,9 @@
-﻿using Api.SharedKernel.Models;
-using Api.Sync.Core.Application.Api.Interfaces;
+﻿using Api.SharedKernel.Common;
+using Api.SharedKernel.Requests;
+using Api.Sync.Core.Application.Api.Commands.SetResponse;
 using Api.Sync.Core.Application.Cuentas.Commands.CreateCuenta;
 using Api.Sync.Core.Application.Polizas.Commands.CreatePoliza;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -11,29 +13,36 @@ public class ProcessRequestCommandHandler : IRequestHandler<ProcessRequestComman
 {
     private readonly ILogger<ProcessRequestCommandHandler> _logger;
     private readonly IMediator _mediator;
-    private readonly IRequestRepository _requestRepository;
 
-    public ProcessRequestCommandHandler(IMediator mediator, ILogger<ProcessRequestCommandHandler> logger,
-                                        IRequestRepository requestRepository)
+    public ProcessRequestCommandHandler(IMediator mediator, ILogger<ProcessRequestCommandHandler> logger)
     {
         _mediator = mediator;
         _logger = logger;
-        _requestRepository = requestRepository;
     }
 
     public async Task<Unit> Handle(ProcessRequestCommand request, CancellationToken cancellationToken)
     {
-        Request apiRequest = request.Request;
-        Response? apiResponse = null;
+        ApiRequestBase apiRequest = request.Request;
+        ApiResponseBase? apiResponse = null;
 
-        if (apiRequest is CreatePolizaRequest crearPolizaRequest)
-            apiResponse = await _mediator.Send(new CreatePolizaCommand(crearPolizaRequest), cancellationToken);
-
-        if (apiRequest is CreateCuentaRequest createCuentaRequest)
-            apiResponse = await _mediator.Send(new CreateCuentaCommand(createCuentaRequest), cancellationToken);
+        try
+        {
+            switch (apiRequest)
+            {
+                case CreatePolizaRequest crearPolizaRequest:
+                    apiResponse = await _mediator.Send(new CreatePolizaCommand(crearPolizaRequest), cancellationToken);
+                    break;
+                case CreateCuentaRequest createCuentaRequest:
+                    apiResponse = await _mediator.Send(new CreateCuentaCommand(createCuentaRequest), cancellationToken);
+                    break;
+            }
+        }
+        catch (ValidationException e)
+        {
+        }
 
         if (apiResponse != null)
-            await _requestRepository.SetResponseAsync(apiRequest.Id, apiResponse, cancellationToken);
+            await _mediator.Send(new SetResponseCommand(apiRequest.Id, apiResponse), cancellationToken);
 
         return Unit.Value;
     }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221115230932_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20221117225111_InitialCrate")]
+    partial class InitialCrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Api.Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Api.SharedKernel.Models.Request", b =>
+            modelBuilder.Entity("Api.SharedKernel.Common.ApiRequestBase", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,14 +43,14 @@ namespace Api.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Requests");
+                    b.ToTable("Requests", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Request");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("ApiRequestBase");
 
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Models.Response", b =>
+            modelBuilder.Entity("Api.SharedKernel.Common.ApiResponseBase", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -71,16 +71,16 @@ namespace Api.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Responses");
+                    b.ToTable("Responses", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Response");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("ApiResponseBase");
 
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Models.CreateCuentaRequest", b =>
+            modelBuilder.Entity("Api.SharedKernel.Requests.CreateCuentaRequest", b =>
                 {
-                    b.HasBaseType("Api.SharedKernel.Models.Request");
+                    b.HasBaseType("Api.SharedKernel.Common.ApiRequestBase");
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -91,9 +91,9 @@ namespace Api.Infrastructure.Persistence.Migrations
                     b.HasDiscriminator().HasValue("CreateCuentaRequest");
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Models.CreatePolizaRequest", b =>
+            modelBuilder.Entity("Api.SharedKernel.Requests.CreatePolizaRequest", b =>
                 {
-                    b.HasBaseType("Api.SharedKernel.Models.Request");
+                    b.HasBaseType("Api.SharedKernel.Common.ApiRequestBase");
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -108,9 +108,9 @@ namespace Api.Infrastructure.Persistence.Migrations
                     b.HasDiscriminator().HasValue("CreatePolizaRequest");
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Models.CreateCuentaResponse", b =>
+            modelBuilder.Entity("Api.SharedKernel.Requests.CreateCuentaResponse", b =>
                 {
-                    b.HasBaseType("Api.SharedKernel.Models.Response");
+                    b.HasBaseType("Api.SharedKernel.Common.ApiResponseBase");
 
                     b.Property<string>("Model")
                         .ValueGeneratedOnUpdateSometimes()
@@ -120,9 +120,9 @@ namespace Api.Infrastructure.Persistence.Migrations
                     b.HasDiscriminator().HasValue("CreateCuentaResponse");
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Models.CreatePolizaResponse", b =>
+            modelBuilder.Entity("Api.SharedKernel.Requests.CreatePolizaResponse", b =>
                 {
-                    b.HasBaseType("Api.SharedKernel.Models.Response");
+                    b.HasBaseType("Api.SharedKernel.Common.ApiResponseBase");
 
                     b.Property<string>("Model")
                         .ValueGeneratedOnUpdateSometimes()
@@ -132,16 +132,16 @@ namespace Api.Infrastructure.Persistence.Migrations
                     b.HasDiscriminator().HasValue("CreatePolizaResponse");
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Models.Response", b =>
+            modelBuilder.Entity("Api.SharedKernel.Common.ApiResponseBase", b =>
                 {
-                    b.HasOne("Api.SharedKernel.Models.Request", null)
+                    b.HasOne("Api.SharedKernel.Common.ApiRequestBase", null)
                         .WithOne("Response")
-                        .HasForeignKey("Api.SharedKernel.Models.Response", "Id")
+                        .HasForeignKey("Api.SharedKernel.Common.ApiResponseBase", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Models.Request", b =>
+            modelBuilder.Entity("Api.SharedKernel.Common.ApiRequestBase", b =>
                 {
                     b.Navigation("Response");
                 });
