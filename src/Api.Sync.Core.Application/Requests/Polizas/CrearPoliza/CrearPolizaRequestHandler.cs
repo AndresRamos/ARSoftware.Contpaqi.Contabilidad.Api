@@ -3,6 +3,8 @@ using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
 using Api.Core.Domain.Requests;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
+using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SDKCONTPAQNGLib;
@@ -16,22 +18,29 @@ public class CrearPolizaRequestHandler : IRequestHandler<CrearPolizaRequest, Api
     private readonly TSdkAsocCFDI _sdkAsocCfdi;
     private readonly TSdkMovimientoPoliza _sdkMovimientoPoliza;
     private readonly TSdkPoliza _sdkPoliza;
+    private readonly IValidator<CrearPolizaRequest> _validator;
 
     public CrearPolizaRequestHandler(ILogger<CrearPolizaRequestHandler> logger,
                                      IPolizaRepository polizaRepository,
                                      TSdkAsocCFDI sdkAsocCfdi,
                                      TSdkMovimientoPoliza sdkMovimientoPoliza,
-                                     TSdkPoliza sdkPoliza)
+                                     TSdkPoliza sdkPoliza,
+                                     IValidator<CrearPolizaRequest> validator)
     {
         _logger = logger;
         _polizaRepository = polizaRepository;
         _sdkAsocCfdi = sdkAsocCfdi;
         _sdkMovimientoPoliza = sdkMovimientoPoliza;
         _sdkPoliza = sdkPoliza;
+        _validator = validator;
     }
 
     public async Task<ApiResponseBase> Handle(CrearPolizaRequest request, CancellationToken cancellationToken)
     {
+        ValidationResult validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+            return ApiResponseFactory.CreateFailed<CrearPolizaResponse>(request.Id, validationResult.ToString());
+
         Guid apiRequestId = request.Id;
         CrearPolizaRequestOptions options = request.Options;
         Poliza poliza = request.Model.Poliza;

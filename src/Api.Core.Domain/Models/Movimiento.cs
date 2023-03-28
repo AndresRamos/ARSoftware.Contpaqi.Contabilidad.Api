@@ -52,5 +52,5 @@ public sealed class Movimiento
     /// <summary>
     ///     Datos extra del movimiento
     /// </summary>
-    public Dictionary<string, string> DatosExtra { get; set; }
+    public Dictionary<string, string> DatosExtra { get; set; } = new();
 }

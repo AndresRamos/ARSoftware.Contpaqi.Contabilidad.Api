@@ -5,12 +5,12 @@ using FluentValidation;
 
 namespace Api.Sync.Core.Application.Requests.Polizas.CrearPoliza;
 
-public sealed class CreatePolizaCommandValidator : AbstractValidator<CrearPolizaRequest>
+public sealed class CrearPolizaRequestValidator : AbstractValidator<CrearPolizaRequest>
 {
-    public CreatePolizaCommandValidator(ITipoPolizaRepository tipoPolizaRepository,
-                                        ICuentaRepository cuentaRepository,
-                                        ISegmentoNegocioRepository segmentoNegocioRepository,
-                                        IDiarioRepository diarioRepository)
+    public CrearPolizaRequestValidator(ITipoPolizaRepository tipoPolizaRepository,
+                                       ICuentaRepository cuentaRepository,
+                                       ISegmentoNegocioRepository segmentoNegocioRepository,
+                                       IDiarioRepository diarioRepository)
     {
         ClassLevelCascadeMode = CascadeMode.Stop;
 

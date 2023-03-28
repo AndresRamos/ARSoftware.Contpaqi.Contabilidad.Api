@@ -1,3 +1,4 @@
+using System.Reflection;
 using Api.Sync.Core.Application;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Commands.IniciarSdk;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
@@ -7,6 +8,7 @@ using MediatR;
 using Serilog;
 
 IHost host = Host.CreateDefaultBuilder(args)
+    .UseContentRoot(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!)
     .ConfigureServices((context, services) =>
     {
         services.AddApplicationServices(context.Configuration);
@@ -21,19 +23,21 @@ IHost host = Host.CreateDefaultBuilder(args)
 
 var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
-var sdkSesionService = host.Services.GetRequiredService<ISdkSesionService>();
 var mediator = host.Services.GetRequiredService<IMediator>();
+var sdkSesionService = host.Services.GetRequiredService<ISdkSesionService>();
 
 await mediator.Send(new IniciarSdkCommand());
 
-await host.RunAsync();
+host.Run();
 
+logger.LogInformation("Empresa Abierta: {EmpresaAbierta}", sdkSesionService.EmpresaAbierta);
 if (sdkSesionService.EmpresaAbierta)
 {
     logger.LogInformation("Cerrando empresa.");
     sdkSesionService.CierraEmpresa();
 }
 
+logger.LogInformation("Conexion Inciada: {ConexionInciada}", sdkSesionService.ConexionInciada);
 if (sdkSesionService.ConexionInciada)
 {
     logger.LogInformation("Terminando SDK.");

@@ -71,6 +71,10 @@ public sealed class Worker : BackgroundService
                 }
             }
         }
+        catch (OperationCanceledException e)
+        {
+            _logger.LogWarning(e, "Operation was cancelled.");
+        }
         catch (Exception e)
         {
             _logger.LogCritical(e, "Critical error ocurred.");

@@ -27,22 +27,19 @@ public sealed class CreateMovimientoModelValidator : AbstractValidator<Movimient
 
         RuleFor(m => m.Concepto).NotNull();
 
-        RuleFor(m => m.SegmentoNegocio.Codigo)
-            .NotNull()
+        RuleFor(m => m.SegmentoNegocio!.Codigo)
             .MustAsync(segmentoNegocioRepository.ExistePorCodigoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not a valid segmento de negocio.")
-            .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.SegmentoNegocio.Codigo), ApplyConditionTo.CurrentValidator);
+            .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.SegmentoNegocio?.Codigo));
 
-        RuleFor(m => m.Diario.Codigo)
-            .NotNull()
+        RuleFor(m => m.Diario!.Codigo)
             .MustAsync(diarioRepository.ExistePorCodgoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not a valid diario especial.")
-            .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.Diario.Codigo), ApplyConditionTo.CurrentValidator);
+            .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.Diario?.Codigo));
 
         RuleFor(m => m.Uuid)
-            .NotNull()
             .Must(s => Guid.TryParse(s, out _))
             .WithMessage("{PropertyName} {PropertyValue} is not a valid UUID")
-            .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.Uuid), ApplyConditionTo.CurrentValidator);
+            .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.Uuid));
     }
 }

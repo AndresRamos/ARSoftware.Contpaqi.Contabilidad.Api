@@ -28,7 +28,6 @@ public sealed class CreatePolizaModelValidator : AbstractValidator<Poliza>
             .SetValidator(new CreateMovimientoModelValidator(cuentaRepository, segmentoNegocioRepository, diarioRepository));
 
         RuleForEach(m => m.Uuids)
-            .NotNull()
             .Must(s => string.IsNullOrWhiteSpace(s) || Guid.TryParse(s, out _))
             .WithMessage("{PropertyName} {PropertyValue} is not a valid UUID");
     }
