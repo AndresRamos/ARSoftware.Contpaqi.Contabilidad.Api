@@ -1,9 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Api.Core.Domain.Models;
+namespace Api.Core.Domain.Models.Enums;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
-public enum MovimientoTipo
+public enum TipoMovimiento
 {
     Cargo = 1,
     Abono = 2

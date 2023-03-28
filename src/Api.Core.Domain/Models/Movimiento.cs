@@ -1,26 +1,23 @@
-﻿namespace Api.Core.Domain.Models;
+﻿using Api.Core.Domain.Models.Enums;
+
+namespace Api.Core.Domain.Models;
 
 /// <summary>
 ///     Model tha represents a CONTPAQi Contabilidad Movimiento
 /// </summary>
 public sealed class Movimiento
 {
-    /// <summary>
-    ///     Número identificador del movimiento.
-    /// </summary>
-    public int Id { get; set; }
-
     public int Numero { get; set; }
 
     /// <summary>
     ///     Tipo de movimiento: Cargo = 1, Abono = 2
     /// </summary>
-    public MovimientoTipo Tipo { get; set; }
+    public TipoMovimiento Tipo { get; set; }
 
     /// <summary>
-    ///     Código identificador de la cuenta contable que afecta al movimiento.
+    ///     Cuenta contable que afecta al movimiento.
     /// </summary>
-    public string Cuenta { get; set; } = string.Empty;
+    public Cuenta Cuenta { get; set; } = new();
 
     /// <summary>
     ///     Importe del movimiento.
@@ -38,17 +35,22 @@ public sealed class Movimiento
     public string Concepto { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Código identificador del segmento de negocio.
+    ///     Segmento de negocio.
     /// </summary>
-    public string SegmentoNegocio { get; set; } = string.Empty;
+    public SegmentoNegocio? SegmentoNegocio { get; set; }
 
     /// <summary>
-    ///     Código identificador del diario especial.
+    ///     Diario especial.
     /// </summary>
-    public string Diario { get; set; } = string.Empty;
+    public DiarioEspecial? Diario { get; set; }
 
     /// <summary>
     ///     UUID a asociar al movimiento.
     /// </summary>
     public string Uuid { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     Datos extra del movimiento
+    /// </summary>
+    public Dictionary<string, string> DatosExtra { get; set; }
 }

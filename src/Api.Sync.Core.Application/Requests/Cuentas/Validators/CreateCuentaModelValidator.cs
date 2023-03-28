@@ -15,7 +15,7 @@ public sealed class CreateCuentaModelValidator : AbstractValidator<Cuenta>
 
         RuleFor(m => m.Codigo)
             .NotEmpty()
-            .MustAsync(async (cuenta, cancellationToken) => await cuentaRepository.ExistsByCodigoAsync(cuenta, cancellationToken) == false)
+            .MustAsync(async (cuenta, cancellationToken) => await cuentaRepository.ExistePorCodigoAsync(cuenta, cancellationToken) == false)
             .WithMessage("{PropertyName} {PropertyValue} already exists.");
 
         RuleFor(m => m.Nombre).NotEmpty();
@@ -24,28 +24,26 @@ public sealed class CreateCuentaModelValidator : AbstractValidator<Cuenta>
 
         RuleFor(m => m.CodigoCuentaAcumula)
             .NotEmpty()
-            .MustAsync(cuentaRepository.ExistsByCodigoAsync)
+            .MustAsync(cuentaRepository.ExistePorCodigoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not valid.");
 
         RuleFor(m => m.Tipo).NotNull();
 
         RuleFor(m => m.CuentaDeMayor).NotNull();
 
-        RuleFor(m => m.SegmentoNegocio)
-            .NotNull()
-            .MustAsync(segmentoNegocioRepository.ExistsByCodigoAsync)
+        RuleFor(m => m.SegmentoNegocio.Codigo)
+            .MustAsync(segmentoNegocioRepository.ExistePorCodigoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not valid.")
-            .When(cuenta => !string.IsNullOrWhiteSpace(cuenta.SegmentoNegocio), ApplyConditionTo.CurrentValidator);
+            .When(cuenta => !string.IsNullOrWhiteSpace(cuenta.SegmentoNegocio.Codigo), ApplyConditionTo.CurrentValidator);
 
-        RuleFor(m => m.Moneda)
+        RuleFor(m => m.Moneda.Codigo)
             .NotEmpty()
-            .MustAsync(monedaRepository.ExistsByCodigoAsync)
+            .MustAsync(monedaRepository.ExistePorCodigoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not valid.");
 
-        RuleFor(m => m.AgrupadorSat)
-            .NotNull()
-            .MustAsync(agrupadorSatRepository.ExistsByCodigoAsync)
+        RuleFor(m => m.AgrupadorSat.Codigo)
+            .MustAsync(agrupadorSatRepository.ExistePorCodigoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not valid.")
-            .When(cuenta => !string.IsNullOrWhiteSpace(cuenta.AgrupadorSat), ApplyConditionTo.CurrentValidator);
+            .When(cuenta => !string.IsNullOrWhiteSpace(cuenta.AgrupadorSat.Codigo), ApplyConditionTo.CurrentValidator);
     }
 }

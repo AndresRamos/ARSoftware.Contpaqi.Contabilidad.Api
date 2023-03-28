@@ -4,7 +4,7 @@ namespace Api.Sync.Core.Application.Common.Models;
 
 public sealed class LoadRelatedDataOptions : ILoadRelatedDataOptions
 {
-    public static LoadRelatedDataOptions Default = new() { CargarDatosExtra = false };
+    public static readonly LoadRelatedDataOptions Default = new() { CargarDatosExtra = false };
 
     public bool CargarDatosExtra { get; set; }
 }

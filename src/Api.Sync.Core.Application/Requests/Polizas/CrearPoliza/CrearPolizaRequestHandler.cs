@@ -81,13 +81,15 @@ public class CrearPolizaRequestHandler : IRequestHandler<CrearPolizaRequest, Api
                 _sdkMovimientoPoliza.Guid = Guid.NewGuid().ToString().ToUpper();
                 _sdkMovimientoPoliza.NumMovto = movimiento.Numero;
                 _sdkMovimientoPoliza.TipoMovto = (ETIPOIMPORTEMOVPOLIZA)movimiento.Tipo;
-                _sdkMovimientoPoliza.CodigoCuenta = movimiento.Cuenta;
+                _sdkMovimientoPoliza.CodigoCuenta = movimiento.Cuenta.Codigo;
                 _sdkMovimientoPoliza.Importe = movimiento.Importe;
                 _sdkMovimientoPoliza.Referencia = movimiento.Referencia;
-                _sdkMovimientoPoliza.SegmentoNegocio =
-                    !string.IsNullOrWhiteSpace(movimiento.SegmentoNegocio) ? movimiento.SegmentoNegocio : string.Empty;
+                _sdkMovimientoPoliza.SegmentoNegocio = !string.IsNullOrWhiteSpace(movimiento.SegmentoNegocio?.Codigo)
+                    ? movimiento.SegmentoNegocio.Codigo
+                    : string.Empty;
                 _sdkMovimientoPoliza.Concepto = movimiento.Concepto;
-                _sdkMovimientoPoliza.Diario = !string.IsNullOrWhiteSpace(movimiento.Diario) ? int.Parse(movimiento.Diario) : 0;
+                _sdkMovimientoPoliza.Diario =
+                    !string.IsNullOrWhiteSpace(movimiento.Diario?.Codigo) ? int.Parse(movimiento.Diario.Codigo) : 0;
 
                 sdkResult = _sdkPoliza.creaMovimiento(_sdkMovimientoPoliza);
                 if (sdkResult == 0)
@@ -107,7 +109,7 @@ public class CrearPolizaRequestHandler : IRequestHandler<CrearPolizaRequest, Api
             return ApiResponseFactory.CreateFailed<CrearPolizaResponse>(request.Id, e.Message);
         }
 
-        Poliza? polizaContabilidad = await _polizaRepository.GetByIdAsync(_sdkPoliza.Id, cancellationToken);
+        Poliza? polizaContabilidad = await _polizaRepository.BuscarPorIdAsync(_sdkPoliza.Id, request.Options, cancellationToken);
 
         return ApiResponseFactory.CreateSuccessfull<CrearPolizaResponse, CrearPolizaResponseModel>(request.Id,
             new CrearPolizaResponseModel { Poliza = polizaContabilidad });

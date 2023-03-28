@@ -1,5 +1,8 @@
-﻿using Api.Core.Domain.Models;
+﻿using Api.Core.Domain.Common;
+using Api.Core.Domain.Models;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
+using Api.Sync.Infrastructure.ContpaqiContabilidad.Extensions;
+using Api.Sync.Infrastructure.ContpaqiContabilidad.Models;
 using ARSoftware.Contpaqi.Contabilidad.Sql.Contexts;
 using ARSoftware.Contpaqi.Contabilidad.Sql.Models.Empresa;
 using AutoMapper;
@@ -12,41 +15,41 @@ public sealed class PolizaRepository : IPolizaRepository
 {
     private readonly ContpaqiContabilidadEmpresaDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IMovimientoRepository _movimientoRepository;
 
     public PolizaRepository(ContpaqiContabilidadEmpresaDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
+        _movimientoRepository = new MovimientoRepository(context, mapper);
     }
 
-    public async Task<Poliza?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Poliza?> BuscarPorIdAsync(int id, ILoadRelatedDataOptions loadRelatedDataOptions, CancellationToken cancellationToken)
     {
-        Poliza? poliza = await _context.Polizas.Where(p => p.Id == id)
-            .ProjectTo<Poliza>(_mapper.ConfigurationProvider)
+        PolizaSql? polizaSql = await _context.Polizas.Where(p => p.Id == id)
+            .ProjectTo<PolizaSql>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (poliza != null)
-        {
-            List<MovimientosPoliza> movimietosContabilidad = await _context.MovimientosPoliza.Where(m => m.IdPoliza == id)
-                .ToListAsync(cancellationToken);
+        if (polizaSql is null)
+            return null;
 
-            foreach (MovimientosPoliza mov in movimietosContabilidad)
-            {
-                var movimiento = _mapper.Map<Movimiento>(mov);
-                movimiento.Cuenta = (await _context.Cuentas.FirstOrDefaultAsync(c => c.Id == mov.IdCuenta, cancellationToken))?.Codigo ??
-                                    "";
+        var poliza = _mapper.Map<Poliza>(polizaSql);
 
-                movimiento.SegmentoNegocio =
-                    (await _context.SegmentosNegocio.FirstOrDefaultAsync(c => c.Id == mov.IdSegNeg, cancellationToken))?.Codigo ?? "";
-
-                movimiento.Diario = (await _context.DiariosEspeciales.FirstOrDefaultAsync(c => c.Id == mov.IdDiario, cancellationToken))
-                                    ?.Codigo ??
-                                    "";
-
-                poliza.Movimientos.Add(movimiento);
-            }
-        }
+        await CargarDatosRelacionadosAsync(poliza, polizaSql, loadRelatedDataOptions, cancellationToken);
 
         return poliza;
+    }
+
+    private async Task CargarDatosRelacionadosAsync(Poliza poliza,
+                                                    PolizaSql polizaSql,
+                                                    ILoadRelatedDataOptions loadRelatedDataOptions,
+                                                    CancellationToken cancellationToken)
+    {
+        poliza.Movimientos = (await _movimientoRepository.BuscarPorPolizaIdAsync(polizaSql.Id, loadRelatedDataOptions, cancellationToken))
+            .ToList();
+
+        if (loadRelatedDataOptions.CargarDatosExtra)
+            poliza.DatosExtra =
+                (await _context.Polizas.FirstAsync(m => m.Id == polizaSql.Id, cancellationToken)).ToDatosDictionary<Polizas>();
     }
 }

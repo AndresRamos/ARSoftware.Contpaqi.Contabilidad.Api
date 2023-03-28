@@ -2,5 +2,5 @@
 
 public interface ITipoPolizaRepository
 {
-    Task<bool> ExistsByCodigoAsync(string codigo, CancellationToken cancellationToken);
+    Task<bool> ExistePorCodigoAsync(string codigo, CancellationToken cancellationToken);
 }

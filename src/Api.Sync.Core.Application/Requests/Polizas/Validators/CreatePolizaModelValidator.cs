@@ -15,7 +15,7 @@ public sealed class CreatePolizaModelValidator : AbstractValidator<Poliza>
 
         RuleFor(m => m.Tipo)
             .NotEmpty()
-            .MustAsync(tipoPolizaRepository.ExistsByCodigoAsync)
+            .MustAsync(tipoPolizaRepository.ExistePorCodigoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not a valid tipo de poliza.");
 
         RuleFor(m => m.Fecha).NotEmpty();

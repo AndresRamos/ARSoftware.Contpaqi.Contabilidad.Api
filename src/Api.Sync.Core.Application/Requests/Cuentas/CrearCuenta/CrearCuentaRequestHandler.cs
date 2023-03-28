@@ -33,10 +33,10 @@ public class CrearCuentaRequestHandler : IRequestHandler<CrearCuentaRequest, Api
         _sdkCuenta.Tipo = (ECUENTATIPO)cuenta.Tipo;
         _sdkCuenta.CtaMayor = (ECUENTADEMAYOR)cuenta.CuentaDeMayor;
         _sdkCuenta.AplicaSegNeg = cuenta.SegmentoNegocioEnMovimientos ? 1 : 0;
-        _sdkCuenta.SegNeg = !string.IsNullOrEmpty(cuenta.SegmentoNegocio) ? int.Parse(cuenta.SegmentoNegocio) : 0;
-        _sdkCuenta.Moneda = int.Parse(cuenta.Moneda);
+        _sdkCuenta.SegNeg = !string.IsNullOrWhiteSpace(cuenta.SegmentoNegocio?.Codigo) ? int.Parse(cuenta.SegmentoNegocio.Codigo) : 0;
+        _sdkCuenta.Moneda = int.Parse(cuenta.Moneda.Codigo);
         _sdkCuenta.DigitoAgrupador = cuenta.DigitoAgrupador;
-        _sdkCuenta.AgrupadorSAT = cuenta.AgrupadorSat;
+        _sdkCuenta.AgrupadorSAT = cuenta.AgrupadorSat?.Codigo ?? string.Empty;
         _sdkCuenta.FechaAlta = DateTime.Today;
         _sdkCuenta.EsBaja = 0;
         _sdkCuenta.SistOrigen = ESISTORIGEN.ORIG_CONTPAQNG;
@@ -55,6 +55,9 @@ public class CrearCuentaRequestHandler : IRequestHandler<CrearCuentaRequest, Api
         }
 
         return ApiResponseFactory.CreateSuccessfull<CrearCuentaResponse, CrearCuentaResponseModel>(request.Id,
-            new CrearCuentaResponseModel { Cuenta = await _cuentaRepository.GetByIdAsync(cuentaId, cancellationToken) });
+            new CrearCuentaResponseModel
+            {
+                Cuenta = await _cuentaRepository.BuscarPorIdAsync(cuentaId, request.Options, cancellationToken)
+            });
     }
 }

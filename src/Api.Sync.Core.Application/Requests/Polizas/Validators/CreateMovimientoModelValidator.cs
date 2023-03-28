@@ -16,9 +16,9 @@ public sealed class CreateMovimientoModelValidator : AbstractValidator<Movimient
 
         RuleFor(m => m.Tipo).NotEmpty();
 
-        RuleFor(m => m.Cuenta)
+        RuleFor(m => m.Cuenta.Codigo)
             .NotEmpty()
-            .MustAsync(cuentaRepository.ExistsByCodigoAsync)
+            .MustAsync(cuentaRepository.ExistePorCodigoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not a valid cuenta.");
 
         RuleFor(m => m.Importe).NotEmpty();
@@ -27,17 +27,17 @@ public sealed class CreateMovimientoModelValidator : AbstractValidator<Movimient
 
         RuleFor(m => m.Concepto).NotNull();
 
-        RuleFor(m => m.SegmentoNegocio)
+        RuleFor(m => m.SegmentoNegocio.Codigo)
             .NotNull()
-            .MustAsync(segmentoNegocioRepository.ExistsByCodigoAsync)
+            .MustAsync(segmentoNegocioRepository.ExistePorCodigoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not a valid segmento de negocio.")
-            .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.SegmentoNegocio), ApplyConditionTo.CurrentValidator);
+            .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.SegmentoNegocio.Codigo), ApplyConditionTo.CurrentValidator);
 
-        RuleFor(m => m.Diario)
+        RuleFor(m => m.Diario.Codigo)
             .NotNull()
-            .MustAsync(diarioRepository.ExistsByCodigoAsync)
+            .MustAsync(diarioRepository.ExistePorCodgoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not a valid diario especial.")
-            .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.Diario), ApplyConditionTo.CurrentValidator);
+            .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.Diario.Codigo), ApplyConditionTo.CurrentValidator);
 
         RuleFor(m => m.Uuid)
             .NotNull()

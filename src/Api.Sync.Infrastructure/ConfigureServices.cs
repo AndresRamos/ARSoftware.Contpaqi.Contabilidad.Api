@@ -5,7 +5,7 @@ using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using Api.Sync.Infrastructure.Api;
 using Api.Sync.Infrastructure.ContpaqiContabilidad.Repositories;
 using ARSoftware.Contpaqi.Contabilidad.Sql.Contexts;
-using Microsoft.Data.SqlClient;
+using ARSoftware.Contpaqi.Contabilidad.Sql.Factories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,8 +40,11 @@ public static class ConfigureServices
 
     private static void AddContpaqiContabilidadServices(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        serviceCollection.AddDbContext<ContpaqiContabilidadGeneralesDbContext>(
-            builder => { builder.UseSqlServer(configuration.GetConnectionString("Contpaqi")); },
+        serviceCollection.AddDbContext<ContpaqiContabilidadGeneralesDbContext>(builder =>
+            {
+                builder.UseSqlServer(ContpaqiContabilidadSqlConnectionStringFactory.CreateContpaqiContabilidadGeneralesConnectionString(
+                    configuration.GetConnectionString("Contpaqi")));
+            },
             ServiceLifetime.Transient,
             ServiceLifetime.Transient);
 
@@ -49,12 +52,10 @@ public static class ConfigureServices
             {
                 ContpaqiContabilidadConfig config = provider.GetRequiredService<IOptions<ContpaqiContabilidadConfig>>().Value;
 
-                var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString("Contpaqi"))
-                {
-                    InitialCatalog = config.Empresa
-                };
-
-                builder.UseSqlServer(sqlConnectionStringBuilder.ToString());
+                builder.UseSqlServer(
+                    ContpaqiContabilidadSqlConnectionStringFactory.CreateContpaqiContabilidadEmpresaConnectionString(
+                        configuration.GetConnectionString("Contpaqi"),
+                        config.Empresa.BaseDatos));
             },
             ServiceLifetime.Transient,
             ServiceLifetime.Transient);

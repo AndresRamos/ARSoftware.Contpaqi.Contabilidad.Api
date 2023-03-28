@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
+using Api.Core.Domain.Models.Enums;
 using Api.Core.Domain.Requests;
 
 namespace Api.Sdk.ConsoleApp.JsonFactories;
@@ -22,8 +23,8 @@ public static class PolizaFactory
                 new()
                 {
                     Numero = 1,
-                    Tipo = MovimientoTipo.Abono,
-                    Cuenta = "60101000",
+                    Tipo = TipoMovimiento.Abono,
+                    Cuenta = new Cuenta { Codigo = "60101000" },
                     Importe = 100,
                     Referencia = "Referencia",
                     Concepto = "Concepto"
@@ -31,8 +32,8 @@ public static class PolizaFactory
                 new()
                 {
                     Numero = 2,
-                    Tipo = MovimientoTipo.Cargo,
-                    Cuenta = "40119000",
+                    Tipo = TipoMovimiento.Cargo,
+                    Cuenta = new Cuenta { Codigo = "40119000" },
                     Importe = 100,
                     Referencia = "Referencia",
                     Concepto = "Concepto"

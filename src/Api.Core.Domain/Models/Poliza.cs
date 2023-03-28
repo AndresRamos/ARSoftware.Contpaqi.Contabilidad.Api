@@ -6,11 +6,6 @@
 public sealed class Poliza
 {
     /// <summary>
-    ///     Número identificador de la póliza.
-    /// </summary>
-    public int Id { get; set; }
-
-    /// <summary>
     ///     Fecha de la póliza.
     /// </summary>
     public DateTime Fecha { get; set; } = DateTime.Today;
@@ -40,4 +35,9 @@ public sealed class Poliza
     ///     UUIDs a asociar a la poliza.
     /// </summary>
     public List<string> Uuids { get; set; } = new();
+
+    /// <summary>
+    ///     Datos extra de la poliza.
+    /// </summary>
+    public Dictionary<string, string> DatosExtra { get; set; } = new();
 }

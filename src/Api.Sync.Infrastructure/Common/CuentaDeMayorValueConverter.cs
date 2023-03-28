@@ -1,4 +1,4 @@
-﻿using Api.Core.Domain.Models;
+﻿using Api.Core.Domain.Models.Enums;
 using Api.Sync.Infrastructure.ContpaqiContabilidad.Extensions;
 using AutoMapper;
 

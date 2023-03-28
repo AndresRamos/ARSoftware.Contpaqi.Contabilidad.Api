@@ -3,6 +3,7 @@ using Api.Sync.Core.Application.Api.Commands.ProcessApiRequest;
 using Api.Sync.Core.Application.Api.Queries.GetPendingRequests;
 using Api.Sync.Core.Application.Common.Models;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Commands.AbrirEmpresa;
+using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Options;
 
@@ -11,6 +12,8 @@ namespace Api.Sync.Presentation.WorkerService;
 public sealed class Worker : BackgroundService
 {
     private readonly ApiSyncConfig _apiSyncConfig;
+    private readonly ContpaqiContabilidadConfig _contpaqiContabilidadConfig;
+    private readonly IEmpresaRepository _empresaRepository;
     private readonly IHostApplicationLifetime _hostApplicationLifetime;
     private readonly ILogger<Worker> _logger;
     private readonly IMediator _mediator;
@@ -18,11 +21,15 @@ public sealed class Worker : BackgroundService
     public Worker(ILogger<Worker> logger,
                   IMediator mediator,
                   IOptions<ApiSyncConfig> apiSyncConfigOptions,
-                  IHostApplicationLifetime hostApplicationLifetime)
+                  IHostApplicationLifetime hostApplicationLifetime,
+                  IOptions<ContpaqiContabilidadConfig> contpaqiContabilidadConfigOptions,
+                  IEmpresaRepository empresaRepository)
     {
         _logger = logger;
         _mediator = mediator;
         _hostApplicationLifetime = hostApplicationLifetime;
+        _empresaRepository = empresaRepository;
+        _contpaqiContabilidadConfig = contpaqiContabilidadConfigOptions.Value;
         _apiSyncConfig = apiSyncConfigOptions.Value;
     }
 
@@ -30,6 +37,10 @@ public sealed class Worker : BackgroundService
     {
         try
         {
+            _contpaqiContabilidadConfig.Empresa =
+                await _empresaRepository.BuscarPorRfcAsync(_apiSyncConfig.EmpresaRfc, LoadRelatedDataOptions.Default, stoppingToken) ??
+                throw new InvalidOperationException();
+
             await _mediator.Send(new AbrirEmpresaCommand(), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)

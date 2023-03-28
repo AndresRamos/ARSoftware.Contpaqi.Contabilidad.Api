@@ -1,15 +1,12 @@
-﻿namespace Api.Core.Domain.Models;
+﻿using Api.Core.Domain.Models.Enums;
+
+namespace Api.Core.Domain.Models;
 
 /// <summary>
 ///     Model that represents a CONTPAQi Contabilidad Cuenta
 /// </summary>
 public sealed class Cuenta
 {
-    /// <summary>
-    ///     Número identificador de la cuenta contable.
-    /// </summary>
-    public int Id { get; set; }
-
     /// <summary>
     ///     Código de la cuenta contable.
     /// </summary>
@@ -33,7 +30,7 @@ public sealed class Cuenta
     /// <summary>
     ///     Tipo de cuenta
     /// </summary>
-    public CuentaTipo Tipo { get; set; }
+    public TipoCuenta Tipo { get; set; }
 
     /// <summary>
     ///     Clave de mayor
@@ -48,14 +45,14 @@ public sealed class Cuenta
     public bool SegmentoNegocioEnMovimientos { get; set; }
 
     /// <summary>
-    ///     Código del segmento de negocio al que pertenece la cuenta contable.
+    ///     Segmento de negocio al que pertenece la cuenta contable.
     /// </summary>
-    public string SegmentoNegocio { get; set; } = string.Empty;
+    public SegmentoNegocio? SegmentoNegocio { get; set; }
 
     /// <summary>
-    ///     Código identificador de la moneda de la cuenta contable.
+    ///     Moneda de la cuenta contable.
     /// </summary>
-    public string Moneda { get; set; } = string.Empty;
+    public Moneda Moneda { get; set; } = new();
 
     /// <summary>
     ///     Dígito agrupador de la cuenta contable.
@@ -63,9 +60,9 @@ public sealed class Cuenta
     public int DigitoAgrupador { get; set; }
 
     /// <summary>
-    ///     Código del Agrupador del SAT
+    ///     Agrupador del SAT
     /// </summary>
-    public string AgrupadorSat { get; set; } = string.Empty;
+    public AgrupadorSat? AgrupadorSat { get; set; }
 
     /// <summary>
     ///     Fecha en que se registró la cuenta contable.
@@ -77,4 +74,9 @@ public sealed class Cuenta
     ///     casilla Inactiva, False = Cuando no se habilita la casilla Inactiva
     /// </summary>
     public bool EsBaja { get; set; }
+
+    /// <summary>
+    ///     Datos extra
+    /// </summary>
+    public Dictionary<string, string> DatosExtra { get; set; } = new();
 }
