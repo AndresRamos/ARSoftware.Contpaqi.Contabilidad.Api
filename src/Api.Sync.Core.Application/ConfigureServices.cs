@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using Api.Sync.Core.Application.Common;
+using Api.Core.Domain.Common;
 using Api.Sync.Core.Application.Common.Behaviors;
+using Api.Sync.Core.Application.Common.Models;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Services;
 using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SDKCONTPAQNGLib;
@@ -17,11 +17,16 @@ public static class ConfigureServices
     {
         serviceCollection.AddAutoMapper(Assembly.GetExecutingAssembly());
         serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), ServiceLifetime.Transient);
-        serviceCollection.AddMediatR(Assembly.GetExecutingAssembly());
-        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        serviceCollection.AddMediatR(serviceConfiguration =>
+        {
+            serviceConfiguration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            serviceConfiguration.RegisterServicesFromAssemblyContaining<ApiRequestBase>();
+            serviceConfiguration.AddOpenBehavior(typeof(PerformanceBehaviour<,>));
+            serviceConfiguration.AddOpenBehavior(typeof(ValidationBehaviour<,>));
+        });
 
-        serviceCollection.Configure<ApiConfig>(configuration.GetSection(nameof(ApiConfig)));
-        serviceCollection.Configure<ContabilidadConfig>(configuration.GetSection(nameof(ContabilidadConfig)));
+        serviceCollection.Configure<ApiSyncConfig>(configuration.GetSection(nameof(ApiSyncConfig)));
+        serviceCollection.Configure<ContpaqiContabilidadConfig>(configuration.GetSection(nameof(ContpaqiContabilidadConfig)));
 
         serviceCollection.AddContpaqiContabilidadSdkServices();
 

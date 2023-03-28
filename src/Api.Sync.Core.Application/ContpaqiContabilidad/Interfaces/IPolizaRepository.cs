@@ -1,4 +1,4 @@
-﻿using Api.SharedKernel.Models;
+﻿using Api.Core.Domain.Models;
 
 namespace Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 

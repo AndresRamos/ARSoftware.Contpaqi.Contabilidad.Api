@@ -1,4 +1,4 @@
-﻿using Api.SharedKernel.Models;
+﻿using Api.Core.Domain.Models;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using ARSoftware.Contpaqi.Contabilidad.Sql.Contexts;
 using ARSoftware.Contpaqi.Contabilidad.Sql.Models.Empresa;
@@ -38,9 +38,10 @@ public sealed class PolizaRepository : IPolizaRepository
 
                 movimiento.SegmentoNegocio =
                     (await _context.SegmentosNegocio.FirstOrDefaultAsync(c => c.Id == mov.IdSegNeg, cancellationToken))?.Codigo ?? "";
-                
+
                 movimiento.Diario = (await _context.DiariosEspeciales.FirstOrDefaultAsync(c => c.Id == mov.IdDiario, cancellationToken))
-                    ?.Codigo ?? "";
+                                    ?.Codigo ??
+                                    "";
 
                 poliza.Movimientos.Add(movimiento);
             }

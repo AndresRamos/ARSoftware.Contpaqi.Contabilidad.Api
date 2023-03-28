@@ -1,4 +1,4 @@
-﻿using Api.SharedKernel.Models;
+﻿using Api.Core.Domain.Models;
 using Api.Sync.Infrastructure.ContpaqiContabilidad.Extensions;
 using AutoMapper;
 

@@ -1,4 +1,4 @@
-﻿using Api.SharedKernel.Models;
+﻿using Api.Core.Domain.Models;
 using ARSoftware.Contpaqi.Contabilidad.Sql.Models.Empresa;
 using AutoMapper;
 

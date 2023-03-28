@@ -1,4 +1,4 @@
-﻿using Api.SharedKernel.Common;
+﻿using Api.Core.Domain.Common;
 using MediatR;
 
 namespace Api.Sync.Core.Application.Api.Queries.GetPendingRequests;

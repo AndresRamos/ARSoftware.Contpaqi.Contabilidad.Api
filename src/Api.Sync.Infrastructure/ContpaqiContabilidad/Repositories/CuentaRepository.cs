@@ -1,4 +1,4 @@
-﻿using Api.SharedKernel.Models;
+﻿using Api.Core.Domain.Models;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using ARSoftware.Contpaqi.Contabilidad.Sql.Contexts;
 using ARSoftware.Contpaqi.Contabilidad.Sql.Models.Empresa;
@@ -62,6 +62,7 @@ public sealed class CuentaRepository : ICuentaRepository
 
         cuenta.AgrupadorSat =
             (await _context.AgrupadoresSAT.FirstOrDefaultAsync(s => s.Id == cuentaContabilidad.IdAgrupadorSAT, cancellationToken))
-            ?.Codigo ?? "";
+            ?.Codigo ??
+            "";
     }
 }

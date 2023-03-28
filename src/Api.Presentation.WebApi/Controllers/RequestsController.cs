@@ -1,38 +1,51 @@
-﻿using Api.Core.Application.Requests.Commands.SetResponse;
-using Api.Core.Application.Requests.Queries.GetPendingRequests;
-using Api.Core.Application.Requests.Queries.GetRequestById;
-using Api.SharedKernel.Common;
+﻿using Api.Core.Application.Requests.Commands.CreateApiRequest;
+using Api.Core.Application.Requests.Queries.GetApiRequestById;
+using Api.Core.Application.Requests.Queries.GetApiRequests;
+using Api.Core.Application.Requests.Queries.GetPendingApiRequests;
+using Api.Core.Domain.Common;
+using Api.Core.Domain.Requests;
+using Api.Presentation.WebApi.Authentication;
+using Api.Presentation.WebApi.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Presentation.WebApi.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
+[Produces("application/json")]
+[ServiceFilter(typeof(ApiKeyAuthFilter))]
+[ApiExceptionFilter]
 public class RequestsController : ControllerBase
 {
+    private readonly LinkGenerator _linkGenerator;
     private readonly IMediator _mediator;
 
-    public RequestsController(IMediator mediator)
+    public RequestsController(IMediator mediator, LinkGenerator linkGenerator)
     {
         _mediator = mediator;
+        _linkGenerator = linkGenerator;
     }
 
+    [FromHeader(Name = "Ocp-Apim-Subscription-Key")]
+    public string ApimSubscriptionKey { get; set; } = string.Empty;
+
     /// <summary>
-    ///     Gets a request by id.
+    ///     Busca una solicitud por id.
     /// </summary>
-    /// <param name="id">Id of request</param>
-    /// <returns>The request.</returns>
-    /// <response code="200">Request found.</response>
-    /// <response code="404">Request not found.</response>
-    /// <response code="500">Internal server error.</response>
+    /// <param name="id">Id de la solicitud a buscar.</param>
+    /// <returns>Una solicitud.</returns>
+    /// <response code="200">Retorna la solicitud.</response>
+    /// <response code="404">No se encontro la solicitud.</response>
+    /// <response code="400">Solicitud invalida.</response>
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesDefaultResponseType]
     public async Task<ActionResult<ApiRequestBase>> Get(Guid id)
     {
-        ApiRequestBase? request = await _mediator.Send(new GetRequestByIdQuery(id));
+        ApiRequestBase? request = await _mediator.Send(new GetApiRequestByIdQuery(id, ApimSubscriptionKey));
 
         if (request is null)
             return NotFound();
@@ -41,35 +54,100 @@ public class RequestsController : ControllerBase
     }
 
     /// <summary>
-    ///     Gets request pending to be processed.
+    ///     Busca solicitudes por rango de fecha.
     /// </summary>
-    /// <returns>Collection of pending requests.</returns>
-    /// <response code="200">Request found.</response>
-    /// <response code="500">Internal server error.</response>
-    [HttpGet("pending")]
+    /// <param name="startDate">Fecha inicio.</param>
+    /// <param name="endDate">Fecha fin.</param>
+    /// <returns>Coleccion de solicitudes dentro rango de fechas.</returns>
+    /// <response code="200">Coleccion de solicitudes dentro rango de fechas.</response>
+    /// <response code="204">No hay solicitudes dentro del rango de fecha.</response>
+    /// <response code="400">Solicitud invalida.</response>
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<IEnumerable<ApiRequestBase>>> GetPendingRequests()
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesDefaultResponseType]
+    public async Task<ActionResult<ApiRequestBase>> Get(DateOnly startDate, DateOnly endDate)
     {
-        IEnumerable<ApiRequestBase> requests = await _mediator.Send(new GetPendingRequestsQuery());
+        IEnumerable<ApiRequestBase> apiRequests = await _mediator.Send(new GetApiRequestsQuery(startDate, endDate, ApimSubscriptionKey));
 
-        return Ok(requests);
+        if (!apiRequests.Any())
+            return NoContent();
+
+        return Ok(apiRequests);
     }
 
     /// <summary>
-    ///     Sets the response for the request.
+    ///     Busca las solicitudes pendientes por procesar.
     /// </summary>
-    /// <param name="command">Reponse</param>
-    /// <returns></returns>
-    /// <response code="200">Request found.</response>
-    /// <response code="500">Internal server error.</response>
-    [HttpPost("{id:guid}/response")]
+    /// <returns>Coleccion de solicitudes pendientes por procesar.</returns>
+    /// ///
+    /// <response code="200">Retorna coleccion de solicitudes pendientes por procesar.</response>
+    /// <response code="204">No hay solicitudes pendientes.</response>
+    /// <response code="400">Solicitud invalida.</response>
+    [HttpGet("Pending")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> SetResponse(SetResponseCommand command)
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesDefaultResponseType]
+    public async Task<ActionResult<IEnumerable<ApiRequestBase>>> GetPending()
     {
-        await _mediator.Send(command);
+        IEnumerable<ApiRequestBase> apiRequests = await _mediator.Send(new GetPendingApiRequestsQuery(ApimSubscriptionKey));
 
-        return Ok();
+        if (!apiRequests.Any())
+            return NoContent();
+
+        return Ok(apiRequests);
+    }
+
+    /// <summary>
+    ///     Crear una solicitud en la base de datos para ser procesada en CONTPAQi Comercial.
+    /// </summary>
+    /// <param name="apiRequest">Solicitud a procesar.</param>
+    /// <returns>La solicitud creada.</returns>
+    /// <response code="201">Retorna la solicitud creada.</response>
+    /// <response code="400">Solicitud invalida.</response>
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesDefaultResponseType]
+    public async Task<ActionResult<Guid>> Post(ApiRequestBase apiRequest)
+    {
+        Guid requestId = await _mediator.Send(new CreateApiRequestCommand(apiRequest, ApimSubscriptionKey));
+
+        ApiRequestBase? request = await _mediator.Send(new GetApiRequestByIdQuery(requestId, ApimSubscriptionKey));
+
+        string? pathByAction = _linkGenerator.GetPathByAction("Get", "Requests", new { id = requestId });
+
+        return Created(pathByAction!, request);
+    }
+
+    /// <summary>
+    ///     Regresa la estructura de una solicitud serializada en JSON.
+    /// </summary>
+    /// <param name="requestName">La solicitud a serializar.</param>
+    /// <returns>La estructura de una solicitud serializada en JSON.</returns>
+    /// <response code="200">La estructura de una solicitud serializada en JSON.</response>
+    [HttpGet("JsonModel")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesDefaultResponseType]
+    public ActionResult<ApiRequestBase> JsonModel(string requestName)
+    {
+        Type requestType = typeof(CrearPolizaRequest);
+
+        var requestFullName = $"{requestType.Namespace}.{requestName}";
+
+        Type? type = requestType.Assembly.GetType(requestFullName);
+
+        if (type is null)
+            throw new InvalidOperationException($"Couldn't find type for request with name {requestFullName}.");
+
+        if (Activator.CreateInstance(type) is not ApiRequestBase instance)
+            throw new InvalidOperationException($"Couldn't create instance for type {type}.");
+
+        instance.SubscriptionKey = ApimSubscriptionKey;
+        instance.EmpresaRfc = "XAXX010101000";
+
+        return Ok(instance);
     }
 }

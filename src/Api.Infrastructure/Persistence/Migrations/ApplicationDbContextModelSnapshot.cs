@@ -17,12 +17,12 @@ namespace Api.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Api.SharedKernel.Common.ApiRequestBase", b =>
+            modelBuilder.Entity("Api.Core.Domain.Common.ApiRequestBase", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,8 +35,16 @@ namespace Api.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsProcessed")
-                        .HasColumnType("bit");
+                    b.Property<string>("EmpresaRfc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubscriptionKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -47,7 +55,7 @@ namespace Api.Infrastructure.Persistence.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Common.ApiResponseBase", b =>
+            modelBuilder.Entity("Api.Core.Domain.Common.ApiResponseBase", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -63,6 +71,9 @@ namespace Api.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("ExecutionTime")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("IsSuccess")
                         .HasColumnType("bit");
 
@@ -75,22 +86,9 @@ namespace Api.Infrastructure.Persistence.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Requests.CreateCuentaRequest", b =>
+            modelBuilder.Entity("Api.Core.Domain.Requests.CrearCuentaRequest", b =>
                 {
-                    b.HasBaseType("Api.SharedKernel.Common.ApiRequestBase");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Model");
-
-                    b.HasDiscriminator().HasValue("CreateCuentaRequest");
-                });
-
-            modelBuilder.Entity("Api.SharedKernel.Requests.CreatePolizaRequest", b =>
-                {
-                    b.HasBaseType("Api.SharedKernel.Common.ApiRequestBase");
+                    b.HasBaseType("Api.Core.Domain.Common.ApiRequestBase");
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -100,45 +98,68 @@ namespace Api.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Options")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Options");
 
-                    b.HasDiscriminator().HasValue("CreatePolizaRequest");
+                    b.HasDiscriminator().HasValue("CrearCuentaRequest");
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Requests.CreateCuentaResponse", b =>
+            modelBuilder.Entity("Api.Core.Domain.Requests.CrearPolizaRequest", b =>
                 {
-                    b.HasBaseType("Api.SharedKernel.Common.ApiResponseBase");
+                    b.HasBaseType("Api.Core.Domain.Common.ApiRequestBase");
 
                     b.Property<string>("Model")
+                        .IsRequired()
                         .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Model");
 
-                    b.HasDiscriminator().HasValue("CreateCuentaResponse");
+                    b.Property<string>("Options")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Options");
+
+                    b.HasDiscriminator().HasValue("CrearPolizaRequest");
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Requests.CreatePolizaResponse", b =>
+            modelBuilder.Entity("Api.Core.Domain.Requests.CrearCuentaResponse", b =>
                 {
-                    b.HasBaseType("Api.SharedKernel.Common.ApiResponseBase");
+                    b.HasBaseType("Api.Core.Domain.Common.ApiResponseBase");
 
                     b.Property<string>("Model")
+                        .IsRequired()
                         .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Model");
 
-                    b.HasDiscriminator().HasValue("CreatePolizaResponse");
+                    b.HasDiscriminator().HasValue("CrearCuentaResponse");
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Common.ApiResponseBase", b =>
+            modelBuilder.Entity("Api.Core.Domain.Requests.CrearPolizaResponse", b =>
                 {
-                    b.HasOne("Api.SharedKernel.Common.ApiRequestBase", null)
+                    b.HasBaseType("Api.Core.Domain.Common.ApiResponseBase");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Model");
+
+                    b.HasDiscriminator().HasValue("CrearPolizaResponse");
+                });
+
+            modelBuilder.Entity("Api.Core.Domain.Common.ApiResponseBase", b =>
+                {
+                    b.HasOne("Api.Core.Domain.Common.ApiRequestBase", null)
                         .WithOne("Response")
-                        .HasForeignKey("Api.SharedKernel.Common.ApiResponseBase", "Id")
+                        .HasForeignKey("Api.Core.Domain.Common.ApiResponseBase", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Api.SharedKernel.Common.ApiRequestBase", b =>
+            modelBuilder.Entity("Api.Core.Domain.Common.ApiRequestBase", b =>
                 {
                     b.Navigation("Response");
                 });

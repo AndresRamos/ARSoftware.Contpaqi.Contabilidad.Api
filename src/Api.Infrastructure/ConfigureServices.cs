@@ -1,4 +1,4 @@
-﻿using Api.Core.Application.Common;
+﻿using Api.Core.Application.Common.Interfaces;
 using Api.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

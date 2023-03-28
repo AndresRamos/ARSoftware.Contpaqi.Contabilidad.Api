@@ -1,53 +1,62 @@
-using Api.SharedKernel.Common;
-using Api.Sync.Core.Application.Api.Commands.ProcessRequest;
+using Api.Core.Domain.Common;
+using Api.Sync.Core.Application.Api.Commands.ProcessApiRequest;
 using Api.Sync.Core.Application.Api.Queries.GetPendingRequests;
-using Api.Sync.Core.Application.ContpaqiContabilidad.Commands.CloseCompany;
-using Api.Sync.Core.Application.ContpaqiContabilidad.Commands.InitializeSdk;
-using Api.Sync.Core.Application.ContpaqiContabilidad.Commands.OpenCompany;
-using Api.Sync.Core.Application.ContpaqiContabilidad.Commands.TerminateSdk;
+using Api.Sync.Core.Application.Common.Models;
+using Api.Sync.Core.Application.ContpaqiContabilidad.Commands.AbrirEmpresa;
 using MediatR;
+using Microsoft.Extensions.Options;
 
 namespace Api.Sync.Presentation.WorkerService;
 
 public sealed class Worker : BackgroundService
 {
+    private readonly ApiSyncConfig _apiSyncConfig;
+    private readonly IHostApplicationLifetime _hostApplicationLifetime;
     private readonly ILogger<Worker> _logger;
     private readonly IMediator _mediator;
 
-    public Worker(ILogger<Worker> logger, IMediator mediator)
+    public Worker(ILogger<Worker> logger,
+                  IMediator mediator,
+                  IOptions<ApiSyncConfig> apiSyncConfigOptions,
+                  IHostApplicationLifetime hostApplicationLifetime)
     {
         _logger = logger;
         _mediator = mediator;
+        _hostApplicationLifetime = hostApplicationLifetime;
+        _apiSyncConfig = apiSyncConfigOptions.Value;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         try
         {
-            await _mediator.Send(new InitializeSdkCommand(), stoppingToken);
-            await _mediator.Send(new OpenCompanyCommand(), stoppingToken);
+            await _mediator.Send(new AbrirEmpresaCommand(), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                try
+                Task waitingTask = Task.Delay(_apiSyncConfig.WaitTime.ToTimeSpan(), stoppingToken);
+
+                List<ApiRequestBase> apiRequests = (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken)).ToList();
+
+                foreach (ApiRequestBase apiRequest in apiRequests)
                 {
-                    List<ApiRequestBase> requests = (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken)).ToList();
+                    int requestIndex = apiRequests.IndexOf(apiRequest) + 1;
+                    int requestsCount = apiRequests.Count;
+                    _logger.LogInformation("Processing request [{requestIndex} of {requestsCount}]", requestIndex, requestsCount);
 
-                    foreach (ApiRequestBase request in requests)
-                    {
-                        int requestIndex = requests.IndexOf(request) + 1;
-                        int requestsCount = requests.Count;
-                        _logger.LogInformation("Processing request [{requestIndex} of {requestsCount}]", requestIndex, requestsCount);
-                        await _mediator.Send(new ProcessRequestCommand(request), stoppingToken);
-                    }
-
-                    TimeSpan timeSpan = TimeSpan.FromMinutes(10);
-                    _logger.LogInformation("Waiting {TimeSpan} for next run.", timeSpan);
-                    await Task.Delay(timeSpan, stoppingToken);
+                    await _mediator.Send(new ProcessApiRequestCommand(apiRequest), stoppingToken);
                 }
-                catch (Exception e)
+
+                if (_apiSyncConfig.ShouldShutDown())
                 {
-                    _logger.LogCritical(e, "Critical error ocurred.");
+                    _logger.LogInformation("Application should shut down.");
+                    break;
+                }
+
+                if (_apiSyncConfig.WaitTime != TimeOnly.MinValue)
+                {
+                    _logger.LogDebug("Waiting for next run.");
+                    await waitingTask;
                 }
             }
         }
@@ -55,10 +64,7 @@ public sealed class Worker : BackgroundService
         {
             _logger.LogCritical(e, "Critical error ocurred.");
         }
-        finally
-        {
-            await _mediator.Send(new CloseCompanyCommand(), stoppingToken);
-            await _mediator.Send(new TerminateSdkCommand(), stoppingToken);
-        }
+
+        _hostApplicationLifetime.StopApplication();
     }
 }

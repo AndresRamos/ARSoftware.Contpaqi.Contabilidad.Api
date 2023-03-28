@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Api.Sync.Core.Application.Api.Interfaces;
-using Api.Sync.Core.Application.Common;
+using Api.Sync.Core.Application.Common.Models;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using Api.Sync.Infrastructure.Api;
 using Api.Sync.Infrastructure.ContpaqiContabilidad.Repositories;
@@ -19,15 +19,21 @@ public static class ConfigureServices
     {
         serviceCollection.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        serviceCollection.AddHttpClient("ApiClient", (provider, client) =>
-        {
-            ApiConfig config = provider.GetRequiredService<IOptions<ApiConfig>>().Value;
-            client.BaseAddress = new Uri(config.Endpoint);
-        });
-
-        serviceCollection.AddTransient<IApiRequestRepository, ApiRequestRepository>();
+        serviceCollection.AddContpaqiContabilidadApiServices();
 
         serviceCollection.AddContpaqiContabilidadServices(configuration);
+
+        return serviceCollection;
+    }
+
+    private static IServiceCollection AddContpaqiContabilidadApiServices(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddHttpClient<IContpaqiComercialApiService, ContpaqiComercialApiService>((serviceProvider, httpClient) =>
+        {
+            ApiSyncConfig apiSyncConfig = serviceProvider.GetRequiredService<IOptions<ApiSyncConfig>>().Value;
+            httpClient.BaseAddress = new Uri(apiSyncConfig.BaseAddress);
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", apiSyncConfig.SubscriptionKey);
+        });
 
         return serviceCollection;
     }
@@ -35,20 +41,23 @@ public static class ConfigureServices
     private static void AddContpaqiContabilidadServices(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         serviceCollection.AddDbContext<ContpaqiContabilidadGeneralesDbContext>(
-            builder => { builder.UseSqlServer(configuration.GetConnectionString("Contpaqi")); }, ServiceLifetime.Transient,
+            builder => { builder.UseSqlServer(configuration.GetConnectionString("Contpaqi")); },
+            ServiceLifetime.Transient,
             ServiceLifetime.Transient);
 
         serviceCollection.AddDbContext<ContpaqiContabilidadEmpresaDbContext>((provider, builder) =>
-        {
-            ContabilidadConfig config = provider.GetRequiredService<IOptions<ContabilidadConfig>>().Value;
-
-            var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString("Contpaqi"))
             {
-                InitialCatalog = config.Empresa
-            };
+                ContpaqiContabilidadConfig config = provider.GetRequiredService<IOptions<ContpaqiContabilidadConfig>>().Value;
 
-            builder.UseSqlServer(sqlConnectionStringBuilder.ToString());
-        }, ServiceLifetime.Transient, ServiceLifetime.Transient);
+                var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString("Contpaqi"))
+                {
+                    InitialCatalog = config.Empresa
+                };
+
+                builder.UseSqlServer(sqlConnectionStringBuilder.ToString());
+            },
+            ServiceLifetime.Transient,
+            ServiceLifetime.Transient);
 
         serviceCollection.AddTransient<IAgrupadorSatRepository, AgrupadorSatRepository>();
         serviceCollection.AddTransient<ICuentaRepository, CuentaRepository>();
