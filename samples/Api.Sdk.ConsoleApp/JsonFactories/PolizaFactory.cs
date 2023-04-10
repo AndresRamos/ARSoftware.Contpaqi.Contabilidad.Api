@@ -14,7 +14,7 @@ public static class PolizaFactory
 
         request.Model.Poliza = new Poliza
         {
-            Tipo = 3,
+            Tipo = new TipoPoliza { Codigo = 3 },
             Concepto = "Concepto Poliza",
             Fecha = DateTime.Today,
             Movimientos = new List<Movimiento>

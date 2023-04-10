@@ -12,5 +12,6 @@ public static class ApiRequestConfiguration
         builder.Configure<EliminarPolizaRequest, EliminarPolizaRequestModel, EliminarPolizaRequestOptions>();
         builder.Configure<CrearCuentaRequest, CrearCuentaRequestModel, CrearCuentaRequestOptions>();
         builder.Configure<BuscarCuentasRequest, BuscarCuentasRequestModel, BuscarCuentasRequestOptions>();
+        builder.Configure<BuscarTiposPolizaRequest, BuscarTiposPolizaRequestModel, BuscarTiposPolizaRequestOptions>();
     }
 }

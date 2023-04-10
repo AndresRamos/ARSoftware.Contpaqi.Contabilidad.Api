@@ -23,7 +23,8 @@ public sealed class PolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                     new JsonDerivedType(typeof(CrearPolizaRequest), nameof(CrearPolizaRequest)),
                     new JsonDerivedType(typeof(CrearCuentaRequest), nameof(CrearCuentaRequest)),
                     new JsonDerivedType(typeof(BuscarCuentasRequest), nameof(BuscarCuentasRequest)),
-                    new JsonDerivedType(typeof(BuscarPolizasRequest), nameof(BuscarPolizasRequest))
+                    new JsonDerivedType(typeof(BuscarPolizasRequest), nameof(BuscarPolizasRequest)),
+                    new JsonDerivedType(typeof(BuscarTiposPolizaRequest), nameof(BuscarTiposPolizaRequest))
                 }
             };
 
@@ -39,7 +40,8 @@ public sealed class PolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                     new JsonDerivedType(typeof(CrearPolizaResponse), nameof(CrearPolizaResponse)),
                     new JsonDerivedType(typeof(CrearCuentaResponse), nameof(CrearCuentaResponse)),
                     new JsonDerivedType(typeof(BuscarCuentasResponse), nameof(BuscarCuentasResponse)),
-                    new JsonDerivedType(typeof(BuscarPolizasResponse), nameof(BuscarPolizasResponse))
+                    new JsonDerivedType(typeof(BuscarPolizasResponse), nameof(BuscarPolizasResponse)),
+                    new JsonDerivedType(typeof(BuscarTiposPolizaResponse), nameof(BuscarTiposPolizaResponse))
                 }
             };
 

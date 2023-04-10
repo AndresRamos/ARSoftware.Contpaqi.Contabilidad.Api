@@ -68,5 +68,10 @@ public sealed class Mappings : Profile
         CreateMap<SegmentoNegocioSql, SegmentoNegocio>()
             .ForMember(des => des.Codigo, opt => opt.MapFrom(src => src.Codigo))
             .ForMember(des => des.Nombre, opt => opt.MapFrom(src => src.Nombre));
+
+        CreateMap<TiposPolizas, TipoPolizaSql>();
+        CreateMap<TipoPolizaSql, TipoPoliza>()
+            .ForMember(des => des.Codigo, opt => opt.MapFrom(src => int.Parse(src.Codigo)))
+            .ForMember(des => des.Nombre, opt => opt.MapFrom(src => src.Nombre));
     }
 }

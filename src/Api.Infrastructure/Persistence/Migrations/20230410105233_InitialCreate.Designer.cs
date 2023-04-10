@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230331195020_InitialCreate")]
+    [Migration("20230410105233_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -127,6 +127,25 @@ namespace Api.Infrastructure.Persistence.Migrations
                     b.HasDiscriminator().HasValue("BuscarPolizasRequest");
                 });
 
+            modelBuilder.Entity("Api.Core.Domain.Requests.BuscarTiposPolizaRequest", b =>
+                {
+                    b.HasBaseType("Api.Core.Domain.Common.ApiRequestBase");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Model");
+
+                    b.Property<string>("Options")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Options");
+
+                    b.HasDiscriminator().HasValue("BuscarTiposPolizaRequest");
+                });
+
             modelBuilder.Entity("Api.Core.Domain.Requests.CrearCuentaRequest", b =>
                 {
                     b.HasBaseType("Api.Core.Domain.Common.ApiRequestBase");
@@ -208,6 +227,19 @@ namespace Api.Infrastructure.Persistence.Migrations
                         .HasColumnName("Model");
 
                     b.HasDiscriminator().HasValue("BuscarPolizasResponse");
+                });
+
+            modelBuilder.Entity("Api.Core.Domain.Requests.BuscarTiposPolizaResponse", b =>
+                {
+                    b.HasBaseType("Api.Core.Domain.Common.ApiResponseBase");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Model");
+
+                    b.HasDiscriminator().HasValue("BuscarTiposPolizaResponse");
                 });
 
             modelBuilder.Entity("Api.Core.Domain.Requests.CrearCuentaResponse", b =>

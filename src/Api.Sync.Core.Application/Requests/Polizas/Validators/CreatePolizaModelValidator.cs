@@ -13,7 +13,7 @@ public sealed class CreatePolizaModelValidator : AbstractValidator<Poliza>
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
-        RuleFor(m => m.Tipo)
+        RuleFor(m => m.Tipo.Codigo)
             .NotEmpty()
             .MustAsync(tipoPolizaRepository.ExistePorCodigoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not a valid tipo de poliza.");

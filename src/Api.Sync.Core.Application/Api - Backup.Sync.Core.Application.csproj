@@ -34,6 +34,7 @@
   <ItemGroup>
     <Folder Include="Api\Commands\SendApiResponse\" />
     <Folder Include="Api\Commands\ProcessApiRequest\" />
+    <Folder Include="Requests\TiposPoliza\" />
   </ItemGroup>
 
 </Project>

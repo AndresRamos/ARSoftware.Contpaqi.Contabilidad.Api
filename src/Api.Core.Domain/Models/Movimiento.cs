@@ -3,7 +3,7 @@
 namespace Api.Core.Domain.Models;
 
 /// <summary>
-///     Model tha represents a CONTPAQi Contabilidad Movimiento
+///     Modelo que representa un CONTPAQi Contabilidad Movimiento
 /// </summary>
 public sealed class Movimiento
 {

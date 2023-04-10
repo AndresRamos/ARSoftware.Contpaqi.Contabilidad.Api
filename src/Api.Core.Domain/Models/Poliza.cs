@@ -19,7 +19,7 @@ public sealed class Poliza
     ///     Tipo de póliza: 1 = Ingresos, 2 = Egresos, 3 = Diario, 4 = Orden, 5 = Estadística, 6 en adelante = Creadas por el
     ///     usuario
     /// </summary>
-    public int Tipo { get; set; }
+    public TipoPoliza Tipo { get; set; } = new();
 
     /// <summary>
     ///     Folio de la póliza.

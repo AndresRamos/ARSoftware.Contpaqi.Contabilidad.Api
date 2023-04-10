@@ -12,5 +12,6 @@ public static class ApiResponseConfiguration
         builder.Configure<EliminarPolizaResponse, EliminarPolizaResponseModel>();
         builder.Configure<CrearCuentaResponse, CrearCuentaResponseModel>();
         builder.Configure<BuscarCuentasResponse, BuscarCuentasResponseModel>();
+        builder.Configure<BuscarTiposPolizaResponse, BuscarTiposPolizaResponseModel>();
     }
 }

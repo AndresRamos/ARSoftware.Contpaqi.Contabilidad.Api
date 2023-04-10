@@ -9,5 +9,6 @@ if (Directory.Exists(baseDirectory))
 
 PolizaFactory.CearJson(Path.Combine(baseDirectory, "Polizas"));
 CuentasFactory.CearJson(Path.Combine(baseDirectory, "Cuentas"));
+TiposPolizaFactory.CearJson(Path.Combine(baseDirectory, "TiposPoliza"));
 
 Console.WriteLine("Programa fin.");

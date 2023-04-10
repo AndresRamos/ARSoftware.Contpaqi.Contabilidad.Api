@@ -43,7 +43,7 @@ public class CrearPolizaRequestHandler : IRequestHandler<CrearPolizaRequest, Api
         CrearPolizaRequestOptions options = request.Options;
         Poliza poliza = request.Model.Poliza;
 
-        var tipoPoliza = (ETIPOPOLIZA)poliza.Tipo;
+        var tipoPoliza = (ETIPOPOLIZA)poliza.Tipo.Codigo;
         try
         {
             _sdkPoliza.iniciarInfo();
