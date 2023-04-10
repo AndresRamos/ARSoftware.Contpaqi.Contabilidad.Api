@@ -3,10 +3,15 @@
 namespace Api.Core.Domain.Models;
 
 /// <summary>
-///     Model that represents a CONTPAQi Contabilidad Cuenta
+///     Modelo de una cuenta contable.
 /// </summary>
 public sealed class Cuenta
 {
+    /// <summary>
+    ///     Id de la cuenta contable.
+    /// </summary>
+    public int Id { get; set; }
+
     /// <summary>
     ///     Código de la cuenta contable.
     /// </summary>

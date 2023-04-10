@@ -3,7 +3,7 @@ using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using Api.Sync.Core.Application.Requests.Polizas.Validators;
 using FluentValidation;
 
-namespace Api.Sync.Core.Application.Requests.Polizas.CrearPoliza;
+namespace Api.Sync.Core.Application.Requests.Polizas;
 
 public sealed class CrearPolizaRequestValidator : AbstractValidator<CrearPolizaRequest>
 {

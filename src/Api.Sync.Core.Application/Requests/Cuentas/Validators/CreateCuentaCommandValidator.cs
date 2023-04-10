@@ -1,9 +1,8 @@
 ﻿using Api.Core.Domain.Requests;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
-using Api.Sync.Core.Application.Requests.Cuentas.Validators;
 using FluentValidation;
 
-namespace Api.Sync.Core.Application.Requests.Cuentas.CrearCuenta;
+namespace Api.Sync.Core.Application.Requests.Cuentas.Validators;
 
 public class CreateCuentaCommandValidator : AbstractValidator<CrearCuentaRequest>
 {

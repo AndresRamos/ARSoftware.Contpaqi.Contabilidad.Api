@@ -1,5 +1,6 @@
 ﻿using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
+using Api.Core.Domain.Requests;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using Api.Sync.Infrastructure.ContpaqiContabilidad.Extensions;
 using Api.Sync.Infrastructure.ContpaqiContabilidad.Models;
@@ -47,6 +48,36 @@ public sealed class CuentaRepository : ICuentaRepository
     public async Task<bool> ExistePorCodigoAsync(string codigo, CancellationToken cancellationToken)
     {
         return await _context.Cuentas.AnyAsync(c => c.Codigo == codigo, cancellationToken);
+    }
+
+    public async Task<IEnumerable<Cuenta>> BuscarPorRequestModelAsync(BuscarCuentasRequestModel requestModel,
+                                                                      ILoadRelatedDataOptions loadRelatedDataOptions,
+                                                                      CancellationToken cancellationToken)
+    {
+        var cuentasList = new List<Cuenta>();
+
+        IQueryable<Cuentas> cuentasQuery = string.IsNullOrEmpty(requestModel.SqlQuery)
+            ? _context.Cuentas.AsQueryable()
+            : _context.Cuentas.FromSqlRaw($"SELECT * FROM Cuentas WHERE {requestModel.SqlQuery}");
+
+        if (requestModel.Id.HasValue)
+            cuentasQuery = cuentasQuery.Where(p => p.Id == requestModel.Id);
+
+        if (!string.IsNullOrWhiteSpace(requestModel.Codigo))
+            cuentasQuery = cuentasQuery.Where(p => p.Codigo == requestModel.Codigo);
+
+        List<CuentaSql> cuentasSql = await cuentasQuery.ProjectTo<CuentaSql>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+
+        foreach (CuentaSql cuentaSql in cuentasSql)
+        {
+            var cuenta = _mapper.Map<Cuenta>(cuentaSql);
+
+            await CargarDatosRelacionadosAsync(cuenta, cuentaSql, loadRelatedDataOptions, cancellationToken);
+
+            cuentasList.Add(cuenta);
+        }
+
+        return cuentasList;
     }
 
     private async Task CargarDatosRelacionadosAsync(Cuenta cuenta,

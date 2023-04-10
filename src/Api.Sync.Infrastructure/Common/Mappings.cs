@@ -18,6 +18,7 @@ public sealed class Mappings : Profile
 
         CreateMap<Cuentas, CuentaSql>();
         CreateMap<CuentaSql, Cuenta>()
+            .ForMember(des => des.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(des => des.Codigo, opt => opt.MapFrom(src => src.Codigo))
             .ForMember(des => des.Nombre, opt => opt.MapFrom(src => src.Nombre))
             .ForMember(des => des.NombreOtroIdioma, opt => opt.MapFrom(src => src.NomIdioma))
@@ -57,6 +58,7 @@ public sealed class Mappings : Profile
 
         CreateMap<Polizas, PolizaSql>();
         CreateMap<PolizaSql, Poliza>()
+            .ForMember(des => des.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(des => des.Fecha, opt => opt.MapFrom(src => src.Fecha))
             .ForMember(des => des.Tipo, opt => opt.MapFrom(src => src.TipoPol))
             .ForMember(des => des.Numero, opt => opt.MapFrom(src => src.Folio))

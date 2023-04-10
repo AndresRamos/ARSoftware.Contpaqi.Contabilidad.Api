@@ -16,8 +16,8 @@ public sealed class TipoPolizaRepository : ITipoPolizaRepository
         _mapper = mapper;
     }
 
-    public async Task<bool> ExistePorCodigoAsync(string codigo, CancellationToken cancellationToken)
+    public async Task<bool> ExistePorCodigoAsync(int codigo, CancellationToken cancellationToken)
     {
-        return await _context.TiposPolizas.AnyAsync(m => m.Codigo.Trim() == codigo.Trim(), cancellationToken);
+        return await _context.TiposPolizas.AnyAsync(m => m.Codigo.Trim() == codigo.ToString(), cancellationToken);
     }
 }

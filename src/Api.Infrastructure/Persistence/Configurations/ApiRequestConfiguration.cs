@@ -8,6 +8,9 @@ public static class ApiRequestConfiguration
     public static void ConfigureRequests(ModelBuilder builder)
     {
         builder.Configure<CrearPolizaRequest, CrearPolizaRequestModel, CrearPolizaRequestOptions>();
+        builder.Configure<BuscarPolizasRequest, BuscarPolizasRequestModel, BuscarPolizasRequestOptions>();
+        builder.Configure<EliminarPolizaRequest, EliminarPolizaRequestModel, EliminarPolizaRequestOptions>();
         builder.Configure<CrearCuentaRequest, CrearCuentaRequestModel, CrearCuentaRequestOptions>();
+        builder.Configure<BuscarCuentasRequest, BuscarCuentasRequestModel, BuscarCuentasRequestOptions>();
     }
 }

@@ -8,5 +8,6 @@ if (Directory.Exists(baseDirectory))
     Directory.Delete(baseDirectory, true);
 
 PolizaFactory.CearJson(Path.Combine(baseDirectory, "Polizas"));
+CuentasFactory.CearJson(Path.Combine(baseDirectory, "Cuentas"));
 
 Console.WriteLine("Programa fin.");

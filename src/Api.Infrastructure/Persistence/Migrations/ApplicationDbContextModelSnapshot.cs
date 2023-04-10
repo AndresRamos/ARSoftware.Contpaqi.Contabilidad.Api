@@ -86,6 +86,44 @@ namespace Api.Infrastructure.Persistence.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("Api.Core.Domain.Requests.BuscarCuentasRequest", b =>
+                {
+                    b.HasBaseType("Api.Core.Domain.Common.ApiRequestBase");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Model");
+
+                    b.Property<string>("Options")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Options");
+
+                    b.HasDiscriminator().HasValue("BuscarCuentasRequest");
+                });
+
+            modelBuilder.Entity("Api.Core.Domain.Requests.BuscarPolizasRequest", b =>
+                {
+                    b.HasBaseType("Api.Core.Domain.Common.ApiRequestBase");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Model");
+
+                    b.Property<string>("Options")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Options");
+
+                    b.HasDiscriminator().HasValue("BuscarPolizasRequest");
+                });
+
             modelBuilder.Entity("Api.Core.Domain.Requests.CrearCuentaRequest", b =>
                 {
                     b.HasBaseType("Api.Core.Domain.Common.ApiRequestBase");
@@ -124,6 +162,51 @@ namespace Api.Infrastructure.Persistence.Migrations
                     b.HasDiscriminator().HasValue("CrearPolizaRequest");
                 });
 
+            modelBuilder.Entity("Api.Core.Domain.Requests.EliminarPolizaRequest", b =>
+                {
+                    b.HasBaseType("Api.Core.Domain.Common.ApiRequestBase");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Model");
+
+                    b.Property<string>("Options")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Options");
+
+                    b.HasDiscriminator().HasValue("EliminarPolizaRequest");
+                });
+
+            modelBuilder.Entity("Api.Core.Domain.Requests.BuscarCuentasResponse", b =>
+                {
+                    b.HasBaseType("Api.Core.Domain.Common.ApiResponseBase");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Model");
+
+                    b.HasDiscriminator().HasValue("BuscarCuentasResponse");
+                });
+
+            modelBuilder.Entity("Api.Core.Domain.Requests.BuscarPolizasResponse", b =>
+                {
+                    b.HasBaseType("Api.Core.Domain.Common.ApiResponseBase");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Model");
+
+                    b.HasDiscriminator().HasValue("BuscarPolizasResponse");
+                });
+
             modelBuilder.Entity("Api.Core.Domain.Requests.CrearCuentaResponse", b =>
                 {
                     b.HasBaseType("Api.Core.Domain.Common.ApiResponseBase");
@@ -148,6 +231,19 @@ namespace Api.Infrastructure.Persistence.Migrations
                         .HasColumnName("Model");
 
                     b.HasDiscriminator().HasValue("CrearPolizaResponse");
+                });
+
+            modelBuilder.Entity("Api.Core.Domain.Requests.EliminarPolizaResponse", b =>
+                {
+                    b.HasBaseType("Api.Core.Domain.Common.ApiResponseBase");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Model");
+
+                    b.HasDiscriminator().HasValue("EliminarPolizaResponse");
                 });
 
             modelBuilder.Entity("Api.Core.Domain.Common.ApiResponseBase", b =>

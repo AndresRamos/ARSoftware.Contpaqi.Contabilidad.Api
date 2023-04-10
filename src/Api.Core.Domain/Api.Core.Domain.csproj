@@ -16,7 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Requests\Cuentas\" />
     <Folder Include="Requests\Polizas\" />
   </ItemGroup>
 
