@@ -40,29 +40,25 @@ public static class ConfigureServices
 
     private static void AddContpaqiContabilidadServices(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        serviceCollection.AddDbContext<ContpaqiContabilidadGeneralesDbContext>(builder =>
+        serviceCollection.AddDbContext<ContpaqiContabilidadGeneralesDbContext>(
+            builder =>
             {
                 builder.UseSqlServer(ContpaqiContabilidadSqlConnectionStringFactory.CreateContpaqiContabilidadGeneralesConnectionString(
                     configuration.GetConnectionString("Contpaqi")));
-            },
-            ServiceLifetime.Transient,
-            ServiceLifetime.Transient);
+            }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
         serviceCollection.AddDbContext<ContpaqiContabilidadEmpresaDbContext>((provider, builder) =>
-            {
-                ContpaqiContabilidadConfig config = provider.GetRequiredService<IOptions<ContpaqiContabilidadConfig>>().Value;
+        {
+            ContpaqiContabilidadConfig config = provider.GetRequiredService<IOptions<ContpaqiContabilidadConfig>>().Value;
 
-                builder.UseSqlServer(
-                    ContpaqiContabilidadSqlConnectionStringFactory.CreateContpaqiContabilidadEmpresaConnectionString(
-                        configuration.GetConnectionString("Contpaqi"),
-                        config.Empresa.BaseDatos));
-            },
-            ServiceLifetime.Transient,
-            ServiceLifetime.Transient);
+            builder.UseSqlServer(
+                ContpaqiContabilidadSqlConnectionStringFactory.CreateContpaqiContabilidadEmpresaConnectionString(
+                    configuration.GetConnectionString("Contpaqi"), config.Empresa.BaseDatos));
+        }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
         serviceCollection.AddTransient<IAgrupadorSatRepository, AgrupadorSatRepository>();
         serviceCollection.AddTransient<ICuentaRepository, CuentaRepository>();
-        serviceCollection.AddTransient<IDiarioRepository, DiarioRepository>();
+        serviceCollection.AddTransient<IDiarioEspecialRepository, DiarioEspecialRepository>();
         serviceCollection.AddTransient<IEmpresaRepository, EmpresaRepository>();
         serviceCollection.AddTransient<IMonedaRepository, MonedaRepository>();
         serviceCollection.AddTransient<IPolizaRepository, PolizaRepository>();

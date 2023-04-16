@@ -16,6 +16,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Requests\Empresas\" />
+    <Folder Include="Requests\DiariosEspeciales\" />
+    <Folder Include="Requests\SegmentosNegocio\" />
     <Folder Include="Requests\TiposPoliza\" />
     <Folder Include="Requests\Polizas\" />
   </ItemGroup>

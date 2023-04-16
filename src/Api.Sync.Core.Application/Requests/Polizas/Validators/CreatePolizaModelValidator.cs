@@ -6,16 +6,12 @@ namespace Api.Sync.Core.Application.Requests.Polizas.Validators;
 
 public sealed class CreatePolizaModelValidator : AbstractValidator<Poliza>
 {
-    public CreatePolizaModelValidator(ITipoPolizaRepository tipoPolizaRepository,
-                                      ICuentaRepository cuentaRepository,
-                                      ISegmentoNegocioRepository segmentoNegocioRepository,
-                                      IDiarioRepository diarioRepository)
+    public CreatePolizaModelValidator(ITipoPolizaRepository tipoPolizaRepository, ICuentaRepository cuentaRepository,
+        ISegmentoNegocioRepository segmentoNegocioRepository, IDiarioEspecialRepository diarioEspecialRepository)
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
-        RuleFor(m => m.Tipo.Codigo)
-            .NotEmpty()
-            .MustAsync(tipoPolizaRepository.ExistePorCodigoAsync)
+        RuleFor(m => m.Tipo.Codigo).NotEmpty().MustAsync(tipoPolizaRepository.ExistePorCodigoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not a valid tipo de poliza.");
 
         RuleFor(m => m.Fecha).NotEmpty();
@@ -25,10 +21,9 @@ public sealed class CreatePolizaModelValidator : AbstractValidator<Poliza>
         RuleFor(m => m.Movimientos).NotEmpty().Must(m => m.Count > 0).WithMessage("Poliza should have at least one movimiento.");
 
         RuleForEach(m => m.Movimientos)
-            .SetValidator(new CreateMovimientoModelValidator(cuentaRepository, segmentoNegocioRepository, diarioRepository));
+            .SetValidator(new CreateMovimientoModelValidator(cuentaRepository, segmentoNegocioRepository, diarioEspecialRepository));
 
-        RuleForEach(m => m.Uuids)
-            .Must(s => string.IsNullOrWhiteSpace(s) || Guid.TryParse(s, out _))
+        RuleForEach(m => m.Uuids).Must(s => string.IsNullOrWhiteSpace(s) || Guid.TryParse(s, out _))
             .WithMessage("{PropertyName} {PropertyValue} is not a valid UUID");
     }
 }

@@ -13,5 +13,8 @@ public static class ApiRequestConfiguration
         builder.Configure<CrearCuentaRequest, CrearCuentaRequestModel, CrearCuentaRequestOptions>();
         builder.Configure<BuscarCuentasRequest, BuscarCuentasRequestModel, BuscarCuentasRequestOptions>();
         builder.Configure<BuscarTiposPolizaRequest, BuscarTiposPolizaRequestModel, BuscarTiposPolizaRequestOptions>();
+        builder.Configure<BuscarEmpresasRequest, BuscarEmpresasRequestModel, BuscarEmpresasRequestOptions>();
+        builder.Configure<BuscarSegmentosNegocioRequest, BuscarSegmentosNegocioRequestModel, BuscarSegmentosNegocioRequestOptions>();
+        builder.Configure<BuscarDiariosEspecialesRequest, BuscarDiariosEspecialesRequestModel, BuscarDiariosEspecialesRequestOptions>();
     }
 }

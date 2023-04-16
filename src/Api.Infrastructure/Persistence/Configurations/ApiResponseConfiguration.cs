@@ -13,5 +13,8 @@ public static class ApiResponseConfiguration
         builder.Configure<CrearCuentaResponse, CrearCuentaResponseModel>();
         builder.Configure<BuscarCuentasResponse, BuscarCuentasResponseModel>();
         builder.Configure<BuscarTiposPolizaResponse, BuscarTiposPolizaResponseModel>();
+        builder.Configure<BuscarEmpresasResponse, BuscarEmpresasResponseModel>();
+        builder.Configure<BuscarSegmentosNegocioResponse, BuscarSegmentosNegocioResponseModel>();
+        builder.Configure<BuscarDiariosEspecialesResponse, BuscarDiariosEspecialesResponseModel>();
     }
 }

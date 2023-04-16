@@ -60,7 +60,6 @@ public sealed class Mappings : Profile
         CreateMap<PolizaSql, Poliza>()
             .ForMember(des => des.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(des => des.Fecha, opt => opt.MapFrom(src => src.Fecha))
-            .ForMember(des => des.Tipo, opt => opt.MapFrom(src => src.TipoPol))
             .ForMember(des => des.Numero, opt => opt.MapFrom(src => src.Folio))
             .ForMember(des => des.Concepto, opt => opt.MapFrom(src => src.Concepto));
 

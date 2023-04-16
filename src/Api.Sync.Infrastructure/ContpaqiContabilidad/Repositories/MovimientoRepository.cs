@@ -15,7 +15,7 @@ public sealed class MovimientoRepository : IMovimientoRepository
 {
     private readonly ContpaqiContabilidadEmpresaDbContext _context;
     private readonly ICuentaRepository _cuentaRepository;
-    private readonly IDiarioRepository _diarioRepository;
+    private readonly IDiarioEspecialRepository _diarioEspecialRepository;
     private readonly IMapper _mapper;
     private readonly ISegmentoNegocioRepository _segmentoNegocioRepository;
 
@@ -25,18 +25,16 @@ public sealed class MovimientoRepository : IMovimientoRepository
         _mapper = mapper;
         _cuentaRepository = new CuentaRepository(context, mapper);
         _segmentoNegocioRepository = new SegmentoNegocioRepository(context, mapper);
-        _diarioRepository = new DiarioRepository(context, mapper);
+        _diarioEspecialRepository = new DiarioEspecialRepository(context, mapper);
     }
 
-    public async Task<IEnumerable<Movimiento>> BuscarPorPolizaIdAsync(int polizaId,
-                                                                      ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                                      CancellationToken cancellationToken)
+    public async Task<IEnumerable<Movimiento>> BuscarPorPolizaIdAsync(int polizaId, ILoadRelatedDataOptions loadRelatedDataOptions,
+        CancellationToken cancellationToken)
     {
         var movimientosList = new List<Movimiento>();
 
         List<MovimientoSql> movimientosSql = await _context.MovimientosPoliza.Where(m => m.IdPoliza == polizaId)
-            .ProjectTo<MovimientoSql>(_mapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken);
+            .ProjectTo<MovimientoSql>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
 
         foreach (MovimientoSql movimientoSql in movimientosSql)
         {
@@ -50,10 +48,8 @@ public sealed class MovimientoRepository : IMovimientoRepository
         return movimientosList;
     }
 
-    private async Task CargarDatosRelacionadosAsync(Movimiento movimiento,
-                                                    MovimientoSql movimientoSql,
-                                                    ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                    CancellationToken cancellationToken)
+    private async Task CargarDatosRelacionadosAsync(Movimiento movimiento, MovimientoSql movimientoSql,
+        ILoadRelatedDataOptions loadRelatedDataOptions, CancellationToken cancellationToken)
     {
         movimiento.Cuenta = await _cuentaRepository.BuscarPorIdAsync(movimientoSql.IdCuenta, loadRelatedDataOptions, cancellationToken) ??
                             new Cuenta();
@@ -64,7 +60,7 @@ public sealed class MovimientoRepository : IMovimientoRepository
 
         if (movimientoSql.IdDiario.HasValue)
             movimiento.Diario =
-                await _diarioRepository.BuscarPorIdAsync(movimientoSql.IdDiario.Value, loadRelatedDataOptions, cancellationToken);
+                await _diarioEspecialRepository.BuscarPorIdAsync(movimientoSql.IdDiario.Value, loadRelatedDataOptions, cancellationToken);
 
         if (loadRelatedDataOptions.CargarDatosExtra)
             movimiento.DatosExtra = (await _context.MovimientosPoliza.FirstAsync(m => m.Id == movimientoSql.Id, cancellationToken))

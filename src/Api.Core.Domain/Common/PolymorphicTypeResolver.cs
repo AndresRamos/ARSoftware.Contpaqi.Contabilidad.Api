@@ -24,7 +24,10 @@ public sealed class PolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                     new JsonDerivedType(typeof(CrearCuentaRequest), nameof(CrearCuentaRequest)),
                     new JsonDerivedType(typeof(BuscarCuentasRequest), nameof(BuscarCuentasRequest)),
                     new JsonDerivedType(typeof(BuscarPolizasRequest), nameof(BuscarPolizasRequest)),
-                    new JsonDerivedType(typeof(BuscarTiposPolizaRequest), nameof(BuscarTiposPolizaRequest))
+                    new JsonDerivedType(typeof(BuscarTiposPolizaRequest), nameof(BuscarTiposPolizaRequest)),
+                    new JsonDerivedType(typeof(BuscarEmpresasRequest), nameof(BuscarEmpresasRequest)),
+                    new JsonDerivedType(typeof(BuscarSegmentosNegocioRequest), nameof(BuscarSegmentosNegocioRequest)),
+                    new JsonDerivedType(typeof(BuscarDiariosEspecialesRequest), nameof(BuscarDiariosEspecialesRequest))
                 }
             };
 
@@ -41,7 +44,9 @@ public sealed class PolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                     new JsonDerivedType(typeof(CrearCuentaResponse), nameof(CrearCuentaResponse)),
                     new JsonDerivedType(typeof(BuscarCuentasResponse), nameof(BuscarCuentasResponse)),
                     new JsonDerivedType(typeof(BuscarPolizasResponse), nameof(BuscarPolizasResponse)),
-                    new JsonDerivedType(typeof(BuscarTiposPolizaResponse), nameof(BuscarTiposPolizaResponse))
+                    new JsonDerivedType(typeof(BuscarEmpresasResponse), nameof(BuscarEmpresasResponse)),
+                    new JsonDerivedType(typeof(BuscarSegmentosNegocioResponse), nameof(BuscarSegmentosNegocioResponse)),
+                    new JsonDerivedType(typeof(BuscarDiariosEspecialesResponse), nameof(BuscarDiariosEspecialesResponse))
                 }
             };
 
