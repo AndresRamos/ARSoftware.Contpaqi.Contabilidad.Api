@@ -5,6 +5,7 @@ public interface ISdkSesionService
     bool ConexionInciada { get; }
     bool SesionUsuarioIniciada { get; }
     bool EmpresaAbierta { get; }
+    string BaseDatos { get; }
     void IniciarConexion();
     void TerminarConexion();
     void IniciarSesionUsuario();

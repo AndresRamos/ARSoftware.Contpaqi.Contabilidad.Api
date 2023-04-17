@@ -13,6 +13,9 @@ public sealed class SdkSesionService : ISdkSesionService
         _sdkSesion = sdkSesion;
     }
 
+    public bool CanAbrirEmpresa => EmpresaAbierta == false;
+    public bool CanCerrarEmpresa => EmpresaAbierta;
+    public string BaseDatos { get; private set; } = string.Empty;
     public bool EmpresaAbierta { get; private set; }
 
     public bool ConexionInciada { get; private set; }
@@ -55,16 +58,25 @@ public sealed class SdkSesionService : ISdkSesionService
 
     public void AbrirEmpresa(string nombreBaseDatos)
     {
-        int sdkResult = _sdkSesion.abreEmpresa(nombreBaseDatos);
+        if (CanAbrirEmpresa)
+        {
+            int sdkResult = _sdkSesion.abreEmpresa(nombreBaseDatos);
 
-        if (sdkResult == SdkResult.Success)
-            EmpresaAbierta = true;
+            if (sdkResult == SdkResult.Success)
+            {
+                EmpresaAbierta = true;
+                BaseDatos = nombreBaseDatos;
+            }
+        }
     }
 
     public void CierraEmpresa()
     {
-        _sdkSesion.cierraEmpresa();
-
-        EmpresaAbierta = false;
+        if (CanCerrarEmpresa)
+        {
+            _sdkSesion.cierraEmpresa();
+            EmpresaAbierta = false;
+            BaseDatos = string.Empty;
+        }
     }
 }

@@ -15,8 +15,7 @@ public sealed class AbrirEmpresaCommandHandler : IRequestHandler<AbrirEmpresaCom
     private readonly ISdkSesionService _sdkSesionService;
 
     public AbrirEmpresaCommandHandler(IOptions<ContpaqiContabilidadConfig> contabilidadConfigOptions,
-                                      ILogger<AbrirEmpresaCommandHandler> logger,
-                                      ISdkSesionService sdkSesionService)
+        ILogger<AbrirEmpresaCommandHandler> logger, ISdkSesionService sdkSesionService)
     {
         _logger = logger;
         _sdkSesionService = sdkSesionService;
@@ -25,7 +24,9 @@ public sealed class AbrirEmpresaCommandHandler : IRequestHandler<AbrirEmpresaCom
 
     public Task Handle(AbrirEmpresaCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Opening company.");
+        // Cerrar empresa si ya está abierta y no es la misma que se quiere abrir
+        if (_sdkSesionService.EmpresaAbierta && _contpaqiContabilidadConfig.Empresa.BaseDatos != _sdkSesionService.BaseDatos)
+            _sdkSesionService.CierraEmpresa();
 
         _logger.LogInformation("Empresa Abierta before AbrirEmpresa: {EmpresaAbierta}", _sdkSesionService.EmpresaAbierta);
         _sdkSesionService.AbrirEmpresa(_contpaqiContabilidadConfig.Empresa.BaseDatos);

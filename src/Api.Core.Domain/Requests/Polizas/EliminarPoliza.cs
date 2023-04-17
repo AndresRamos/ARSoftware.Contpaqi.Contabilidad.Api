@@ -17,7 +17,7 @@ public sealed class EliminarPolizaRequest : ApiRequestBase, IApiRequest<Eliminar
 /// </summary>
 public sealed class EliminarPolizaRequestModel
 {
-    public LlavePoliza LlavePoliza { get; set; }
+    public LlavePoliza LlavePoliza { get; set; } = new();
 }
 
 /// <summary>

@@ -18,12 +18,9 @@ public sealed class Worker : BackgroundService
     private readonly ILogger<Worker> _logger;
     private readonly IMediator _mediator;
 
-    public Worker(ILogger<Worker> logger,
-                  IMediator mediator,
-                  IOptions<ApiSyncConfig> apiSyncConfigOptions,
-                  IHostApplicationLifetime hostApplicationLifetime,
-                  IOptions<ContpaqiContabilidadConfig> contpaqiContabilidadConfigOptions,
-                  IEmpresaRepository empresaRepository)
+    public Worker(ILogger<Worker> logger, IMediator mediator, IOptions<ApiSyncConfig> apiSyncConfigOptions,
+        IHostApplicationLifetime hostApplicationLifetime, IOptions<ContpaqiContabilidadConfig> contpaqiContabilidadConfigOptions,
+        IEmpresaRepository empresaRepository)
     {
         _logger = logger;
         _mediator = mediator;
@@ -37,25 +34,31 @@ public sealed class Worker : BackgroundService
     {
         try
         {
-            _contpaqiContabilidadConfig.Empresa =
-                await _empresaRepository.BuscarPorRfcAsync(_apiSyncConfig.EmpresaRfc, LoadRelatedDataOptions.Default, stoppingToken) ??
-                throw new InvalidOperationException();
-
-            await _mediator.Send(new AbrirEmpresaCommand(), stoppingToken);
+            Task waitingTask = Task.Delay(_apiSyncConfig.WaitTime.ToTimeSpan(), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                Task waitingTask = Task.Delay(_apiSyncConfig.WaitTime.ToTimeSpan(), stoppingToken);
+                List<IGrouping<string, ApiRequestBase>> requestGroups = (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken))
+                    .GroupBy(request => request.EmpresaRfc)
+                    .ToList();
 
-                List<ApiRequestBase> apiRequests = (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken)).ToList();
-
-                foreach (ApiRequestBase apiRequest in apiRequests)
+                foreach (IGrouping<string, ApiRequestBase> requestGroup in requestGroups)
                 {
-                    int requestIndex = apiRequests.IndexOf(apiRequest) + 1;
-                    int requestsCount = apiRequests.Count;
-                    _logger.LogInformation("Processing request [{requestIndex} of {requestsCount}]", requestIndex, requestsCount);
+                    _contpaqiContabilidadConfig.Empresa =
+                        await _empresaRepository.BuscarPorRfcAsync(requestGroup.Key, LoadRelatedDataOptions.Default, stoppingToken) ??
+                        throw new InvalidOperationException();
 
-                    await _mediator.Send(new ProcessApiRequestCommand(apiRequest), stoppingToken);
+                    await _mediator.Send(new AbrirEmpresaCommand(), stoppingToken);
+
+                    foreach (ApiRequestBase apiRequest in requestGroup.ToList())
+                    {
+                        int requestIndex =
+                            (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken)).ToList().IndexOf(apiRequest) + 1;
+                        int requestsCount = (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken)).ToList().Count;
+                        _logger.LogInformation("Processing request [{requestIndex} of {requestsCount}]", requestIndex, requestsCount);
+
+                        await _mediator.Send(new ProcessApiRequestCommand(apiRequest), stoppingToken);
+                    }
                 }
 
                 if (_apiSyncConfig.ShouldShutDown())
