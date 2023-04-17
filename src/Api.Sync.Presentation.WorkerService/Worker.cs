@@ -1,4 +1,5 @@
 using Api.Core.Domain.Common;
+using Api.Core.Domain.Models;
 using Api.Sync.Core.Application.Api.Commands.ProcessApiRequest;
 using Api.Sync.Core.Application.Api.Queries.GetPendingRequests;
 using Api.Sync.Core.Application.Common.Models;
@@ -44,9 +45,13 @@ public sealed class Worker : BackgroundService
 
                 foreach (IGrouping<string, ApiRequestBase> requestGroup in requestGroups)
                 {
-                    _contpaqiContabilidadConfig.Empresa =
-                        await _empresaRepository.BuscarPorRfcAsync(requestGroup.Key, LoadRelatedDataOptions.Default, stoppingToken) ??
-                        throw new InvalidOperationException();
+                    Empresa? empresa = await _empresaRepository.BuscarPorRfcAsync(requestGroup.Key, LoadRelatedDataOptions.Default,
+                        stoppingToken);
+
+                    if (empresa is null)
+                        continue;
+
+                    _contpaqiContabilidadConfig.Empresa = empresa;
 
                     await _mediator.Send(new AbrirEmpresaCommand(), stoppingToken);
 
