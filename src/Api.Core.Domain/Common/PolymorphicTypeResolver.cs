@@ -20,14 +20,14 @@ public sealed class PolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                 UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
                 DerivedTypes =
                 {
-                    new JsonDerivedType(typeof(CrearPolizaRequest), nameof(CrearPolizaRequest)),
-                    new JsonDerivedType(typeof(CrearCuentaRequest), nameof(CrearCuentaRequest)),
                     new JsonDerivedType(typeof(BuscarCuentasRequest), nameof(BuscarCuentasRequest)),
-                    new JsonDerivedType(typeof(BuscarPolizasRequest), nameof(BuscarPolizasRequest)),
-                    new JsonDerivedType(typeof(BuscarTiposPolizaRequest), nameof(BuscarTiposPolizaRequest)),
+                    new JsonDerivedType(typeof(BuscarDiariosEspecialesRequest), nameof(BuscarDiariosEspecialesRequest)),
                     new JsonDerivedType(typeof(BuscarEmpresasRequest), nameof(BuscarEmpresasRequest)),
+                    new JsonDerivedType(typeof(BuscarPolizasRequest), nameof(BuscarPolizasRequest)),
                     new JsonDerivedType(typeof(BuscarSegmentosNegocioRequest), nameof(BuscarSegmentosNegocioRequest)),
-                    new JsonDerivedType(typeof(BuscarDiariosEspecialesRequest), nameof(BuscarDiariosEspecialesRequest))
+                    new JsonDerivedType(typeof(BuscarTiposPolizaRequest), nameof(BuscarTiposPolizaRequest)),
+                    new JsonDerivedType(typeof(CrearCuentaRequest), nameof(CrearCuentaRequest)),
+                    new JsonDerivedType(typeof(CrearPolizaRequest), nameof(CrearPolizaRequest))
                 }
             };
 
@@ -40,13 +40,14 @@ public sealed class PolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                 UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
                 DerivedTypes =
                 {
-                    new JsonDerivedType(typeof(CrearPolizaResponse), nameof(CrearPolizaResponse)),
-                    new JsonDerivedType(typeof(CrearCuentaResponse), nameof(CrearCuentaResponse)),
                     new JsonDerivedType(typeof(BuscarCuentasResponse), nameof(BuscarCuentasResponse)),
-                    new JsonDerivedType(typeof(BuscarPolizasResponse), nameof(BuscarPolizasResponse)),
+                    new JsonDerivedType(typeof(BuscarDiariosEspecialesResponse), nameof(BuscarDiariosEspecialesResponse)),
                     new JsonDerivedType(typeof(BuscarEmpresasResponse), nameof(BuscarEmpresasResponse)),
+                    new JsonDerivedType(typeof(BuscarPolizasResponse), nameof(BuscarPolizasResponse)),
                     new JsonDerivedType(typeof(BuscarSegmentosNegocioResponse), nameof(BuscarSegmentosNegocioResponse)),
-                    new JsonDerivedType(typeof(BuscarDiariosEspecialesResponse), nameof(BuscarDiariosEspecialesResponse))
+                    new JsonDerivedType(typeof(BuscarTiposPolizaResponse), nameof(BuscarTiposPolizaResponse)),
+                    new JsonDerivedType(typeof(CrearCuentaResponse), nameof(CrearCuentaResponse)),
+                    new JsonDerivedType(typeof(CrearPolizaResponse), nameof(CrearPolizaResponse))
                 }
             };
 

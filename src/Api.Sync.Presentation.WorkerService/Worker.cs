@@ -35,15 +35,14 @@ public sealed class Worker : BackgroundService
     {
         try
         {
-            Task waitingTask = Task.Delay(_apiSyncConfig.WaitTime.ToTimeSpan(), stoppingToken);
-
             while (!stoppingToken.IsCancellationRequested)
             {
-                List<IGrouping<string, ApiRequestBase>> requestGroups = (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken))
-                    .GroupBy(request => request.EmpresaRfc)
-                    .ToList();
+                Task waitingTask = Task.Delay(_apiSyncConfig.WaitTime.ToTimeSpan(), stoppingToken);
 
-                foreach (IGrouping<string, ApiRequestBase> requestGroup in requestGroups)
+                List<ApiRequestBase> pendingRequests = (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken)).ToList();
+                _logger.LogInformation("{PendingRequests} solicitudes pendientes.", pendingRequests.Count);
+
+                foreach (IGrouping<string, ApiRequestBase> requestGroup in pendingRequests.GroupBy(request => request.EmpresaRfc))
                 {
                     Empresa? empresa = await _empresaRepository.BuscarPorRfcAsync(requestGroup.Key, LoadRelatedDataOptions.Default,
                         stoppingToken);
@@ -55,12 +54,13 @@ public sealed class Worker : BackgroundService
 
                     await _mediator.Send(new AbrirEmpresaCommand(), stoppingToken);
 
-                    foreach (ApiRequestBase apiRequest in requestGroup.ToList())
+                    List<ApiRequestBase> apiRequests = requestGroup.ToList();
+                    foreach (ApiRequestBase apiRequest in apiRequests)
                     {
-                        int requestIndex =
-                            (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken)).ToList().IndexOf(apiRequest) + 1;
-                        int requestsCount = (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken)).ToList().Count;
-                        _logger.LogInformation("Processing request [{requestIndex} of {requestsCount}]", requestIndex, requestsCount);
+                        int requestIndex = apiRequests.IndexOf(apiRequest) + 1;
+                        int requestsCount = apiRequests.Count;
+                        _logger.LogInformation("Empresa: {EmpresaRfc}. Procesando [{requestIndex} of {requestsCount}]", requestGroup.Key,
+                            requestIndex, requestsCount);
 
                         await _mediator.Send(new ProcessApiRequestCommand(apiRequest), stoppingToken);
                     }
@@ -68,24 +68,24 @@ public sealed class Worker : BackgroundService
 
                 if (_apiSyncConfig.ShouldShutDown())
                 {
-                    _logger.LogInformation("Application should shut down.");
+                    _logger.LogInformation("La aplicacion debe apgarse.");
                     break;
                 }
 
                 if (_apiSyncConfig.WaitTime != TimeOnly.MinValue)
                 {
-                    _logger.LogDebug("Waiting for next run.");
+                    _logger.LogDebug("Esperando la siguiente iteracion.");
                     await waitingTask;
                 }
             }
         }
         catch (OperationCanceledException e)
         {
-            _logger.LogWarning(e, "Operation was cancelled.");
+            _logger.LogWarning(e, "La operacion fue cancelada.");
         }
         catch (Exception e)
         {
-            _logger.LogCritical(e, "Critical error ocurred.");
+            _logger.LogCritical(e, "Ocurrio un error critico.");
         }
 
         _hostApplicationLifetime.StopApplication();
