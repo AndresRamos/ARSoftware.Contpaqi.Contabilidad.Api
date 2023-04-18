@@ -1,10 +1,10 @@
 ﻿namespace Api.Core.Domain.Common;
 
-public abstract class ContpaqiResponse
+public interface IContpaqiResponse
 {
 }
 
-public interface IContpaqiResponse<TModel>
+public interface IContpaqiResponse<TModel> : IContpaqiResponse
 {
     /// <summary>
     ///     Response model.
