@@ -52,7 +52,7 @@ namespace Api.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Requests", (string)null);
+                    b.ToTable("Requests");
 
                     b.UseTphMappingStrategy();
                 });
@@ -85,7 +85,7 @@ namespace Api.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Responses", (string)null);
+                    b.ToTable("Responses");
 
                     b.UseTphMappingStrategy();
                 });

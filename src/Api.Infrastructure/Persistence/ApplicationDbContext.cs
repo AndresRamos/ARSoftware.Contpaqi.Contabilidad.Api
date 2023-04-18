@@ -16,10 +16,11 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ApiRequest>().UseTphMappingStrategy().ToTable("Requests");
-        modelBuilder.Entity<ApiResponse>().UseTphMappingStrategy().ToTable("Responses");
+        modelBuilder.Entity<ApiRequest>().UseTphMappingStrategy();
+        modelBuilder.Entity<ApiResponse>().UseTphMappingStrategy();
 
         modelBuilder.Entity<ApiRequest>().HasOne(r => r.Response).WithOne().HasForeignKey<ApiResponse>(r => r.Id);
+
         modelBuilder.Entity<ApiRequest>()
             .Property(e => e.ContpaqiRequest)
             .HasConversion(v => JsonSerializer.Serialize(v, JsonExtensions.GetJsonSerializerOptions()),
@@ -29,9 +30,6 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
             .Property(e => e.ContpaqiResponse)
             .HasConversion(v => JsonSerializer.Serialize(v, JsonExtensions.GetJsonSerializerOptions()),
                 v => JsonSerializer.Deserialize<IContpaqiResponse>(v, JsonExtensions.GetJsonSerializerOptions()));
-
-        //ApiRequestConfiguration.ConfigureRequests(modelBuilder);
-        //ApiResponseConfiguration.ConfigureResponses(modelBuilder);
 
         base.OnModelCreating(modelBuilder);
     }

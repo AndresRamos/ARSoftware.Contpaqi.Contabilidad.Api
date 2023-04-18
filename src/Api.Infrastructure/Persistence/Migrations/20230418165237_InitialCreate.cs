@@ -34,10 +34,10 @@ namespace Api.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    IsSuccess = table.Column<bool>(type: "bit", nullable: false),
                     ContpaqiResponseType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContpaqiResponse = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsSuccess = table.Column<bool>(type: "bit", nullable: false),
                     ExecutionTime = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
