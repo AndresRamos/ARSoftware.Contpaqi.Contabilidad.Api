@@ -6,7 +6,7 @@ namespace Api.Core.Domain.Requests;
 /// <summary>
 ///     Solicitud para crear una poliza.
 /// </summary>
-public sealed class CrearPolizaRequest : ApiRequestBase, IApiRequest<CrearPolizaRequestModel, CrearPolizaRequestOptions>
+public sealed class CrearPolizaRequest : IContpaqiRequest<CrearPolizaRequestModel, CrearPolizaRequestOptions>
 {
     public CrearPolizaRequestModel Model { get; set; } = new();
     public CrearPolizaRequestOptions Options { get; set; } = new();
@@ -37,7 +37,7 @@ public sealed class CrearPolizaRequestOptions : ILoadRelatedDataOptions
 /// <summary>
 ///     Respuesta de la solicitud CrearPolizaRequest.
 /// </summary>
-public sealed class CrearPolizaResponse : ApiResponseBase, IApiResponse<CrearPolizaResponseModel>
+public sealed class CrearPolizaResponse : IContpaqiResponse<CrearPolizaResponseModel>
 {
     public CrearPolizaResponseModel Model { get; set; } = new();
 }

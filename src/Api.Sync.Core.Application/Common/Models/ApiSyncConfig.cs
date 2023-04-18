@@ -7,6 +7,7 @@ public sealed class ApiSyncConfig
     public string BaseAddress { get; set; } = string.Empty;
     public TimeOnly WaitTime { get; set; } = TimeOnly.MinValue;
     public TimeOnly ShutdownTime { get; set; } = new(20, 0, 0);
+    public List<string> Empresas { get; set; } = new();
 
     public bool ShouldShutDown()
     {

@@ -41,22 +41,21 @@ public sealed class DiariosEspecialesFactory
         Directory.CreateDirectory(directory);
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarDiariosEspecialesRequest)}_Todo.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarTodo(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarTodo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarDiariosEspecialesRequest)}_PorId.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorId(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorId(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarDiariosEspecialesRequest)}_PorCodigo.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorCodigo(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorCodigo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarDiariosEspecialesRequest)}_PorSql.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorSql(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorSql(), options));
     }
 
     private static BuscarDiariosEspecialesRequest IniciarlizarBuscarDiariosEspecialesRequest()
     {
         var request = new BuscarDiariosEspecialesRequest();
-        request.EmpresaRfc = "URE180429TM6";
 
         return request;
     }

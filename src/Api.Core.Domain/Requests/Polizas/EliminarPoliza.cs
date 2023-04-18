@@ -6,7 +6,7 @@ namespace Api.Core.Domain.Requests;
 /// <summary>
 ///     Solicitud para eliminar polizas.
 /// </summary>
-public sealed class EliminarPolizaRequest : ApiRequestBase, IApiRequest<EliminarPolizaRequestModel, EliminarPolizaRequestOptions>
+public sealed class EliminarPolizaRequest : IContpaqiRequest<EliminarPolizaRequestModel, EliminarPolizaRequestOptions>
 {
     public EliminarPolizaRequestModel Model { get; set; } = new();
     public EliminarPolizaRequestOptions Options { get; set; } = new();
@@ -31,7 +31,7 @@ public sealed class EliminarPolizaRequestOptions : ILoadRelatedDataOptions
 /// <summary>
 ///     Respuesta de la solicitud EliminarPolizaRequest.
 /// </summary>
-public sealed class EliminarPolizaResponse : ApiResponseBase, IApiResponse<EliminarPolizaResponseModel>
+public sealed class EliminarPolizaResponse : IContpaqiResponse<EliminarPolizaResponseModel>
 {
     public EliminarPolizaResponseModel Model { get; set; } = new();
 }

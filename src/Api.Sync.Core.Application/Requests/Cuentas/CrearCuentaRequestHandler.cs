@@ -8,7 +8,7 @@ using SDKCONTPAQNGLib;
 
 namespace Api.Sync.Core.Application.Requests.Cuentas;
 
-public class CrearCuentaRequestHandler : IRequestHandler<CrearCuentaRequest, ApiResponseBase>
+public class CrearCuentaRequestHandler : IRequestHandler<CrearCuentaRequest, ApiResponse>
 {
     private readonly ICuentaRepository _cuentaRepository;
     private readonly ILogger<CrearCuentaRequestHandler> _logger;
@@ -21,7 +21,7 @@ public class CrearCuentaRequestHandler : IRequestHandler<CrearCuentaRequest, Api
         _logger = logger;
     }
 
-    public async Task<ApiResponseBase> Handle(CrearCuentaRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(CrearCuentaRequest request, CancellationToken cancellationToken)
     {
         Cuenta cuenta = request.Model.Cuenta;
 
@@ -53,15 +53,17 @@ public class CrearCuentaRequestHandler : IRequestHandler<CrearCuentaRequest, Api
                 throw new Exception($"No se pudo crear la cuenta. Error: {codigoError} - {mensajeError}");
             }
 
-            return ApiResponseFactory.CreateSuccessfull<CrearCuentaResponse, CrearCuentaResponseModel>(request.Id,
-                new CrearCuentaResponseModel
+            return ApiResponse.CreateSuccessfull(new CrearCuentaResponse
+            {
+                Model = new CrearCuentaResponseModel
                 {
                     Cuenta = await _cuentaRepository.BuscarPorIdAsync(_sdkCuenta.Id, request.Options, cancellationToken)
-                });
+                }
+            });
         }
         catch (Exception e)
         {
-            return ApiResponseFactory.CreateFailed<CrearCuentaResponse>(request.Id, e.Message);
+            return ApiResponse.CreateFailed(e.Message);
         }
     }
 }

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Api.Sync.Core.Application.Requests.DiariosEspeciales;
 
-public sealed class BuscarDiariosEspecialesRequestHandler : IRequestHandler<BuscarDiariosEspecialesRequest, ApiResponseBase>
+public sealed class BuscarDiariosEspecialesRequestHandler : IRequestHandler<BuscarDiariosEspecialesRequest, ApiResponse>
 {
     private readonly IDiarioEspecialRepository _diarioEspecialRepository;
 
@@ -15,19 +15,21 @@ public sealed class BuscarDiariosEspecialesRequestHandler : IRequestHandler<Busc
         _diarioEspecialRepository = diarioEspecialRepository;
     }
 
-    public async Task<ApiResponseBase> Handle(BuscarDiariosEspecialesRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(BuscarDiariosEspecialesRequest request, CancellationToken cancellationToken)
     {
         try
         {
             List<DiarioEspecial> diarios =
                 (await _diarioEspecialRepository.BuscarPorRequestModelAsync(request.Model, request.Options, cancellationToken)).ToList();
 
-            return ApiResponseFactory.CreateSuccessfull<BuscarDiariosEspecialesResponse, BuscarDiariosEspecialesResponseModel>(request.Id,
-                new BuscarDiariosEspecialesResponseModel { DiariosEspeciales = diarios });
+            return ApiResponse.CreateSuccessfull(new BuscarDiariosEspecialesResponse
+            {
+                Model = new BuscarDiariosEspecialesResponseModel { DiariosEspeciales = diarios }
+            });
         }
         catch (Exception e)
         {
-            return ApiResponseFactory.CreateFailed<BuscarDiariosEspecialesResponse>(request.Id, e.Message);
+            return ApiResponse.CreateFailed(e.Message);
         }
     }
 }

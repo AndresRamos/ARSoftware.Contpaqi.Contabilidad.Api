@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Api.Sync.Core.Application.Requests.SegmentosNegocio;
 
-public sealed class BuscarSegmentosNegocioRequestHandler : IRequestHandler<BuscarSegmentosNegocioRequest, ApiResponseBase>
+public sealed class BuscarSegmentosNegocioRequestHandler : IRequestHandler<BuscarSegmentosNegocioRequest, ApiResponse>
 {
     private readonly ISegmentoNegocioRepository _segmentoNegocioRepository;
 
@@ -15,19 +15,21 @@ public sealed class BuscarSegmentosNegocioRequestHandler : IRequestHandler<Busca
         _segmentoNegocioRepository = segmentoNegocioRepository;
     }
 
-    public async Task<ApiResponseBase> Handle(BuscarSegmentosNegocioRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(BuscarSegmentosNegocioRequest request, CancellationToken cancellationToken)
     {
         try
         {
             List<SegmentoNegocio> segmentosNegocio =
                 (await _segmentoNegocioRepository.BuscarPorRequestModelAsync(request.Model, request.Options, cancellationToken)).ToList();
 
-            return ApiResponseFactory.CreateSuccessfull<BuscarSegmentosNegocioResponse, BuscarSegmentosNegocioResponseModel>(request.Id,
-                new BuscarSegmentosNegocioResponseModel { SegmentosNegocio = segmentosNegocio });
+            return ApiResponse.CreateSuccessfull(new BuscarSegmentosNegocioResponse
+            {
+                Model = new BuscarSegmentosNegocioResponseModel { SegmentosNegocio = segmentosNegocio }
+            });
         }
         catch (Exception e)
         {
-            return ApiResponseFactory.CreateFailed<BuscarSegmentosNegocioResponse>(request.Id, e.Message);
+            return ApiResponse.CreateFailed(e.Message);
         }
     }
 }

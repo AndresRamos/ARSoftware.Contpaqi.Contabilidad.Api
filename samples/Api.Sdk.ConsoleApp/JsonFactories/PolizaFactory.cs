@@ -84,32 +84,30 @@ public static class PolizaFactory
         Directory.CreateDirectory(directory);
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(CrearPolizaRequest)}.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(Crear(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(Crear(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarPolizasRequest)}_PorId.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorId(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorId(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarPolizasRequest)}_PorRangoFecha.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorRangoFecha(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorRangoFecha(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarPolizasRequest)}_PorNumero.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorNumero(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorNumero(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarPolizasRequest)}_PorSql.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorSql(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorSql(), options));
     }
 
     private static CrearPolizaRequest InicializarCrearPolizaRequest()
     {
         var request = new CrearPolizaRequest();
-        request.EmpresaRfc = "URE180429TM6";
         return request;
     }
 
     private static BuscarPolizasRequest InicializarBuscarPolizasRequest()
     {
         var request = new BuscarPolizasRequest();
-        request.EmpresaRfc = "URE180429TM6";
         return request;
     }
 }

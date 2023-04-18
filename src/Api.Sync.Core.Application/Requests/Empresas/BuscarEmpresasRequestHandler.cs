@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Api.Sync.Core.Application.Requests.Empresas;
 
-public sealed class BuscarEmpresasRequestHandler : IRequestHandler<BuscarEmpresasRequest, ApiResponseBase>
+public sealed class BuscarEmpresasRequestHandler : IRequestHandler<BuscarEmpresasRequest, ApiResponse>
 {
     private readonly IEmpresaRepository _empresaRepository;
 
@@ -15,18 +15,20 @@ public sealed class BuscarEmpresasRequestHandler : IRequestHandler<BuscarEmpresa
         _empresaRepository = empresaRepository;
     }
 
-    public async Task<ApiResponseBase> Handle(BuscarEmpresasRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(BuscarEmpresasRequest request, CancellationToken cancellationToken)
     {
         try
         {
             List<Empresa> empresas = (await _empresaRepository.BuscarTodoAsync(request.Options, cancellationToken)).ToList();
 
-            return ApiResponseFactory.CreateSuccessfull<BuscarEmpresasResponse, BuscarEmpresasResponseModel>(request.Id,
-                new BuscarEmpresasResponseModel { Empresas = empresas });
+            return ApiResponse.CreateSuccessfull(new BuscarEmpresasResponse
+            {
+                Model = new BuscarEmpresasResponseModel { Empresas = empresas }
+            });
         }
         catch (Exception e)
         {
-            return ApiResponseFactory.CreateFailed<BuscarEmpresasResponse>(request.Id, e.Message);
+            return ApiResponse.CreateFailed(e.Message);
         }
     }
 }

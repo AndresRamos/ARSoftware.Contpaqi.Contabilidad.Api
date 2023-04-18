@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Api.Sync.Core.Application.Requests.Cuentas;
 
-public sealed record BuscarCuentasRequestHandler : IRequestHandler<BuscarCuentasRequest, ApiResponseBase>
+public sealed record BuscarCuentasRequestHandler : IRequestHandler<BuscarCuentasRequest, ApiResponse>
 {
     private readonly ICuentaRepository _cuentaRepository;
 
@@ -15,19 +15,21 @@ public sealed record BuscarCuentasRequestHandler : IRequestHandler<BuscarCuentas
         _cuentaRepository = cuentaRepository;
     }
 
-    public async Task<ApiResponseBase> Handle(BuscarCuentasRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(BuscarCuentasRequest request, CancellationToken cancellationToken)
     {
         try
         {
             List<Cuenta> cuentas = (await _cuentaRepository.BuscarPorRequestModelAsync(request.Model, request.Options, cancellationToken))
                 .ToList();
 
-            return ApiResponseFactory.CreateSuccessfull<BuscarCuentasResponse, BuscarCuentasResponseModel>(request.Id,
-                new BuscarCuentasResponseModel { Cuentas = cuentas });
+            return ApiResponse.CreateSuccessfull(new BuscarCuentasResponse
+            {
+                Model = new BuscarCuentasResponseModel { Cuentas = cuentas }
+            });
         }
         catch (Exception e)
         {
-            return ApiResponseFactory.CreateFailed<BuscarCuentasResponse>(request.Id, e.Message);
+            return ApiResponse.CreateFailed(e.Message);
         }
     }
 }

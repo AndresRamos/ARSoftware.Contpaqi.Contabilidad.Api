@@ -41,22 +41,21 @@ public sealed class SegmentosNegocioFactory
         Directory.CreateDirectory(directory);
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarSegmentosNegocioRequest)}_Todo.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarTodo(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarTodo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarSegmentosNegocioRequest)}_PorId.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorId(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorId(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarSegmentosNegocioRequest)}_PorCodigo.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorCodigo(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorCodigo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarSegmentosNegocioRequest)}_PorSql.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorSql(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorSql(), options));
     }
 
     private static BuscarSegmentosNegocioRequest IniciarlizarBuscarSegmentosNegocioRequest()
     {
         var request = new BuscarSegmentosNegocioRequest();
-        request.EmpresaRfc = "URE180429TM6";
 
         return request;
     }

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Api.Sync.Core.Application.Requests.TiposPoliza;
 
-public sealed class BuscarTiposPolizaRequestHandler : IRequestHandler<BuscarTiposPolizaRequest, ApiResponseBase>
+public sealed class BuscarTiposPolizaRequestHandler : IRequestHandler<BuscarTiposPolizaRequest, ApiResponse>
 {
     private readonly ITipoPolizaRepository _tipoPolizaRepository;
 
@@ -15,19 +15,21 @@ public sealed class BuscarTiposPolizaRequestHandler : IRequestHandler<BuscarTipo
         _tipoPolizaRepository = tipoPolizaRepository;
     }
 
-    public async Task<ApiResponseBase> Handle(BuscarTiposPolizaRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(BuscarTiposPolizaRequest request, CancellationToken cancellationToken)
     {
         try
         {
             List<TipoPoliza> tiposPoliza =
                 (await _tipoPolizaRepository.BuscarPorRequestModelAsync(request.Model, request.Options, cancellationToken)).ToList();
 
-            return ApiResponseFactory.CreateSuccessfull<BuscarTiposPolizaResponse, BuscarTiposPolizaResponseModel>(request.Id,
-                new BuscarTiposPolizaResponseModel { TiposPoliza = tiposPoliza });
+            return ApiResponse.CreateSuccessfull(new BuscarTiposPolizaResponse
+            {
+                Model = new BuscarTiposPolizaResponseModel { TiposPoliza = tiposPoliza }
+            });
         }
         catch (Exception e)
         {
-            return ApiResponseFactory.CreateFailed<BuscarTiposPolizaResponse>(request.Id, e.Message);
+            return ApiResponse.CreateFailed(e.Message);
         }
     }
 }

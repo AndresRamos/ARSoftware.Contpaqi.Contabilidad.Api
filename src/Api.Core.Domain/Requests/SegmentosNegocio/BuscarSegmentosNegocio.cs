@@ -3,8 +3,8 @@ using Api.Core.Domain.Models;
 
 namespace Api.Core.Domain.Requests;
 
-public sealed class BuscarSegmentosNegocioRequest : ApiRequestBase,
-    IApiRequest<BuscarSegmentosNegocioRequestModel, BuscarSegmentosNegocioRequestOptions>
+public sealed class
+    BuscarSegmentosNegocioRequest : IContpaqiRequest<BuscarSegmentosNegocioRequestModel, BuscarSegmentosNegocioRequestOptions>
 {
     public BuscarSegmentosNegocioRequestModel Model { get; set; } = new();
     public BuscarSegmentosNegocioRequestOptions Options { get; set; } = new();
@@ -22,7 +22,7 @@ public sealed class BuscarSegmentosNegocioRequestOptions : ILoadRelatedDataOptio
     public bool CargarDatosExtra { get; set; }
 }
 
-public sealed class BuscarSegmentosNegocioResponse : ApiResponseBase, IApiResponse<BuscarSegmentosNegocioResponseModel>
+public sealed class BuscarSegmentosNegocioResponse : IContpaqiResponse<BuscarSegmentosNegocioResponseModel>
 {
     public BuscarSegmentosNegocioResponseModel Model { get; set; } = new();
 }

@@ -26,13 +26,11 @@ public sealed class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavio
 
         long elapsedMilliseconds = _timer.ElapsedMilliseconds;
 
-        if (response is ApiResponseBase apiResponse)
+        if (response is ApiResponse apiResponse)
         {
             apiResponse.ExecutionTime = _timer.ElapsedMilliseconds;
-            _logger.LogDebug("Api Request Processing Time: {Name} ({ElapsedMilliseconds} milliseconds) {@Request}",
-                typeof(TRequest).Name,
-                elapsedMilliseconds,
-                request);
+            _logger.LogDebug("Api Request Processing Time: {Name} ({ElapsedMilliseconds} milliseconds) {@Request}", typeof(TRequest).Name,
+                elapsedMilliseconds, request);
         }
 
         return response;

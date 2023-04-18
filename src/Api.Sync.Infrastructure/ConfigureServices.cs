@@ -31,8 +31,11 @@ public static class ConfigureServices
         serviceCollection.AddHttpClient<IContpaqiComercialApiService, ContpaqiComercialApiService>((serviceProvider, httpClient) =>
         {
             ApiSyncConfig apiSyncConfig = serviceProvider.GetRequiredService<IOptions<ApiSyncConfig>>().Value;
+            ContpaqiContabilidadConfig contpaqiContabilidadConfig =
+                serviceProvider.GetRequiredService<IOptions<ContpaqiContabilidadConfig>>().Value;
             httpClient.BaseAddress = new Uri(apiSyncConfig.BaseAddress);
             httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", apiSyncConfig.SubscriptionKey);
+            httpClient.DefaultRequestHeaders.Add("x-Empresa-Rfc", contpaqiContabilidadConfig.Empresa.Rfc);
         });
 
         return serviceCollection;

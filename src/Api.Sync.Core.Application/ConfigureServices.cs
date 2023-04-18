@@ -20,7 +20,7 @@ public static class ConfigureServices
         serviceCollection.AddMediatR(serviceConfiguration =>
         {
             serviceConfiguration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            serviceConfiguration.RegisterServicesFromAssemblyContaining<ApiRequestBase>();
+            serviceConfiguration.RegisterServicesFromAssemblyContaining<ApiRequest>();
             serviceConfiguration.AddOpenBehavior(typeof(PerformanceBehaviour<,>));
         });
 

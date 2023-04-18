@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
 using Api.Sync.Core.Application.Api.Commands.ProcessApiRequest;
@@ -35,31 +36,35 @@ public sealed class Worker : BackgroundService
     {
         try
         {
+            ImmutableList<Empresa> empresas = (await _empresaRepository.BuscarTodoAsync(LoadRelatedDataOptions.Default, stoppingToken))
+                .ToImmutableList();
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 Task waitingTask = Task.Delay(_apiSyncConfig.WaitTime.ToTimeSpan(), stoppingToken);
 
-                List<ApiRequestBase> pendingRequests = (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken)).ToList();
-                _logger.LogInformation("{PendingRequests} solicitudes pendientes.", pendingRequests.Count);
-
-                foreach (IGrouping<string, ApiRequestBase> requestGroup in pendingRequests.GroupBy(request => request.EmpresaRfc))
+                foreach (string empresaRfc in _apiSyncConfig.Empresas)
                 {
-                    Empresa? empresa = await _empresaRepository.BuscarPorRfcAsync(requestGroup.Key, LoadRelatedDataOptions.Default,
-                        stoppingToken);
+                    Empresa? empresa = empresas.FirstOrDefault(e => e.Rfc == empresaRfc);
 
                     if (empresa is null)
                         continue;
 
                     _contpaqiContabilidadConfig.Empresa = empresa;
 
+                    List<ApiRequest> apiRequests = (await _mediator.Send(new GetPendingRequestsQuery(), stoppingToken)).ToList();
+                    _logger.LogInformation("{PendingRequests} solicitudes pendientes.", apiRequests.Count);
+
+                    if (!apiRequests.Any())
+                        continue;
+
                     await _mediator.Send(new AbrirEmpresaCommand(), stoppingToken);
 
-                    List<ApiRequestBase> apiRequests = requestGroup.ToList();
-                    foreach (ApiRequestBase apiRequest in apiRequests)
+                    foreach (ApiRequest apiRequest in apiRequests)
                     {
                         int requestIndex = apiRequests.IndexOf(apiRequest) + 1;
                         int requestsCount = apiRequests.Count;
-                        _logger.LogInformation("Empresa: {EmpresaRfc}. Procesando [{requestIndex} of {requestsCount}]", requestGroup.Key,
+                        _logger.LogInformation("Empresa: {EmpresaRfc}. Procesando [{requestIndex} of {requestsCount}]", empresaRfc,
                             requestIndex, requestsCount);
 
                         await _mediator.Send(new ProcessApiRequestCommand(apiRequest), stoppingToken);

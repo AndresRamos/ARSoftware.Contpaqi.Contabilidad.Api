@@ -10,7 +10,7 @@ using SDKCONTPAQNGLib;
 
 namespace Api.Sync.Core.Application.Requests.Polizas;
 
-public class CrearPolizaRequestHandler : IRequestHandler<CrearPolizaRequest, ApiResponseBase>
+public class CrearPolizaRequestHandler : IRequestHandler<CrearPolizaRequest, ApiResponse>
 {
     private readonly ILogger<CrearPolizaRequestHandler> _logger;
     private readonly IPolizaRepository _polizaRepository;
@@ -19,12 +19,8 @@ public class CrearPolizaRequestHandler : IRequestHandler<CrearPolizaRequest, Api
     private readonly TSdkPoliza _sdkPoliza;
     private readonly IValidator<CrearPolizaRequest> _validator;
 
-    public CrearPolizaRequestHandler(ILogger<CrearPolizaRequestHandler> logger,
-                                     IPolizaRepository polizaRepository,
-                                     TSdkAsocCFDI sdkAsocCfdi,
-                                     TSdkMovimientoPoliza sdkMovimientoPoliza,
-                                     TSdkPoliza sdkPoliza,
-                                     IValidator<CrearPolizaRequest> validator)
+    public CrearPolizaRequestHandler(ILogger<CrearPolizaRequestHandler> logger, IPolizaRepository polizaRepository,
+        TSdkAsocCFDI sdkAsocCfdi, TSdkMovimientoPoliza sdkMovimientoPoliza, TSdkPoliza sdkPoliza, IValidator<CrearPolizaRequest> validator)
     {
         _logger = logger;
         _polizaRepository = polizaRepository;
@@ -34,11 +30,11 @@ public class CrearPolizaRequestHandler : IRequestHandler<CrearPolizaRequest, Api
         _validator = validator;
     }
 
-    public async Task<ApiResponseBase> Handle(CrearPolizaRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(CrearPolizaRequest request, CancellationToken cancellationToken)
     {
         ValidationResult validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
-            return ApiResponseFactory.CreateFailed<CrearPolizaResponse>(request.Id, validationResult.ToString());
+            return ApiResponse.CreateFailed(validationResult.ToString());
 
         CrearPolizaRequestOptions options = request.Options;
         Poliza poliza = request.Model.Poliza;
@@ -65,8 +61,7 @@ public class CrearPolizaRequestHandler : IRequestHandler<CrearPolizaRequest, Api
                 string mensajeError = _sdkPoliza.getMensajeError();
                 _logger.LogError("No se pudo crear la poliza. Error: {codigoError} - {mensajeError}", codigoError, mensajeError);
 
-                return ApiResponseFactory.CreateFailed<CrearPolizaResponse>(request.Id,
-                    $"No se pudo crear la poliza. Error: {codigoError} - {mensajeError}");
+                return ApiResponse.CreateFailed($"No se pudo crear la poliza. Error: {codigoError} - {mensajeError}");
             }
 
             sdkResult = _sdkPoliza.buscaPorId(_sdkPoliza.Id);
@@ -110,13 +105,15 @@ public class CrearPolizaRequestHandler : IRequestHandler<CrearPolizaRequest, Api
 
             Poliza? polizaContabilidad = await _polizaRepository.BuscarPorIdAsync(_sdkPoliza.Id, request.Options, cancellationToken);
 
-            return ApiResponseFactory.CreateSuccessfull<CrearPolizaResponse, CrearPolizaResponseModel>(request.Id,
-                new CrearPolizaResponseModel { Poliza = polizaContabilidad });
+            return ApiResponse.CreateSuccessfull(new CrearPolizaResponse
+            {
+                Model = new CrearPolizaResponseModel { Poliza = polizaContabilidad }
+            });
         }
         catch (Exception e)
         {
             EliminarPoliza(_sdkPoliza.Id);
-            return ApiResponseFactory.CreateFailed<CrearPolizaResponse>(request.Id, e.Message);
+            return ApiResponse.CreateFailed(e.Message);
         }
     }
 

@@ -3,8 +3,8 @@ using Api.Core.Domain.Models;
 
 namespace Api.Core.Domain.Requests;
 
-public sealed class BuscarDiariosEspecialesRequest : ApiRequestBase,
-    IApiRequest<BuscarDiariosEspecialesRequestModel, BuscarDiariosEspecialesRequestOptions>
+public sealed class
+    BuscarDiariosEspecialesRequest : IContpaqiRequest<BuscarDiariosEspecialesRequestModel, BuscarDiariosEspecialesRequestOptions>
 {
     public BuscarDiariosEspecialesRequestModel Model { get; set; } = new();
     public BuscarDiariosEspecialesRequestOptions Options { get; set; } = new();
@@ -22,7 +22,7 @@ public sealed class BuscarDiariosEspecialesRequestOptions : ILoadRelatedDataOpti
     public bool CargarDatosExtra { get; set; }
 }
 
-public sealed class BuscarDiariosEspecialesResponse : ApiResponseBase, IApiResponse<BuscarDiariosEspecialesResponseModel>
+public sealed class BuscarDiariosEspecialesResponse : IContpaqiResponse<BuscarDiariosEspecialesResponseModel>
 {
     public BuscarDiariosEspecialesResponseModel Model { get; set; } = new();
 }

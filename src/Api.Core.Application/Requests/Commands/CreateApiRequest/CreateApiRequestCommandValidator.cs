@@ -8,6 +8,6 @@ public class CreateApiRequestCommandValidator : AbstractValidator<CreateApiReque
     {
         RuleFor(r => r.SubscriptionKey).NotEmpty();
 
-        RuleFor(r => r.ApiRequest.EmpresaRfc).NotNull();
+        RuleFor(r => r.EmpresaRfc).NotNull();
     }
 }

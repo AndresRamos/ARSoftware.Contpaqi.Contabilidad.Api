@@ -44,22 +44,21 @@ public sealed class TiposPolizaFactory
         Directory.CreateDirectory(directory);
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarCuentasRequest)}_Todo.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarTodo(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarTodo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarCuentasRequest)}_PorId.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorId(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorId(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarCuentasRequest)}_PorCodigo.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorCodigo(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorCodigo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarCuentasRequest)}_PorSql.json"),
-            JsonSerializer.Serialize<ApiRequestBase>(BuscarPorSql(), options));
+            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorSql(), options));
     }
 
     private static BuscarTiposPolizaRequest IniciarlizarBuscarTiposPolizaRequest()
     {
         var request = new BuscarTiposPolizaRequest();
-        request.EmpresaRfc = "URE180429TM6";
 
         return request;
     }

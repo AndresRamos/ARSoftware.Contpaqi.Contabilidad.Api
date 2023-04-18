@@ -3,7 +3,7 @@ using Api.Core.Domain.Models;
 
 namespace Api.Core.Domain.Requests;
 
-public sealed class BuscarTiposPolizaRequest : ApiRequestBase, IApiRequest<BuscarTiposPolizaRequestModel, BuscarTiposPolizaRequestOptions>
+public sealed class BuscarTiposPolizaRequest : IContpaqiRequest<BuscarTiposPolizaRequestModel, BuscarTiposPolizaRequestOptions>
 {
     public BuscarTiposPolizaRequestModel Model { get; set; } = new();
     public BuscarTiposPolizaRequestOptions Options { get; set; } = new();
@@ -21,7 +21,7 @@ public sealed class BuscarTiposPolizaRequestOptions : ILoadRelatedDataOptions
     public bool CargarDatosExtra { get; set; }
 }
 
-public sealed class BuscarTiposPolizaResponse : ApiResponseBase, IApiResponse<BuscarTiposPolizaResponseModel>
+public sealed class BuscarTiposPolizaResponse : IContpaqiResponse<BuscarTiposPolizaResponseModel>
 {
     public BuscarTiposPolizaResponseModel Model { get; set; } = new();
 }

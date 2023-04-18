@@ -1,6 +1,6 @@
-﻿using Api.Core.Application.Common.Interfaces;
+﻿using System.Text.Json;
+using Api.Core.Application.Common.Interfaces;
 using Api.Core.Domain.Common;
-using Api.Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Infrastructure.Persistence;
@@ -11,18 +11,27 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
     }
 
-    public DbSet<ApiRequestBase> Requests => Set<ApiRequestBase>();
-    public DbSet<ApiResponseBase> Responses => Set<ApiResponseBase>();
+    public DbSet<ApiRequest> Requests => Set<ApiRequest>();
+    public DbSet<ApiResponse> Responses => Set<ApiResponse>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ApiRequestBase>().UseTphMappingStrategy().ToTable("Requests");
-        modelBuilder.Entity<ApiResponseBase>().UseTphMappingStrategy().ToTable("Responses");
+        modelBuilder.Entity<ApiRequest>().UseTphMappingStrategy().ToTable("Requests");
+        modelBuilder.Entity<ApiResponse>().UseTphMappingStrategy().ToTable("Responses");
 
-        modelBuilder.Entity<ApiRequestBase>().HasOne(r => r.Response).WithOne().HasForeignKey<ApiResponseBase>(r => r.Id);
+        modelBuilder.Entity<ApiRequest>().HasOne(r => r.Response).WithOne().HasForeignKey<ApiResponse>(r => r.Id);
+        modelBuilder.Entity<ApiRequest>()
+            .Property(e => e.ContpaqiRequest)
+            .HasConversion(v => JsonSerializer.Serialize(v, JsonExtensions.GetJsonSerializerOptions()),
+                v => JsonSerializer.Deserialize<IContpaqiRequest>(v, JsonExtensions.GetJsonSerializerOptions()));
 
-        ApiRequestConfiguration.ConfigureRequests(modelBuilder);
-        ApiResponseConfiguration.ConfigureResponses(modelBuilder);
+        modelBuilder.Entity<ApiResponse>()
+            .Property(e => e.ContpaqiResponse)
+            .HasConversion(v => JsonSerializer.Serialize(v, JsonExtensions.GetJsonSerializerOptions()),
+                v => JsonSerializer.Deserialize<IContpaqiResponse>(v, JsonExtensions.GetJsonSerializerOptions()));
+
+        //ApiRequestConfiguration.ConfigureRequests(modelBuilder);
+        //ApiResponseConfiguration.ConfigureResponses(modelBuilder);
 
         base.OnModelCreating(modelBuilder);
     }

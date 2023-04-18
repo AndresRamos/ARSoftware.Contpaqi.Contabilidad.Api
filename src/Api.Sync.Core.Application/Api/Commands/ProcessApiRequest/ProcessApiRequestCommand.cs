@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Api.Sync.Core.Application.Api.Commands.ProcessApiRequest;
 
-public sealed record ProcessApiRequestCommand(ApiRequestBase ApiRequest) : IRequest;
+public sealed record ProcessApiRequestCommand(ApiRequest ApiRequest) : IRequest;
 
 public sealed class ProcessApiRequestCommandHandler : IRequestHandler<ProcessApiRequestCommand>
 {
@@ -17,10 +17,8 @@ public sealed class ProcessApiRequestCommandHandler : IRequestHandler<ProcessApi
 
     public async Task Handle(ProcessApiRequestCommand request, CancellationToken cancellationToken)
     {
-        ApiRequestBase apiRequest = request.ApiRequest;
+        ApiResponse apiResponse = await _mediator.Send(request.ApiRequest.ContpaqiRequest, cancellationToken);
 
-        ApiResponseBase apiResponse = await _mediator.Send(apiRequest, cancellationToken);
-
-        await _mediator.Send(new SendApiResponseCommand(apiResponse), cancellationToken);
+        await _mediator.Send(new SendApiResponseCommand(request.ApiRequest.Id, apiResponse), cancellationToken);
     }
 }

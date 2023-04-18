@@ -6,7 +6,7 @@ namespace Api.Core.Domain.Requests;
 /// <summary>
 ///     Solicitud para buscar polizas.
 /// </summary>
-public sealed class BuscarPolizasRequest : ApiRequestBase, IApiRequest<BuscarPolizasRequestModel, BuscarPolizasRequestOptions>
+public sealed class BuscarPolizasRequest : IContpaqiRequest<BuscarPolizasRequestModel, BuscarPolizasRequestOptions>
 {
     public BuscarPolizasRequestModel Model { get; set; } = new();
     public BuscarPolizasRequestOptions Options { get; set; } = new();
@@ -70,7 +70,7 @@ public sealed class BuscarPolizasRequestOptions : ILoadRelatedDataOptions
 /// <summary>
 ///     Respuesta de la solicitud BuscarPolizasRequest.
 /// </summary>
-public sealed class BuscarPolizasResponse : ApiResponseBase, IApiResponse<BuscarPolizasResponseModel>
+public sealed class BuscarPolizasResponse : IContpaqiResponse<BuscarPolizasResponseModel>
 {
     public BuscarPolizasResponseModel Model { get; set; } = new();
 }

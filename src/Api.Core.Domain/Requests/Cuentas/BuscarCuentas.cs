@@ -3,7 +3,7 @@ using Api.Core.Domain.Models;
 
 namespace Api.Core.Domain.Requests;
 
-public sealed class BuscarCuentasRequest : ApiRequestBase, IApiRequest<BuscarCuentasRequestModel, BuscarCuentasRequestOptions>
+public sealed class BuscarCuentasRequest : IContpaqiRequest<BuscarCuentasRequestModel, BuscarCuentasRequestOptions>
 {
     public BuscarCuentasRequestModel Model { get; set; } = new();
     public BuscarCuentasRequestOptions Options { get; set; } = new();
@@ -21,7 +21,7 @@ public sealed class BuscarCuentasRequestOptions : ILoadRelatedDataOptions
     public bool CargarDatosExtra { get; set; }
 }
 
-public sealed class BuscarCuentasResponse : ApiResponseBase, IApiResponse<BuscarCuentasResponseModel>
+public sealed class BuscarCuentasResponse : IContpaqiResponse<BuscarCuentasResponseModel>
 {
     public BuscarCuentasResponseModel Model { get; set; } = new();
 }

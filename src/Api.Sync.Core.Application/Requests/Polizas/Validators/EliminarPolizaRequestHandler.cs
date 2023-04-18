@@ -8,22 +8,21 @@ using SDKCONTPAQNGLib;
 
 namespace Api.Sync.Core.Application.Requests.Polizas.Validators;
 
-public sealed class EliminarPolizaRequestHandler : IRequestHandler<EliminarPolizaRequest, ApiResponseBase>
+public sealed class EliminarPolizaRequestHandler : IRequestHandler<EliminarPolizaRequest, ApiResponse>
 {
     private readonly ILogger<EliminarPolizaRequestHandler> _logger;
     private readonly IPolizaRepository _polizaRepository;
     private readonly TSdkPoliza _sdkPoliza;
 
-    public EliminarPolizaRequestHandler(IPolizaRepository polizaRepository,
-                                        TSdkPoliza sdkPoliza,
-                                        ILogger<EliminarPolizaRequestHandler> logger)
+    public EliminarPolizaRequestHandler(IPolizaRepository polizaRepository, TSdkPoliza sdkPoliza,
+        ILogger<EliminarPolizaRequestHandler> logger)
     {
         _polizaRepository = polizaRepository;
         _sdkPoliza = sdkPoliza;
         _logger = logger;
     }
 
-    public async Task<ApiResponseBase> Handle(EliminarPolizaRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(EliminarPolizaRequest request, CancellationToken cancellationToken)
     {
         try
         {
@@ -40,12 +39,11 @@ public sealed class EliminarPolizaRequestHandler : IRequestHandler<EliminarPoliz
                 throw new Exception($"No se pude eliminar la poliza. Error: {codigoError} - {mensajeError}");
             }
 
-            return ApiResponseFactory.CreateSuccessfull<EliminarPolizaResponse, EliminarPolizaResponseModel>(request.Id,
-                new EliminarPolizaResponseModel());
+            return ApiResponse.CreateSuccessfull(new EliminarPolizaResponse());
         }
         catch (Exception e)
         {
-            return ApiResponseFactory.CreateFailed<EliminarPolizaResponse>(request.Id, e.Message);
+            return ApiResponse.CreateFailed(e.Message);
         }
     }
 }
