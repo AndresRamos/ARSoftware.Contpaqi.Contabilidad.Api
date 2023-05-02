@@ -1,10 +1,10 @@
 ﻿using Api.Core.Application.Common.Interfaces;
-using Api.Core.Domain.Common;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 using MediatR;
 
 namespace Api.Core.Application.Requests.Commands.CreateApiRequest;
 
-public sealed record CreateApiRequestCommand(IContpaqiRequest ApiRequest, string SubscriptionKey, string EmpresaRfc) : IRequest<Guid>;
+public sealed record CreateApiRequestCommand(ContpaqiRequest ApiRequest, string SubscriptionKey, string EmpresaRfc) : IRequest<Guid>;
 
 public sealed class CreateApiRequestCommandHandler : IRequestHandler<CreateApiRequestCommand, Guid>
 {
