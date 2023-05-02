@@ -1,0 +1,781 @@
+{
+	"info": {
+		"_postman_id": "b785a884-26c1-4752-bfe0-1d20deef0017",
+		"name": "CONTPAQi Contabilidad API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16633069",
+		"_collection_link": "https://grey-astronaut-557995.postman.co/workspace/CONTPAQi-APIs~a18e8e21-875e-45fe-9561-f544437d2aa6/collection/16633069-b785a884-26c1-4752-bfe0-1d20deef0017?action=share&creator=16633069&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Cuentas",
+			"item": [
+				{
+					"name": "Create Cuenta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"$type\": \"CrearCuentaRequest\",\r\n  \"model\": {\r\n    \"cuenta\": {\r\n      \"id\": 0,\r\n      \"codigo\": \"10201001\",\r\n      \"nombre\": \"BANCOMER\",\r\n      \"nombreOtroIdioma\": \"BANCOMER\",\r\n      \"codigoCuentaAcumula\": \"10201000\",\r\n      \"tipo\": \"ActivoDeudora\",\r\n      \"cuentaDeMayor\": \"No\",\r\n      \"segmentoNegocioEnMovimientos\": false,\r\n      \"segmentoNegocio\": null,\r\n      \"moneda\": {\r\n        \"codigo\": \"1\",\r\n        \"nombre\": \"\",\r\n        \"codigoSat\": \"\",\r\n        \"datosExtra\": {}\r\n      },\r\n      \"digitoAgrupador\": 0,\r\n      \"agrupadorSat\": {\r\n        \"codigo\": \"102.01\",\r\n        \"nombre\": \"\",\r\n        \"tipo\": \"\",\r\n        \"datosExtra\": {}\r\n      },\r\n      \"fechaAlta\": \"2023-04-18T00:00:00-05:00\",\r\n      \"esBaja\": false,\r\n      \"datosExtra\": {}\r\n    }\r\n  },\r\n  \"options\": {\r\n    \"cargarDatosExtra\": false\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Todo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarCuentasRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"codigo\": null,\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarCuentasRequest\",\r\n    \"model\": {\r\n        \"id\": 13,\r\n        \"codigo\": null,\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Codigo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarCuentasRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"codigo\": \"10100000\",\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por SQL",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarCuentasRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"codigo\": null,\r\n        \"sqlQuery\": \"Nombre = \\u0027Caja\\u0027\"\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Diarios Especiales",
+			"item": [
+				{
+					"name": "Buscar Todo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarDiariosEspecialesRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"codigo\": null,\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarDiariosEspecialesRequest\",\r\n    \"model\": {\r\n        \"id\": 2,\r\n        \"codigo\": null,\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Codigo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarDiariosEspecialesRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"codigo\": \"82\",\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Sql",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarDiariosEspecialesRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"codigo\": null,\r\n        \"sqlQuery\": \"Nombre = \\u0027Tasa IVA 16%\\u0027\"\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Empresas",
+			"item": [
+				{
+					"name": "Buscar Todo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarEmpresasRequest\",\r\n    \"model\": {},\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Polizas",
+			"item": [
+				{
+					"name": "Crear Poliza",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"CrearPolizaRequest\",\r\n    \"model\": {\r\n        \"poliza\": {\r\n            \"id\": 0,\r\n            \"fecha\": \"2023-04-18T00:00:00-05:00\",\r\n            \"tipo\": {\r\n                \"codigo\": 3,\r\n                \"nombre\": \"\",\r\n                \"datosExtra\": {}\r\n            },\r\n            \"numero\": 0,\r\n            \"concepto\": \"Concepto Poliza\",\r\n            \"movimientos\": [\r\n                {\r\n                    \"numero\": 1,\r\n                    \"tipo\": \"Abono\",\r\n                    \"cuenta\": {\r\n                        \"id\": 0,\r\n                        \"codigo\": \"60101000\",\r\n                        \"nombre\": \"\",\r\n                        \"nombreOtroIdioma\": \"\",\r\n                        \"codigoCuentaAcumula\": \"\",\r\n                        \"tipo\": 0,\r\n                        \"cuentaDeMayor\": 0,\r\n                        \"segmentoNegocioEnMovimientos\": false,\r\n                        \"segmentoNegocio\": null,\r\n                        \"moneda\": {\r\n                            \"codigo\": \"\",\r\n                            \"nombre\": \"\",\r\n                            \"codigoSat\": \"\",\r\n                            \"datosExtra\": {}\r\n                        },\r\n                        \"digitoAgrupador\": 0,\r\n                        \"agrupadorSat\": null,\r\n                        \"fechaAlta\": \"0001-01-01T00:00:00\",\r\n                        \"esBaja\": false,\r\n                        \"datosExtra\": {}\r\n                    },\r\n                    \"importe\": 100,\r\n                    \"referencia\": \"Referencia\",\r\n                    \"concepto\": \"Concepto\",\r\n                    \"segmentoNegocio\": null,\r\n                    \"diario\": null,\r\n                    \"uuid\": \"\",\r\n                    \"datosExtra\": {}\r\n                },\r\n                {\r\n                    \"numero\": 2,\r\n                    \"tipo\": \"Cargo\",\r\n                    \"cuenta\": {\r\n                        \"id\": 0,\r\n                        \"codigo\": \"40119000\",\r\n                        \"nombre\": \"\",\r\n                        \"nombreOtroIdioma\": \"\",\r\n                        \"codigoCuentaAcumula\": \"\",\r\n                        \"tipo\": 0,\r\n                        \"cuentaDeMayor\": 0,\r\n                        \"segmentoNegocioEnMovimientos\": false,\r\n                        \"segmentoNegocio\": null,\r\n                        \"moneda\": {\r\n                            \"codigo\": \"\",\r\n                            \"nombre\": \"\",\r\n                            \"codigoSat\": \"\",\r\n                            \"datosExtra\": {}\r\n                        },\r\n                        \"digitoAgrupador\": 0,\r\n                        \"agrupadorSat\": null,\r\n                        \"fechaAlta\": \"0001-01-01T00:00:00\",\r\n                        \"esBaja\": false,\r\n                        \"datosExtra\": {}\r\n                    },\r\n                    \"importe\": 100,\r\n                    \"referencia\": \"Referencia\",\r\n                    \"concepto\": \"Concepto\",\r\n                    \"segmentoNegocio\": null,\r\n                    \"diario\": null,\r\n                    \"uuid\": \"\",\r\n                    \"datosExtra\": {}\r\n                }\r\n            ],\r\n            \"uuids\": [],\r\n            \"datosExtra\": {}\r\n        }\r\n    },\r\n    \"options\": {\r\n        \"buscarSiguienteNumero\": true,\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarPolizasRequest\",\r\n    \"model\": {\r\n        \"id\": 1,\r\n        \"fechaInicio\": null,\r\n        \"fechaFin\": null,\r\n        \"tipo\": null,\r\n        \"ejercicio\": null,\r\n        \"periodo\": null,\r\n        \"numero\": null,\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Numero",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarPolizasRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"fechaInicio\": null,\r\n        \"fechaFin\": null,\r\n        \"tipo\": 3,\r\n        \"ejercicio\": 2023,\r\n        \"periodo\": 3,\r\n        \"numero\": 24,\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Rango Fecha",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarPolizasRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"fechaInicio\": \"2023-04-18\",\r\n        \"fechaFin\": \"2023-04-18\",\r\n        \"tipo\": 3,\r\n        \"ejercicio\": null,\r\n        \"periodo\": null,\r\n        \"numero\": null,\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Sql",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarPolizasRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"fechaInicio\": null,\r\n        \"fechaFin\": null,\r\n        \"tipo\": null,\r\n        \"ejercicio\": null,\r\n        \"periodo\": null,\r\n        \"numero\": null,\r\n        \"sqlQuery\": \"Cargos = 100\"\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Segmentos Negocio",
+			"item": [
+				{
+					"name": "Buscar Todo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarSegmentosNegocioRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"codigo\": null,\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarSegmentosNegocioRequest\",\r\n    \"model\": {\r\n        \"id\": 1,\r\n        \"codigo\": null,\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Codigo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarSegmentosNegocioRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"codigo\": \"9999\",\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Sql",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarSegmentosNegocioRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"codigo\": null,\r\n        \"sqlQuery\": \"Nombre = \\u0027Segmento por omisi\\u00F3n\\u0027\"\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TiposPoliza",
+			"item": [
+				{
+					"name": "Buscar Todo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarTiposPolizaRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"codigo\": null,\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarTiposPolizaRequest\",\r\n    \"model\": {\r\n        \"id\": 1,\r\n        \"codigo\": null,\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Codigo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarTiposPolizaRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"codigo\": 2,\r\n        \"sqlQuery\": null\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Por Sql",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"$type\": \"BuscarTiposPolizaRequest\",\r\n    \"model\": {\r\n        \"id\": null,\r\n        \"codigo\": null,\r\n        \"sqlQuery\": \"Nombre = \\u0027Diario\\u0027\"\r\n    },\r\n    \"options\": {\r\n        \"cargarDatosExtra\": false\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Requests",
+			"item": [
+				{
+					"name": "Get Request By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/requests/f5ce5dca-2e4c-42e9-3471-08db3e55c08b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"requests",
+								"f5ce5dca-2e4c-42e9-3471-08db3e55c08b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pending Requests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Requests/pending",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Requests",
+								"pending"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"var subscriptionKeyHeader = pm.collectionVariables.get(\"subscriptionKeyHeaderName\");",
+					"var subscriptionKey = pm.collectionVariables.get(\"subscriptionKey\");",
+					"pm.request.headers.add({ key: subscriptionKeyHeader, value: subscriptionKey });",
+					"",
+					"var empresaRfcHeader = pm.collectionVariables.get(\"empresaRfcHeaderName\");",
+					"var empresaRfc = pm.collectionVariables.get(\"empresaRfc\");",
+					"pm.request.headers.add({ key: empresaRfcHeader, value: empresaRfc });"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://contpaqiapim.azure-api.net/contabilidad",
+			"type": "string"
+		},
+		{
+			"key": "subscriptionKeyHeaderName",
+			"value": "Ocp-Apim-Subscription-Key",
+			"type": "string"
+		},
+		{
+			"key": "subscriptionKey",
+			"value": "00000000000000000000000000000000",
+			"type": "string"
+		},
+		{
+			"key": "empresaRfcHeaderName",
+			"value": "x-Empresa-Rfc",
+			"type": "string"
+		},
+		{
+			"key": "empresaRfc",
+			"value": "URE180429TM6",
+			"type": "string"
+		}
+	]
+}
