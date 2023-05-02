@@ -41,9 +41,8 @@ public sealed class PolizaRepository : IPolizaRepository
         return poliza;
     }
 
-    public async Task<Poliza?> BuscarPorLlaveAsync(LlavePoliza llave,
-                                                   ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                   CancellationToken cancellationToken)
+    public async Task<Poliza?> BuscarPorLlaveAsync(LlavePoliza llave, ILoadRelatedDataOptions loadRelatedDataOptions,
+        CancellationToken cancellationToken)
     {
         PolizaSql? polizaSql = await _context.Polizas
             .Where(p => p.TipoPol == llave.Tipo && p.Ejercicio == llave.Ejercicio && p.Periodo == llave.Periodo && p.Folio == llave.Numero)
@@ -61,8 +60,7 @@ public sealed class PolizaRepository : IPolizaRepository
     }
 
     public async Task<IEnumerable<Poliza>> BuscarPorRequestModelAsync(BuscarPolizasRequestModel requestModel,
-                                                                      ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                                      CancellationToken cancellationToken)
+        ILoadRelatedDataOptions loadRelatedDataOptions, CancellationToken cancellationToken)
     {
         var polizasList = new List<Poliza>();
 
@@ -111,10 +109,8 @@ public sealed class PolizaRepository : IPolizaRepository
         return polizasList;
     }
 
-    private async Task CargarDatosRelacionadosAsync(Poliza poliza,
-                                                    PolizaSql polizaSql,
-                                                    ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                    CancellationToken cancellationToken)
+    private async Task CargarDatosRelacionadosAsync(Poliza poliza, PolizaSql polizaSql, ILoadRelatedDataOptions loadRelatedDataOptions,
+        CancellationToken cancellationToken)
     {
         poliza.Movimientos = (await _movimientoRepository.BuscarPorPolizaIdAsync(polizaSql.Id, loadRelatedDataOptions, cancellationToken))
             .ToList();

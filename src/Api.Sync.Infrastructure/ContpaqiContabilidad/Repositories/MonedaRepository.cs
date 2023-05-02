@@ -43,10 +43,8 @@ public sealed class MonedaRepository : IMonedaRepository
         return moneda;
     }
 
-    private async Task CargarDatosRelacionadosAsync(Moneda moneda,
-                                                    MonedaSql monedaSql,
-                                                    ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                    CancellationToken cancellationToken)
+    private async Task CargarDatosRelacionadosAsync(Moneda moneda, MonedaSql monedaSql, ILoadRelatedDataOptions loadRelatedDataOptions,
+        CancellationToken cancellationToken)
     {
         if (loadRelatedDataOptions.CargarDatosExtra)
             moneda.DatosExtra =

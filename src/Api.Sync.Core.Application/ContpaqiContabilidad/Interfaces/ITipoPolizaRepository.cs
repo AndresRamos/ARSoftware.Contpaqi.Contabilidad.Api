@@ -9,6 +9,5 @@ public interface ITipoPolizaRepository
     Task<bool> ExistePorCodigoAsync(int codigo, CancellationToken cancellationToken);
 
     Task<IEnumerable<TipoPoliza>> BuscarPorRequestModelAsync(BuscarTiposPolizaRequestModel requestModel,
-                                                             ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                             CancellationToken cancellationToken);
+        ILoadRelatedDataOptions loadRelatedDataOptions, CancellationToken cancellationToken);
 }

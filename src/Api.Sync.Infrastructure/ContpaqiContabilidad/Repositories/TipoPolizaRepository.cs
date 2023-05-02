@@ -29,8 +29,7 @@ public sealed class TipoPolizaRepository : ITipoPolizaRepository
     }
 
     public async Task<IEnumerable<TipoPoliza>> BuscarPorRequestModelAsync(BuscarTiposPolizaRequestModel requestModel,
-                                                                          ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                                          CancellationToken cancellationToken)
+        ILoadRelatedDataOptions loadRelatedDataOptions, CancellationToken cancellationToken)
     {
         var tiposPolizaList = new List<TipoPoliza>();
 
@@ -59,10 +58,8 @@ public sealed class TipoPolizaRepository : ITipoPolizaRepository
         return tiposPolizaList;
     }
 
-    private async Task CargarDatosRelacionadosAsync(TipoPoliza tipoPoliza,
-                                                    TipoPolizaSql tipoPolizaSql,
-                                                    ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                    CancellationToken cancellationToken)
+    private async Task CargarDatosRelacionadosAsync(TipoPoliza tipoPoliza, TipoPolizaSql tipoPolizaSql,
+        ILoadRelatedDataOptions loadRelatedDataOptions, CancellationToken cancellationToken)
     {
         if (loadRelatedDataOptions.CargarDatosExtra)
             tipoPoliza.DatosExtra = (await _context.TiposPolizas.FirstAsync(m => m.Id == tipoPolizaSql.Id, cancellationToken))

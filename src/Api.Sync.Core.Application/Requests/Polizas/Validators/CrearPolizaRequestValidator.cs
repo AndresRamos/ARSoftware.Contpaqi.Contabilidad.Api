@@ -1,9 +1,8 @@
 ﻿using Api.Core.Domain.Requests;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
-using Api.Sync.Core.Application.Requests.Polizas.Validators;
 using FluentValidation;
 
-namespace Api.Sync.Core.Application.Requests.Polizas;
+namespace Api.Sync.Core.Application.Requests.Polizas.Validators;
 
 public sealed class CrearPolizaRequestValidator : AbstractValidator<CrearPolizaRequest>
 {
@@ -14,7 +13,9 @@ public sealed class CrearPolizaRequestValidator : AbstractValidator<CrearPolizaR
 
         RuleFor(m => m.Model).NotNull();
 
-        RuleFor(m => m.Model.Poliza).NotEmpty().SetValidator(new CreatePolizaModelValidator(tipoPolizaRepository, cuentaRepository,
-            segmentoNegocioRepository, diarioEspecialRepository));
+        RuleFor(m => m.Model.Poliza)
+            .NotEmpty()
+            .SetValidator(new CreatePolizaModelValidator(tipoPolizaRepository, cuentaRepository, segmentoNegocioRepository,
+                diarioEspecialRepository));
     }
 }

@@ -15,8 +15,7 @@ public sealed class IniciarSdkCommandHandler : IRequestHandler<IniciarSdkCommand
     private readonly ISdkSesionService _sdkSesionService;
 
     public IniciarSdkCommandHandler(IOptions<ContpaqiContabilidadConfig> contabilidadConfigOptions,
-                                    ILogger<IniciarSdkCommandHandler> logger,
-                                    ISdkSesionService sdkSesionService)
+        ILogger<IniciarSdkCommandHandler> logger, ISdkSesionService sdkSesionService)
     {
         _logger = logger;
         _sdkSesionService = sdkSesionService;

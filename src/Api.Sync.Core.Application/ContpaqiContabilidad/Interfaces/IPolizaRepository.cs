@@ -8,11 +8,9 @@ public interface IPolizaRepository
 {
     Task<Poliza?> BuscarPorIdAsync(int id, ILoadRelatedDataOptions loadRelatedDataOptions, CancellationToken cancellationToken);
 
-    Task<Poliza?> BuscarPorLlaveAsync(LlavePoliza llave,
-                                      ILoadRelatedDataOptions loadRelatedDataOptions,
-                                      CancellationToken cancellationToken);
+    Task<Poliza?> BuscarPorLlaveAsync(LlavePoliza llave, ILoadRelatedDataOptions loadRelatedDataOptions,
+        CancellationToken cancellationToken);
 
     Task<IEnumerable<Poliza>> BuscarPorRequestModelAsync(BuscarPolizasRequestModel requestModel,
-                                                         ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                         CancellationToken cancellationToken);
+        ILoadRelatedDataOptions loadRelatedDataOptions, CancellationToken cancellationToken);
 }

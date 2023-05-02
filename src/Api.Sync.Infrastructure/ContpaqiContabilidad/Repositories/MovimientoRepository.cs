@@ -34,7 +34,8 @@ public sealed class MovimientoRepository : IMovimientoRepository
         var movimientosList = new List<Movimiento>();
 
         List<MovimientoSql> movimientosSql = await _context.MovimientosPoliza.Where(m => m.IdPoliza == polizaId)
-            .ProjectTo<MovimientoSql>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+            .ProjectTo<MovimientoSql>(_mapper.ConfigurationProvider)
+            .ToListAsync(cancellationToken);
 
         foreach (MovimientoSql movimientoSql in movimientosSql)
         {

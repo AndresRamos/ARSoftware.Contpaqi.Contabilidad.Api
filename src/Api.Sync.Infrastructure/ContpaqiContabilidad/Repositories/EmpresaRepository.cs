@@ -20,10 +20,8 @@ public sealed class EmpresaRepository : IEmpresaRepository
     private readonly ContpaqiContabilidadGeneralesDbContext _generalesContext;
     private readonly IMapper _mapper;
 
-    public EmpresaRepository(ContpaqiContabilidadGeneralesDbContext generalesContext,
-                             IMapper mapper,
-                             IConfiguration configuration,
-                             ContpaqiContabilidadEmpresaDbContext empresaContext)
+    public EmpresaRepository(ContpaqiContabilidadGeneralesDbContext generalesContext, IMapper mapper, IConfiguration configuration,
+        ContpaqiContabilidadEmpresaDbContext empresaContext)
     {
         _generalesContext = generalesContext;
         _mapper = mapper;
@@ -31,9 +29,8 @@ public sealed class EmpresaRepository : IEmpresaRepository
         _empresaContext = empresaContext;
     }
 
-    public async Task<Empresa?> BuscarPorRfcAsync(string rfc,
-                                                  ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                  CancellationToken cancellationToken)
+    public async Task<Empresa?> BuscarPorRfcAsync(string rfc, ILoadRelatedDataOptions loadRelatedDataOptions,
+        CancellationToken cancellationToken)
     {
         IEnumerable<Empresa> empresas = await BuscarTodoAsync(loadRelatedDataOptions, cancellationToken);
 
@@ -41,7 +38,7 @@ public sealed class EmpresaRepository : IEmpresaRepository
     }
 
     public async Task<IEnumerable<Empresa>> BuscarTodoAsync(ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                            CancellationToken cancellationToken)
+        CancellationToken cancellationToken)
     {
         var empresasList = new List<Empresa>();
 
@@ -60,14 +57,12 @@ public sealed class EmpresaRepository : IEmpresaRepository
         return empresasList;
     }
 
-    private async Task CargarDatosRelacionadosAsync(Empresa empresa,
-                                                    ILoadRelatedDataOptions relatedDataOptions,
-                                                    CancellationToken cancellationToken)
+    private async Task CargarDatosRelacionadosAsync(Empresa empresa, ILoadRelatedDataOptions relatedDataOptions,
+        CancellationToken cancellationToken)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ContpaqiContabilidadEmpresaDbContext>();
         string empresaConnectionString = ContpaqiContabilidadSqlConnectionStringFactory.CreateContpaqiContabilidadEmpresaConnectionString(
-            _configuration.GetConnectionString("Contpaqi"),
-            empresa.BaseDatos);
+            _configuration.GetConnectionString("Contpaqi"), empresa.BaseDatos);
         optionsBuilder.UseSqlServer(empresaConnectionString);
 
         _empresaContext.Database.SetConnectionString(empresaConnectionString);

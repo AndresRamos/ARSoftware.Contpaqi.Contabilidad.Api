@@ -15,7 +15,9 @@ public sealed class CreateMovimientoModelValidator : AbstractValidator<Movimient
 
         RuleFor(m => m.Tipo).NotEmpty();
 
-        RuleFor(m => m.Cuenta.Codigo).NotEmpty().MustAsync(cuentaRepository.ExistePorCodigoAsync)
+        RuleFor(m => m.Cuenta.Codigo)
+            .NotEmpty()
+            .MustAsync(cuentaRepository.ExistePorCodigoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not a valid cuenta.");
 
         RuleFor(m => m.Importe).NotEmpty();
@@ -24,15 +26,19 @@ public sealed class CreateMovimientoModelValidator : AbstractValidator<Movimient
 
         RuleFor(m => m.Concepto).NotNull();
 
-        RuleFor(m => m.SegmentoNegocio!.Codigo).MustAsync(segmentoNegocioRepository.ExistePorCodigoAsync)
+        RuleFor(m => m.SegmentoNegocio!.Codigo)
+            .MustAsync(segmentoNegocioRepository.ExistePorCodigoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not a valid segmento de negocio.")
             .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.SegmentoNegocio?.Codigo));
 
-        RuleFor(m => m.Diario!.Codigo).MustAsync(diarioEspecialRepository.ExistePorCodgoAsync)
+        RuleFor(m => m.Diario!.Codigo)
+            .MustAsync(diarioEspecialRepository.ExistePorCodgoAsync)
             .WithMessage("{PropertyName} {PropertyValue} is not a valid diario especial.")
             .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.Diario?.Codigo));
 
-        RuleFor(m => m.Uuid).Must(s => Guid.TryParse(s, out _)).WithMessage("{PropertyName} {PropertyValue} is not a valid UUID")
+        RuleFor(m => m.Uuid)
+            .Must(s => Guid.TryParse(s, out _))
+            .WithMessage("{PropertyName} {PropertyValue} is not a valid UUID")
             .When(movimiento => !string.IsNullOrWhiteSpace(movimiento.Uuid));
     }
 }

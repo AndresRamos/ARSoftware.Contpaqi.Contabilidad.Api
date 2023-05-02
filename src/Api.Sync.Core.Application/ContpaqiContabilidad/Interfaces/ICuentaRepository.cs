@@ -10,6 +10,5 @@ public interface ICuentaRepository
     Task<bool> ExistePorCodigoAsync(string codigo, CancellationToken cancellationToken);
 
     Task<IEnumerable<Cuenta>> BuscarPorRequestModelAsync(BuscarCuentasRequestModel requestModel,
-                                                         ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                         CancellationToken cancellationToken);
+        ILoadRelatedDataOptions loadRelatedDataOptions, CancellationToken cancellationToken);
 }

@@ -6,10 +6,8 @@ namespace Api.Sync.Core.Application.Requests.Cuentas.Validators;
 
 public sealed class CreateCuentaModelValidator : AbstractValidator<Cuenta>
 {
-    public CreateCuentaModelValidator(ICuentaRepository cuentaRepository,
-                                      ISegmentoNegocioRepository segmentoNegocioRepository,
-                                      IMonedaRepository monedaRepository,
-                                      IAgrupadorSatRepository agrupadorSatRepository)
+    public CreateCuentaModelValidator(ICuentaRepository cuentaRepository, ISegmentoNegocioRepository segmentoNegocioRepository,
+        IMonedaRepository monedaRepository, IAgrupadorSatRepository agrupadorSatRepository)
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
 

@@ -27,9 +27,8 @@ public sealed class AgrupadorSatRepository : IAgrupadorSatRepository
         return await _context.AgrupadoresSAT.AnyAsync(c => c.Codigo == codigo, cancellationToken);
     }
 
-    public async Task<AgrupadorSat?> BuscarPorIdAsync(int id,
-                                                      ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                      CancellationToken cancellationToken)
+    public async Task<AgrupadorSat?> BuscarPorIdAsync(int id, ILoadRelatedDataOptions loadRelatedDataOptions,
+        CancellationToken cancellationToken)
     {
         AgrupadorSatSql? agrupadorSatSql = await _context.AgrupadoresSAT.Where(s => s.Id == id)
             .ProjectTo<AgrupadorSatSql>(_mapper.ConfigurationProvider)
@@ -45,10 +44,8 @@ public sealed class AgrupadorSatRepository : IAgrupadorSatRepository
         return segmento;
     }
 
-    private async Task CargarDatosRelacionadosAsync(AgrupadorSat agrupadorSat,
-                                                    AgrupadorSatSql agrupadorSatSql,
-                                                    ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                    CancellationToken cancellationToken)
+    private async Task CargarDatosRelacionadosAsync(AgrupadorSat agrupadorSat, AgrupadorSatSql agrupadorSatSql,
+        ILoadRelatedDataOptions loadRelatedDataOptions, CancellationToken cancellationToken)
     {
         if (loadRelatedDataOptions.CargarDatosExtra)
             agrupadorSat.DatosExtra = (await _context.AgrupadoresSAT.FirstAsync(m => m.Id == agrupadorSatSql.Id, cancellationToken))

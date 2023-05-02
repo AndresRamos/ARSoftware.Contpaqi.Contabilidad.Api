@@ -1,28 +1,28 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-Api.Sync.Presentation.WorkerService-ef819930-aa2c-4514-acb3-be930471d9e0</UserSecretsId>
-    <PlatformTarget>x86</PlatformTarget>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>1.0.0</Version>
-    <Authors>AR Software</Authors>
-    <Description>Sincronizador de solicitudes de CONTPAQi Contabilidad API.</Description>
-    <Copyright>Copyright AR Software 2023</Copyright>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>dotnet-Api.Sync.Presentation.WorkerService-ef819930-aa2c-4514-acb3-be930471d9e0</UserSecretsId>
+		<PlatformTarget>x86</PlatformTarget>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<Version>1.0.0</Version>
+		<Authors>AR Software</Authors>
+		<Description>Sincronizador de solicitudes de CONTPAQi Contabilidad API.</Description>
+		<Copyright>Copyright AR Software 2023</Copyright>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-    <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+		<PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Api.Sync.Core.Application\Api.Sync.Core.Application.csproj" />
-    <ProjectReference Include="..\Api.Sync.Infrastructure\Api.Sync.Infrastructure.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Api.Sync.Core.Application\Api.Sync.Core.Application.csproj" />
+		<ProjectReference Include="..\Api.Sync.Infrastructure\Api.Sync.Infrastructure.csproj" />
+	</ItemGroup>
 </Project>

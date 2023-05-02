@@ -51,8 +51,7 @@ public sealed class CuentaRepository : ICuentaRepository
     }
 
     public async Task<IEnumerable<Cuenta>> BuscarPorRequestModelAsync(BuscarCuentasRequestModel requestModel,
-                                                                      ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                                      CancellationToken cancellationToken)
+        ILoadRelatedDataOptions loadRelatedDataOptions, CancellationToken cancellationToken)
     {
         var cuentasList = new List<Cuenta>();
 
@@ -80,10 +79,8 @@ public sealed class CuentaRepository : ICuentaRepository
         return cuentasList;
     }
 
-    private async Task CargarDatosRelacionadosAsync(Cuenta cuenta,
-                                                    CuentaSql cuentaSql,
-                                                    ILoadRelatedDataOptions loadRelatedDataOptions,
-                                                    CancellationToken cancellationToken)
+    private async Task CargarDatosRelacionadosAsync(Cuenta cuenta, CuentaSql cuentaSql, ILoadRelatedDataOptions loadRelatedDataOptions,
+        CancellationToken cancellationToken)
     {
         if (cuentaSql.IdSegNeg.HasValue)
             cuenta.SegmentoNegocio =
