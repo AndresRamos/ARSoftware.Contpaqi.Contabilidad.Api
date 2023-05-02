@@ -1,0 +1,7 @@
+{
+  "$type": "BuscarDiariosEspecialesRequest",
+  "model": {
+    "sqlQuery": "Nombre = \u0027Tasa IVA 16%\u0027"
+  },
+  "options": {}
+}

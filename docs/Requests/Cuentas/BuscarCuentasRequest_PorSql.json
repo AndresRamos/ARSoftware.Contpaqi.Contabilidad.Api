@@ -1,0 +1,7 @@
+{
+  "$type": "BuscarCuentasRequest",
+  "model": {
+    "sqlQuery": "Nombre = \u0027Caja\u0027"
+  },
+  "options": {}
+}

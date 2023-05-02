@@ -1,0 +1,7 @@
+{
+  "$type": "BuscarCuentasRequest",
+  "model": {
+    "id": 13
+  },
+  "options": {}
+}

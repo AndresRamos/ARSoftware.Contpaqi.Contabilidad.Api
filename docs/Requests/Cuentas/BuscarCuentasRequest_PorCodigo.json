@@ -1,0 +1,7 @@
+{
+  "$type": "BuscarCuentasRequest",
+  "model": {
+    "codigo": "10100000"
+  },
+  "options": {}
+}

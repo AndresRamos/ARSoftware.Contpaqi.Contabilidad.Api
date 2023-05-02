@@ -1,0 +1,28 @@
+{
+  "$type": "CrearCuentaRequest",
+  "model": {
+    "cuenta": {
+      "codigo": "10201001",
+      "nombre": "BANCOMER",
+      "nombreOtroIdioma": "BANCOMER",
+      "codigoCuentaAcumula": "10201000",
+      "tipo": "ActivoDeudora",
+      "cuentaDeMayor": "No",
+      "moneda": {
+        "codigo": "1",
+        "nombre": "",
+        "codigoSat": "",
+        "datosExtra": {}
+      },
+      "agrupadorSat": {
+        "codigo": "102.01",
+        "nombre": "",
+        "tipo": "",
+        "datosExtra": {}
+      },
+      "fechaAlta": "2023-05-02T00:00:00-05:00",
+      "datosExtra": {}
+    }
+  },
+  "options": {}
+}

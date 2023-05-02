@@ -1,0 +1,7 @@
+{
+  "$type": "BuscarSegmentosNegocioRequest",
+  "model": {
+    "id": 1
+  },
+  "options": {}
+}

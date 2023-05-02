@@ -1,0 +1,7 @@
+{
+  "$type": "BuscarSegmentosNegocioRequest",
+  "model": {
+    "sqlQuery": "Nombre = \u0027Segmento por omisi\u00F3n\u0027"
+  },
+  "options": {}
+}

@@ -1,0 +1,7 @@
+{
+  "$type": "BuscarPolizasRequest",
+  "model": {
+    "sqlQuery": "Cargos = 100"
+  },
+  "options": {}
+}

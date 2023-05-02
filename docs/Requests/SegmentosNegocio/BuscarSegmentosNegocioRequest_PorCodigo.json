@@ -1,0 +1,7 @@
+{
+  "$type": "BuscarSegmentosNegocioRequest",
+  "model": {
+    "codigo": "9999"
+  },
+  "options": {}
+}

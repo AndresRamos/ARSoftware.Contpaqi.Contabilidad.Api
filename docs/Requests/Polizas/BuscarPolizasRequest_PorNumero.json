@@ -1,0 +1,10 @@
+{
+  "$type": "BuscarPolizasRequest",
+  "model": {
+    "tipo": 3,
+    "ejercicio": 2023,
+    "periodo": 3,
+    "numero": 24
+  },
+  "options": {}
+}

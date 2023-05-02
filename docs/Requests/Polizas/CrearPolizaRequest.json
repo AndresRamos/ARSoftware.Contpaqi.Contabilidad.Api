@@ -1,0 +1,65 @@
+{
+  "$type": "CrearPolizaRequest",
+  "model": {
+    "poliza": {
+      "fecha": "2023-05-02T00:00:00-05:00",
+      "tipo": {
+        "codigo": 3,
+        "nombre": "",
+        "datosExtra": {}
+      },
+      "concepto": "Concepto Poliza",
+      "movimientos": [
+        {
+          "numero": 1,
+          "tipo": "Abono",
+          "cuenta": {
+            "codigo": "60101000",
+            "nombre": "",
+            "nombreOtroIdioma": "",
+            "codigoCuentaAcumula": "",
+            "moneda": {
+              "codigo": "",
+              "nombre": "",
+              "codigoSat": "",
+              "datosExtra": {}
+            },
+            "datosExtra": {}
+          },
+          "importe": 100,
+          "referencia": "Referencia",
+          "concepto": "Concepto",
+          "uuid": "",
+          "datosExtra": {}
+        },
+        {
+          "numero": 2,
+          "tipo": "Cargo",
+          "cuenta": {
+            "codigo": "40119000",
+            "nombre": "",
+            "nombreOtroIdioma": "",
+            "codigoCuentaAcumula": "",
+            "moneda": {
+              "codigo": "",
+              "nombre": "",
+              "codigoSat": "",
+              "datosExtra": {}
+            },
+            "datosExtra": {}
+          },
+          "importe": 100,
+          "referencia": "Referencia",
+          "concepto": "Concepto",
+          "uuid": "",
+          "datosExtra": {}
+        }
+      ],
+      "uuids": [],
+      "datosExtra": {}
+    }
+  },
+  "options": {
+    "buscarSiguienteNumero": true
+  }
+}

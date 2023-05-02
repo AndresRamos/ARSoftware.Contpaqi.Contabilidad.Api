@@ -1,0 +1,7 @@
+{
+  "$type": "BuscarTiposPolizaRequest",
+  "model": {
+    "codigo": 2
+  },
+  "options": {}
+}

@@ -1,0 +1,9 @@
+{
+  "$type": "BuscarPolizasRequest",
+  "model": {
+    "fechaInicio": "2023-05-02",
+    "fechaFin": "2023-05-02",
+    "tipo": 3
+  },
+  "options": {}
+}

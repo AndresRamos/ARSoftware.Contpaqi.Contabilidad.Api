@@ -1,0 +1,7 @@
+{
+  "$type": "BuscarDiariosEspecialesRequest",
+  "model": {
+    "codigo": "82"
+  },
+  "options": {}
+}

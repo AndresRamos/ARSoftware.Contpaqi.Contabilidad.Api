@@ -1,0 +1,7 @@
+{
+  "$type": "BuscarTiposPolizaRequest",
+  "model": {
+    "id": 1
+  },
+  "options": {}
+}
