@@ -1,15 +1,18 @@
 ﻿using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 
 namespace Api.Core.Domain.Requests;
 
 /// <summary>
 ///     Solicitud para eliminar polizas.
 /// </summary>
-public sealed class EliminarPolizaRequest : IContpaqiRequest<EliminarPolizaRequestModel, EliminarPolizaRequestOptions>
+public sealed class
+    EliminarPolizaRequest : ContpaqiRequest<EliminarPolizaRequestModel, EliminarPolizaRequestOptions, EliminarPolizaResponse>
 {
-    public EliminarPolizaRequestModel Model { get; set; } = new();
-    public EliminarPolizaRequestOptions Options { get; set; } = new();
+    public EliminarPolizaRequest(EliminarPolizaRequestModel model, EliminarPolizaRequestOptions options) : base(model, options)
+    {
+    }
 }
 
 /// <summary>
@@ -31,9 +34,16 @@ public sealed class EliminarPolizaRequestOptions : ILoadRelatedDataOptions
 /// <summary>
 ///     Respuesta de la solicitud EliminarPolizaRequest.
 /// </summary>
-public sealed class EliminarPolizaResponse : IContpaqiResponse<EliminarPolizaResponseModel>
+public sealed class EliminarPolizaResponse : ContpaqiResponse<EliminarPolizaResponseModel>
 {
-    public EliminarPolizaResponseModel Model { get; set; } = new();
+    public EliminarPolizaResponse(EliminarPolizaResponseModel model) : base(model)
+    {
+    }
+
+    public static EliminarPolizaResponse CreateInstance()
+    {
+        return new EliminarPolizaResponse(new EliminarPolizaResponseModel());
+    }
 }
 
 /// <summary>

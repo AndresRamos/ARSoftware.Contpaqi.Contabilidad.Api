@@ -1,13 +1,16 @@
 ﻿using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 
 namespace Api.Core.Domain.Requests;
 
-public sealed class
-    BuscarSegmentosNegocioRequest : IContpaqiRequest<BuscarSegmentosNegocioRequestModel, BuscarSegmentosNegocioRequestOptions>
+public sealed class BuscarSegmentosNegocioRequest : ContpaqiRequest<BuscarSegmentosNegocioRequestModel, BuscarSegmentosNegocioRequestOptions
+    , BuscarSegmentosNegocioResponse>
 {
-    public BuscarSegmentosNegocioRequestModel Model { get; set; } = new();
-    public BuscarSegmentosNegocioRequestOptions Options { get; set; } = new();
+    public BuscarSegmentosNegocioRequest(BuscarSegmentosNegocioRequestModel model, BuscarSegmentosNegocioRequestOptions options) :
+        base(model, options)
+    {
+    }
 }
 
 public sealed class BuscarSegmentosNegocioRequestModel
@@ -22,13 +25,25 @@ public sealed class BuscarSegmentosNegocioRequestOptions : ILoadRelatedDataOptio
     public bool CargarDatosExtra { get; set; }
 }
 
-public sealed class BuscarSegmentosNegocioResponse : IContpaqiResponse<BuscarSegmentosNegocioResponseModel>
+public sealed class BuscarSegmentosNegocioResponse : ContpaqiResponse<BuscarSegmentosNegocioResponseModel>
 {
-    public BuscarSegmentosNegocioResponseModel Model { get; set; } = new();
+    public BuscarSegmentosNegocioResponse(BuscarSegmentosNegocioResponseModel model) : base(model)
+    {
+    }
+
+    public static BuscarSegmentosNegocioResponse CreateInstance(List<SegmentoNegocio> segmentosNegocio)
+    {
+        return new BuscarSegmentosNegocioResponse(new BuscarSegmentosNegocioResponseModel(segmentosNegocio));
+    }
 }
 
 public sealed class BuscarSegmentosNegocioResponseModel
 {
+    public BuscarSegmentosNegocioResponseModel(List<SegmentoNegocio> segmentosNegocio)
+    {
+        SegmentosNegocio = segmentosNegocio;
+    }
+
     public int NumeroRegistros => SegmentosNegocio.Count;
-    public List<SegmentoNegocio> SegmentosNegocio { get; set; } = new();
+    public List<SegmentoNegocio> SegmentosNegocio { get; set; }
 }

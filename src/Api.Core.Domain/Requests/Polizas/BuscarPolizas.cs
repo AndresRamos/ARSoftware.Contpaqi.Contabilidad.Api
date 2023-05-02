@@ -1,15 +1,17 @@
 ﻿using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 
 namespace Api.Core.Domain.Requests;
 
 /// <summary>
 ///     Solicitud para buscar polizas.
 /// </summary>
-public sealed class BuscarPolizasRequest : IContpaqiRequest<BuscarPolizasRequestModel, BuscarPolizasRequestOptions>
+public sealed class BuscarPolizasRequest : ContpaqiRequest<BuscarPolizasRequestModel, BuscarPolizasRequestOptions, BuscarPolizasResponse>
 {
-    public BuscarPolizasRequestModel Model { get; set; } = new();
-    public BuscarPolizasRequestOptions Options { get; set; } = new();
+    public BuscarPolizasRequest(BuscarPolizasRequestModel model, BuscarPolizasRequestOptions options) : base(model, options)
+    {
+    }
 }
 
 /// <summary>
@@ -70,9 +72,16 @@ public sealed class BuscarPolizasRequestOptions : ILoadRelatedDataOptions
 /// <summary>
 ///     Respuesta de la solicitud BuscarPolizasRequest.
 /// </summary>
-public sealed class BuscarPolizasResponse : IContpaqiResponse<BuscarPolizasResponseModel>
+public sealed class BuscarPolizasResponse : ContpaqiResponse<BuscarPolizasResponseModel>
 {
-    public BuscarPolizasResponseModel Model { get; set; } = new();
+    public BuscarPolizasResponse(BuscarPolizasResponseModel model) : base(model)
+    {
+    }
+
+    public static BuscarPolizasResponse CreateInstance(List<Poliza> polizas)
+    {
+        return new BuscarPolizasResponse(new BuscarPolizasResponseModel(polizas));
+    }
 }
 
 /// <summary>
@@ -80,8 +89,13 @@ public sealed class BuscarPolizasResponse : IContpaqiResponse<BuscarPolizasRespo
 /// </summary>
 public sealed class BuscarPolizasResponseModel
 {
+    public BuscarPolizasResponseModel(List<Poliza> polizas)
+    {
+        Polizas = polizas;
+    }
+
     /// <summary>
     ///     Lista de polizas encontradas.
     /// </summary>
-    public List<Poliza> Polizas { get; set; } = new();
+    public List<Poliza> Polizas { get; set; }
 }

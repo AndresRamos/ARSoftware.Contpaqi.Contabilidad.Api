@@ -1,15 +1,17 @@
 ﻿using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 
 namespace Api.Core.Domain.Requests;
 
 /// <summary>
 ///     Solicitud para crear una poliza.
 /// </summary>
-public sealed class CrearPolizaRequest : IContpaqiRequest<CrearPolizaRequestModel, CrearPolizaRequestOptions>
+public sealed class CrearPolizaRequest : ContpaqiRequest<CrearPolizaRequestModel, CrearPolizaRequestOptions, CrearPolizaResponse>
 {
-    public CrearPolizaRequestModel Model { get; set; } = new();
-    public CrearPolizaRequestOptions Options { get; set; } = new();
+    public CrearPolizaRequest(CrearPolizaRequestModel model, CrearPolizaRequestOptions options) : base(model, options)
+    {
+    }
 }
 
 /// <summary>
@@ -37,9 +39,16 @@ public sealed class CrearPolizaRequestOptions : ILoadRelatedDataOptions
 /// <summary>
 ///     Respuesta de la solicitud CrearPolizaRequest.
 /// </summary>
-public sealed class CrearPolizaResponse : IContpaqiResponse<CrearPolizaResponseModel>
+public sealed class CrearPolizaResponse : ContpaqiResponse<CrearPolizaResponseModel>
 {
-    public CrearPolizaResponseModel Model { get; set; } = new();
+    public CrearPolizaResponse(CrearPolizaResponseModel model) : base(model)
+    {
+    }
+
+    public static CrearPolizaResponse CreateInstance(Poliza poliza)
+    {
+        return new CrearPolizaResponse(new CrearPolizaResponseModel(poliza));
+    }
 }
 
 /// <summary>
@@ -47,5 +56,10 @@ public sealed class CrearPolizaResponse : IContpaqiResponse<CrearPolizaResponseM
 /// </summary>
 public sealed class CrearPolizaResponseModel
 {
-    public Poliza? Poliza { get; set; }
+    public CrearPolizaResponseModel(Poliza poliza)
+    {
+        Poliza = poliza;
+    }
+
+    public Poliza Poliza { get; set; }
 }

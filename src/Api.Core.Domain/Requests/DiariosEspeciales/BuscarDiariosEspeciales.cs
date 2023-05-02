@@ -1,13 +1,16 @@
 ﻿using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 
 namespace Api.Core.Domain.Requests;
 
-public sealed class
-    BuscarDiariosEspecialesRequest : IContpaqiRequest<BuscarDiariosEspecialesRequestModel, BuscarDiariosEspecialesRequestOptions>
+public sealed class BuscarDiariosEspecialesRequest : ContpaqiRequest<BuscarDiariosEspecialesRequestModel,
+    BuscarDiariosEspecialesRequestOptions, BuscarDiariosEspecialesResponse>
 {
-    public BuscarDiariosEspecialesRequestModel Model { get; set; } = new();
-    public BuscarDiariosEspecialesRequestOptions Options { get; set; } = new();
+    public BuscarDiariosEspecialesRequest(BuscarDiariosEspecialesRequestModel model, BuscarDiariosEspecialesRequestOptions options) :
+        base(model, options)
+    {
+    }
 }
 
 public sealed class BuscarDiariosEspecialesRequestModel
@@ -22,13 +25,25 @@ public sealed class BuscarDiariosEspecialesRequestOptions : ILoadRelatedDataOpti
     public bool CargarDatosExtra { get; set; }
 }
 
-public sealed class BuscarDiariosEspecialesResponse : IContpaqiResponse<BuscarDiariosEspecialesResponseModel>
+public sealed class BuscarDiariosEspecialesResponse : ContpaqiResponse<BuscarDiariosEspecialesResponseModel>
 {
-    public BuscarDiariosEspecialesResponseModel Model { get; set; } = new();
+    public BuscarDiariosEspecialesResponse(BuscarDiariosEspecialesResponseModel model) : base(model)
+    {
+    }
+
+    public static BuscarDiariosEspecialesResponse CreateInstance(List<DiarioEspecial> diariosEspeciales)
+    {
+        return new BuscarDiariosEspecialesResponse(new BuscarDiariosEspecialesResponseModel(diariosEspeciales));
+    }
 }
 
 public sealed class BuscarDiariosEspecialesResponseModel
 {
+    public BuscarDiariosEspecialesResponseModel(List<DiarioEspecial> diariosEspeciales)
+    {
+        DiariosEspeciales = diariosEspeciales;
+    }
+
     public int NumeroRegistros => DiariosEspeciales.Count;
-    public List<DiarioEspecial> DiariosEspeciales { get; set; } = new();
+    public List<DiarioEspecial> DiariosEspeciales { get; set; }
 }

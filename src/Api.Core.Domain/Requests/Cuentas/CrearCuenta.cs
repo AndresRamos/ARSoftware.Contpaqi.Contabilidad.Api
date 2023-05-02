@@ -1,12 +1,14 @@
 ﻿using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 
 namespace Api.Core.Domain.Requests;
 
-public sealed class CrearCuentaRequest : IContpaqiRequest<CrearCuentaRequestModel, CrearCuentaRequestOptions>
+public sealed class CrearCuentaRequest : ContpaqiRequest<CrearCuentaRequestModel, CrearCuentaRequestOptions, CrearCuentaResponse>
 {
-    public CrearCuentaRequestModel Model { get; set; } = new();
-    public CrearCuentaRequestOptions Options { get; set; } = new();
+    public CrearCuentaRequest(CrearCuentaRequestModel model, CrearCuentaRequestOptions options) : base(model, options)
+    {
+    }
 }
 
 public sealed class CrearCuentaRequestModel
@@ -19,12 +21,24 @@ public sealed class CrearCuentaRequestOptions : ILoadRelatedDataOptions
     public bool CargarDatosExtra { get; set; }
 }
 
-public sealed class CrearCuentaResponse : IContpaqiResponse<CrearCuentaResponseModel>
+public sealed class CrearCuentaResponse : ContpaqiResponse<CrearCuentaResponseModel>
 {
-    public CrearCuentaResponseModel Model { get; set; } = new();
+    public CrearCuentaResponse(CrearCuentaResponseModel model) : base(model)
+    {
+    }
+
+    public static CrearCuentaResponse CreateInstance(Cuenta cuenta)
+    {
+        return new CrearCuentaResponse(new CrearCuentaResponseModel(cuenta));
+    }
 }
 
 public sealed class CrearCuentaResponseModel
 {
-    public Cuenta? Cuenta { get; set; }
+    public CrearCuentaResponseModel(Cuenta cuenta)
+    {
+        Cuenta = cuenta;
+    }
+
+    public Cuenta Cuenta { get; set; }
 }

@@ -1,12 +1,14 @@
 ﻿using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 
 namespace Api.Core.Domain.Requests;
 
-public sealed class BuscarCuentasRequest : IContpaqiRequest<BuscarCuentasRequestModel, BuscarCuentasRequestOptions>
+public sealed class BuscarCuentasRequest : ContpaqiRequest<BuscarCuentasRequestModel, BuscarCuentasRequestOptions, BuscarCuentasResponse>
 {
-    public BuscarCuentasRequestModel Model { get; set; } = new();
-    public BuscarCuentasRequestOptions Options { get; set; } = new();
+    public BuscarCuentasRequest(BuscarCuentasRequestModel model, BuscarCuentasRequestOptions options) : base(model, options)
+    {
+    }
 }
 
 public sealed class BuscarCuentasRequestModel
@@ -21,12 +23,24 @@ public sealed class BuscarCuentasRequestOptions : ILoadRelatedDataOptions
     public bool CargarDatosExtra { get; set; }
 }
 
-public sealed class BuscarCuentasResponse : IContpaqiResponse<BuscarCuentasResponseModel>
+public sealed class BuscarCuentasResponse : ContpaqiResponse<BuscarCuentasResponseModel>
 {
-    public BuscarCuentasResponseModel Model { get; set; } = new();
+    public BuscarCuentasResponse(BuscarCuentasResponseModel model) : base(model)
+    {
+    }
+
+    public static BuscarCuentasResponse CreateInstance(List<Cuenta> cuentas)
+    {
+        return new BuscarCuentasResponse(new BuscarCuentasResponseModel(cuentas));
+    }
 }
 
 public sealed class BuscarCuentasResponseModel
 {
-    public List<Cuenta> Cuentas { get; set; } = new();
+    public BuscarCuentasResponseModel(List<Cuenta> cuentas)
+    {
+        Cuentas = cuentas;
+    }
+
+    public List<Cuenta> Cuentas { get; set; }
 }
