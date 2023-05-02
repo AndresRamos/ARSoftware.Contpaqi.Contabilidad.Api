@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ARSoftware.Contpaqi.Api.Common" Version="1.0.0" />
     <PackageReference Include="MediatR" Version="12.0.1" />
   </ItemGroup>
 
