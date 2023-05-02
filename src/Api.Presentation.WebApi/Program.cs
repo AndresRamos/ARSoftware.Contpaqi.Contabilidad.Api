@@ -2,6 +2,7 @@ using System.Reflection;
 using Api.Core.Application;
 using Api.Core.Application.Requests.Commands.CreateApiRequest;
 using Api.Core.Domain.Common;
+using Api.Core.Domain.Requests;
 using Api.Infrastructure;
 using Api.Infrastructure.Persistence;
 using Api.Presentation.WebApi.Authentication;
@@ -42,7 +43,7 @@ builder.Services.AddSwaggerGen(c =>
 
     c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
     c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{typeof(CreateApiRequestCommand).Assembly.GetName().Name}.xml"));
-    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{typeof(IContpaqiRequest).Assembly.GetName().Name}.xml"));
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{typeof(BuscarCuentasRequest).Assembly.GetName().Name}.xml"));
 
     c.UseAllOfForInheritance();
     c.UseOneOfForPolymorphism();

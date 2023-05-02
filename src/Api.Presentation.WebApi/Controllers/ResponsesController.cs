@@ -1,8 +1,8 @@
 ﻿using Api.Core.Application.Requests.Commands.CreateApiResponse;
 using Api.Core.Application.Requests.Queries.GetApiRequestById;
-using Api.Core.Domain.Common;
 using Api.Presentation.WebApi.Authentication;
 using Api.Presentation.WebApi.Filters;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
