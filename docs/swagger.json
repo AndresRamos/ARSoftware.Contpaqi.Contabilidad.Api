@@ -1,0 +1,1717 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "AR Software - CONTPAQi Contabilidad API",
+    "description": "API used to create request to be processed in CONTPAQi Contabilidad",
+    "contact": {
+      "name": "AR Software",
+      "url": "https://www.arsoft.net",
+      "email": "andres@arsoft.net"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Requests/{id}": {
+      "get": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Busca una solicitud por id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id de la solicitud a buscar.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-Empresa-Rfc",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna la solicitud.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiRequest"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se encontro la solicitud.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud invalida.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Requests": {
+      "get": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Busca solicitudes por rango de fecha.",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Fecha inicio.",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Fecha fin.",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-Empresa-Rfc",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coleccion de solicitudes dentro rango de fechas.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiRequest"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No hay solicitudes dentro del rango de fecha."
+          },
+          "400": {
+            "description": "Solicitud invalida.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Crear una solicitud en la base de datos para ser procesada en CONTPAQi Comercial.",
+        "parameters": [
+          {
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-Empresa-Rfc",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Solicitud a procesar.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/BuscarCuentasRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CrearCuentaRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarDiariosEspecialesRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarEmpresasRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarPolizasRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CrearPolizaRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EliminarPolizaRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarSegmentosNegocioRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarTiposPolizaRequest"
+                  }
+                ]
+              }
+            },
+            "text/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/BuscarCuentasRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CrearCuentaRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarDiariosEspecialesRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarEmpresasRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarPolizasRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CrearPolizaRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EliminarPolizaRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarSegmentosNegocioRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarTiposPolizaRequest"
+                  }
+                ]
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/BuscarCuentasRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CrearCuentaRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarDiariosEspecialesRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarEmpresasRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarPolizasRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CrearPolizaRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EliminarPolizaRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarSegmentosNegocioRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BuscarTiposPolizaRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Retorna la solicitud creada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud invalida.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Requests/Pending": {
+      "get": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Busca las solicitudes pendientes por procesar.",
+        "parameters": [
+          {
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-Empresa-Rfc",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna coleccion de solicitudes pendientes por procesar.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiRequest"
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No hay solicitudes pendientes."
+          },
+          "400": {
+            "description": "Solicitud invalida.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Requests/JsonModel": {
+      "get": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Regresa la estructura de una solicitud serializada en JSON.",
+        "parameters": [
+          {
+            "name": "requestName",
+            "in": "query",
+            "description": "La solicitud a serializar.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-Empresa-Rfc",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La estructura de una solicitud serializada en JSON.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/BuscarCuentasRequest"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CrearCuentaRequest"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BuscarDiariosEspecialesRequest"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BuscarEmpresasRequest"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BuscarPolizasRequest"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CrearPolizaRequest"
+                    },
+                    {
+                      "$ref": "#/components/schemas/EliminarPolizaRequest"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BuscarSegmentosNegocioRequest"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BuscarTiposPolizaRequest"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/requests/{id}/response": {
+      "get": {
+        "tags": [
+          "Responses"
+        ],
+        "summary": "Busca una respuesta por id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id de la respuesta a buscar.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna la respuesta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se encontro la respuesta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud invalida.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Responses"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiResponse"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiResponse"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiResponse"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AgrupadorSat": {
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "datosExtra": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApiRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "subscriptionKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "empresaRfc": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "contpaqiRequestType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "contpaqiRequest": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BuscarCuentasRequest"
+              },
+              {
+                "$ref": "#/components/schemas/CrearCuentaRequest"
+              },
+              {
+                "$ref": "#/components/schemas/BuscarDiariosEspecialesRequest"
+              },
+              {
+                "$ref": "#/components/schemas/BuscarEmpresasRequest"
+              },
+              {
+                "$ref": "#/components/schemas/BuscarPolizasRequest"
+              },
+              {
+                "$ref": "#/components/schemas/CrearPolizaRequest"
+              },
+              {
+                "$ref": "#/components/schemas/EliminarPolizaRequest"
+              },
+              {
+                "$ref": "#/components/schemas/BuscarSegmentosNegocioRequest"
+              },
+              {
+                "$ref": "#/components/schemas/BuscarTiposPolizaRequest"
+              }
+            ],
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/RequestStatus"
+          },
+          "response": {
+            "$ref": "#/components/schemas/ApiResponse"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "contpaqiResponseType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "contpaqiResponse": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BuscarCuentasResponse"
+              },
+              {
+                "$ref": "#/components/schemas/CrearCuentaResponse"
+              },
+              {
+                "$ref": "#/components/schemas/BuscarDiariosEspecialesResponse"
+              },
+              {
+                "$ref": "#/components/schemas/BuscarEmpresasResponse"
+              },
+              {
+                "$ref": "#/components/schemas/BuscarPolizasResponse"
+              },
+              {
+                "$ref": "#/components/schemas/CrearPolizaResponse"
+              },
+              {
+                "$ref": "#/components/schemas/EliminarPolizaResponse"
+              },
+              {
+                "$ref": "#/components/schemas/BuscarSegmentosNegocioResponse"
+              },
+              {
+                "$ref": "#/components/schemas/BuscarTiposPolizaResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "executionTime": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarCuentasRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/BuscarCuentasRequestModel"
+          },
+          "options": {
+            "$ref": "#/components/schemas/BuscarCuentasRequestOptions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarCuentasRequestModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "sqlQuery": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarCuentasRequestOptions": {
+        "type": "object",
+        "properties": {
+          "cargarDatosExtra": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarCuentasResponse": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/BuscarCuentasResponseModel"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarCuentasResponseModel": {
+        "type": "object",
+        "properties": {
+          "cuentas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Cuenta"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarDiariosEspecialesRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/BuscarDiariosEspecialesRequestModel"
+          },
+          "options": {
+            "$ref": "#/components/schemas/BuscarDiariosEspecialesRequestOptions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarDiariosEspecialesRequestModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "sqlQuery": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarDiariosEspecialesRequestOptions": {
+        "type": "object",
+        "properties": {
+          "cargarDatosExtra": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarDiariosEspecialesResponse": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/BuscarDiariosEspecialesResponseModel"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarDiariosEspecialesResponseModel": {
+        "type": "object",
+        "properties": {
+          "numeroRegistros": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "diariosEspeciales": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiarioEspecial"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarEmpresasRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/BuscarEmpresasRequestModel"
+          },
+          "options": {
+            "$ref": "#/components/schemas/BuscarEmpresasRequestOptions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarEmpresasRequestModel": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "BuscarEmpresasRequestOptions": {
+        "type": "object",
+        "properties": {
+          "cargarDatosExtra": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarEmpresasResponse": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/BuscarEmpresasResponseModel"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarEmpresasResponseModel": {
+        "type": "object",
+        "properties": {
+          "numeroRegistros": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "empresas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Empresa"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarPolizasRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/BuscarPolizasRequestModel"
+          },
+          "options": {
+            "$ref": "#/components/schemas/BuscarPolizasRequestOptions"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Solicitud para buscar polizas."
+      },
+      "BuscarPolizasRequestModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Parametro para buscar polizas por id.",
+            "format": "int32",
+            "nullable": true
+          },
+          "fechaInicio": {
+            "type": "string",
+            "description": "Parametro para buscar por rango de fecha.",
+            "format": "date",
+            "nullable": true
+          },
+          "fechaFin": {
+            "type": "string",
+            "description": "Parametro para buscar por rango de fecha.",
+            "format": "date",
+            "nullable": true
+          },
+          "tipo": {
+            "type": "integer",
+            "description": "Parametro para buscar polizas por tipo.",
+            "format": "int32",
+            "nullable": true
+          },
+          "ejercicio": {
+            "type": "integer",
+            "description": "Parametro para buscar polizas por ejercicio.",
+            "format": "int32",
+            "nullable": true
+          },
+          "periodo": {
+            "type": "integer",
+            "description": "Parametro para buscar polizas por periodo.",
+            "format": "int32",
+            "nullable": true
+          },
+          "numero": {
+            "type": "integer",
+            "description": "Parametro para buscar polizas por numero.",
+            "format": "int32",
+            "nullable": true
+          },
+          "sqlQuery": {
+            "type": "string",
+            "description": "Parametro para buscar polizs por SQL.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Modelo de la solicitud BuscarPolizasRequest."
+      },
+      "BuscarPolizasRequestOptions": {
+        "type": "object",
+        "properties": {
+          "cargarDatosExtra": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Opciones de la solicitud BuscarPolizasRequest."
+      },
+      "BuscarPolizasResponse": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/BuscarPolizasResponseModel"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Respuesta de la solicitud BuscarPolizasRequest."
+      },
+      "BuscarPolizasResponseModel": {
+        "type": "object",
+        "properties": {
+          "polizas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Poliza"
+            },
+            "description": "Lista de polizas encontradas.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Modelo de la solicitud BuscarPolizasResponse."
+      },
+      "BuscarSegmentosNegocioRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/BuscarSegmentosNegocioRequestModel"
+          },
+          "options": {
+            "$ref": "#/components/schemas/BuscarSegmentosNegocioRequestOptions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarSegmentosNegocioRequestModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "sqlQuery": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarSegmentosNegocioRequestOptions": {
+        "type": "object",
+        "properties": {
+          "cargarDatosExtra": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarSegmentosNegocioResponse": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/BuscarSegmentosNegocioResponseModel"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarSegmentosNegocioResponseModel": {
+        "type": "object",
+        "properties": {
+          "numeroRegistros": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "segmentosNegocio": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SegmentoNegocio"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarTiposPolizaRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/BuscarTiposPolizaRequestModel"
+          },
+          "options": {
+            "$ref": "#/components/schemas/BuscarTiposPolizaRequestOptions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarTiposPolizaRequestModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "codigo": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "sqlQuery": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarTiposPolizaRequestOptions": {
+        "type": "object",
+        "properties": {
+          "cargarDatosExtra": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarTiposPolizaResponse": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/BuscarTiposPolizaResponseModel"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarTiposPolizaResponseModel": {
+        "type": "object",
+        "properties": {
+          "numeroRegistros": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "tiposPoliza": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TipoPoliza"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CrearCuentaRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/CrearCuentaRequestModel"
+          },
+          "options": {
+            "$ref": "#/components/schemas/CrearCuentaRequestOptions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CrearCuentaRequestModel": {
+        "type": "object",
+        "properties": {
+          "cuenta": {
+            "$ref": "#/components/schemas/Cuenta"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CrearCuentaRequestOptions": {
+        "type": "object",
+        "properties": {
+          "cargarDatosExtra": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CrearCuentaResponse": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/CrearCuentaResponseModel"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CrearCuentaResponseModel": {
+        "type": "object",
+        "properties": {
+          "cuenta": {
+            "$ref": "#/components/schemas/Cuenta"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CrearPolizaRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/CrearPolizaRequestModel"
+          },
+          "options": {
+            "$ref": "#/components/schemas/CrearPolizaRequestOptions"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Solicitud para crear una poliza."
+      },
+      "CrearPolizaRequestModel": {
+        "type": "object",
+        "properties": {
+          "poliza": {
+            "$ref": "#/components/schemas/Poliza"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Modelo de la solicitud CrearPolizaRequest"
+      },
+      "CrearPolizaRequestOptions": {
+        "type": "object",
+        "properties": {
+          "buscarSiguienteNumero": {
+            "type": "boolean",
+            "description": "Buscar el numero consecutivo del tipo de poliza."
+          },
+          "cargarDatosExtra": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Opciones de la solicitud CrearPolizaRequest."
+      },
+      "CrearPolizaResponse": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/CrearPolizaResponseModel"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Respuesta de la solicitud CrearPolizaRequest."
+      },
+      "CrearPolizaResponseModel": {
+        "type": "object",
+        "properties": {
+          "poliza": {
+            "$ref": "#/components/schemas/Poliza"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Modelo de la respuesta CrearPolizaResponse."
+      },
+      "Cuenta": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id de la cuenta contable.",
+            "format": "int32"
+          },
+          "codigo": {
+            "type": "string",
+            "description": "Código de la cuenta contable.",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "description": "Nombre de la cuenta contable.",
+            "nullable": true
+          },
+          "nombreOtroIdioma": {
+            "type": "string",
+            "description": "Nombre de la cuenta contable en otro idioma.",
+            "nullable": true
+          },
+          "codigoCuentaAcumula": {
+            "type": "string",
+            "description": "Código de la cuenta a la que acumula la cuenta.",
+            "nullable": true
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/TipoCuenta"
+          },
+          "cuentaDeMayor": {
+            "$ref": "#/components/schemas/CuentaDeMayor"
+          },
+          "segmentoNegocioEnMovimientos": {
+            "type": "boolean",
+            "description": "Bandera de segmento de negocio a nivel movimiento. Contiene los siguientes valores: True = Cuando en la lista de\r\ncampos se tiene seleccionadoel número de segmento de negocio, False = Cuando en la lista de campos aparece la\r\nopción No Acepta"
+          },
+          "segmentoNegocio": {
+            "$ref": "#/components/schemas/SegmentoNegocio"
+          },
+          "moneda": {
+            "$ref": "#/components/schemas/Moneda"
+          },
+          "digitoAgrupador": {
+            "type": "integer",
+            "description": "Dígito agrupador de la cuenta contable.",
+            "format": "int32"
+          },
+          "agrupadorSat": {
+            "$ref": "#/components/schemas/AgrupadorSat"
+          },
+          "fechaAlta": {
+            "type": "string",
+            "description": "Fecha en que se registró la cuenta contable.",
+            "format": "date-time"
+          },
+          "esBaja": {
+            "type": "boolean",
+            "description": "Bandera de estado de baja de la cuenta contable. Contiene los siguientes valores: True = Cuando se habilita la\r\ncasilla Inactiva, False = Cuando no se habilita la casilla Inactiva"
+          },
+          "datosExtra": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Datos extra",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Modelo de una cuenta contable."
+      },
+      "CuentaDeMayor": {
+        "enum": [
+          "Si",
+          "No",
+          "DeTitulo",
+          "DeSubtitulo"
+        ],
+        "type": "string"
+      },
+      "DiarioEspecial": {
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipo": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "datosExtra": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EliminarPolizaRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/EliminarPolizaRequestModel"
+          },
+          "options": {
+            "$ref": "#/components/schemas/EliminarPolizaRequestOptions"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Solicitud para eliminar polizas."
+      },
+      "EliminarPolizaRequestModel": {
+        "type": "object",
+        "properties": {
+          "llavePoliza": {
+            "$ref": "#/components/schemas/LlavePoliza"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Modelo de la solicitud EliminarPolizaRequest."
+      },
+      "EliminarPolizaRequestOptions": {
+        "type": "object",
+        "properties": {
+          "cargarDatosExtra": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Opciones de la solicitud EliminarPolizaRequest."
+      },
+      "EliminarPolizaResponse": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/EliminarPolizaResponseModel"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Respuesta de la solicitud EliminarPolizaRequest."
+      },
+      "EliminarPolizaResponseModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Modelo de la respuesta EliminarPolizaResponse."
+      },
+      "Empresa": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "baseDatos": {
+            "type": "string",
+            "nullable": true
+          },
+          "rfc": {
+            "type": "string",
+            "nullable": true
+          },
+          "guidAdd": {
+            "type": "string",
+            "nullable": true
+          },
+          "datosExtra": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LlavePoliza": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "integer",
+            "description": "Tipo de la poliza.",
+            "format": "int32"
+          },
+          "ejercicio": {
+            "type": "integer",
+            "description": "Ejercicio de la poliza.",
+            "format": "int32"
+          },
+          "periodo": {
+            "type": "integer",
+            "description": "Periodo de la poliza.",
+            "format": "int32"
+          },
+          "numero": {
+            "type": "integer",
+            "description": "Numero de la poliza.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Modelo de la llave de una poliza."
+      },
+      "Moneda": {
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "codigoSat": {
+            "type": "string",
+            "nullable": true
+          },
+          "datosExtra": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Movimiento": {
+        "type": "object",
+        "properties": {
+          "numero": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/TipoMovimiento"
+          },
+          "cuenta": {
+            "$ref": "#/components/schemas/Cuenta"
+          },
+          "importe": {
+            "type": "number",
+            "description": "Importe del movimiento.",
+            "format": "double"
+          },
+          "referencia": {
+            "type": "string",
+            "description": "Referencia del movimiento.",
+            "nullable": true
+          },
+          "concepto": {
+            "type": "string",
+            "description": "Concepto del movimiento.",
+            "nullable": true
+          },
+          "segmentoNegocio": {
+            "$ref": "#/components/schemas/SegmentoNegocio"
+          },
+          "diario": {
+            "$ref": "#/components/schemas/DiarioEspecial"
+          },
+          "uuid": {
+            "type": "string",
+            "description": "UUID a asociar al movimiento.",
+            "nullable": true
+          },
+          "datosExtra": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Datos extra del movimiento",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Modelo que representa un CONTPAQi Contabilidad Movimiento"
+      },
+      "Poliza": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id de la poliza.",
+            "format": "int32"
+          },
+          "fecha": {
+            "type": "string",
+            "description": "Fecha de la póliza.",
+            "format": "date-time"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/TipoPoliza"
+          },
+          "numero": {
+            "type": "integer",
+            "description": "Folio de la póliza.",
+            "format": "int32"
+          },
+          "concepto": {
+            "type": "string",
+            "description": "Concepto de la póliza.",
+            "nullable": true
+          },
+          "movimientos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Movimiento"
+            },
+            "description": "Movimientos contables de la poliza.",
+            "nullable": true
+          },
+          "uuids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "UUIDs a asociar a la poliza.",
+            "nullable": true
+          },
+          "datosExtra": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Datos extra de la poliza.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model that represents a CONTPAQi Contabilidad Poliza"
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "RequestStatus": {
+        "enum": [
+          0,
+          1,
+          -1
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "SegmentoNegocio": {
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "datosExtra": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TipoCuenta": {
+        "enum": [
+          "ActivoDeudora",
+          "ActivoAcreedora",
+          "PasivoDeudora",
+          "PasivoAcreedora",
+          "CapitalDeudora",
+          "CapitalAcreedora",
+          "ResultadosDeudora",
+          "ResultadosAcreedora",
+          "EstadisticasDeudora",
+          "EstadisticasAcreedora",
+          "OrdenDeudora",
+          "OrdenAcreedora"
+        ],
+        "type": "string"
+      },
+      "TipoMovimiento": {
+        "enum": [
+          "Cargo",
+          "Abono"
+        ],
+        "type": "string"
+      },
+      "TipoPoliza": {
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "description": "Código del tipo de póliza.",
+            "format": "int32"
+          },
+          "nombre": {
+            "type": "string",
+            "description": "Nombre del tipo de póliza.",
+            "nullable": true
+          },
+          "datosExtra": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Modelo que representa un CONTPAQi Contabilidad Tipo De Poliza"
+      }
+    }
+  }
+}
