@@ -5,6 +5,10 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Version>1.1.0</Version>
+		<Authors>AR Software</Authors>
+		<Description>CONTPAQi Contabilidad API.</Description>
+		<Copyright>Copyright AR Software 2023</Copyright>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
