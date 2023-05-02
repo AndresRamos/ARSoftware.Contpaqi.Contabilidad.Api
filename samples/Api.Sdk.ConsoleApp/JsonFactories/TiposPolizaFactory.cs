@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Api.Core.Domain.Common;
 using Api.Core.Domain.Requests;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 
 namespace Api.Sdk.ConsoleApp.JsonFactories;
 
@@ -44,21 +45,21 @@ public sealed class TiposPolizaFactory
         Directory.CreateDirectory(directory);
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarCuentasRequest)}_Todo.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarTodo(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarTodo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarCuentasRequest)}_PorId.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorId(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorId(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarCuentasRequest)}_PorCodigo.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorCodigo(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorCodigo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarCuentasRequest)}_PorSql.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorSql(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorSql(), options));
     }
 
     private static BuscarTiposPolizaRequest IniciarlizarBuscarTiposPolizaRequest()
     {
-        var request = new BuscarTiposPolizaRequest();
+        var request = new BuscarTiposPolizaRequest(new BuscarTiposPolizaRequestModel(), new BuscarTiposPolizaRequestOptions());
 
         return request;
     }

@@ -3,6 +3,7 @@ using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
 using Api.Core.Domain.Models.Enums;
 using Api.Core.Domain.Requests;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 
 namespace Api.Sdk.ConsoleApp.JsonFactories;
 
@@ -70,31 +71,31 @@ public static class CuentasFactory
         Directory.CreateDirectory(directory);
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(CrearCuentaRequest)}.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(Crear(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(Crear(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarCuentasRequest)}_Todo.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarTodo(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarTodo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarCuentasRequest)}_PorId.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorId(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorId(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarCuentasRequest)}_PorCodigo.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorCodigo(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorCodigo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarCuentasRequest)}_PorSql.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorSql(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorSql(), options));
     }
 
     private static BuscarCuentasRequest IniciarlizarBuscarCuentasRequest()
     {
-        var request = new BuscarCuentasRequest();
+        var request = new BuscarCuentasRequest(new BuscarCuentasRequestModel(), new BuscarCuentasRequestOptions());
 
         return request;
     }
 
     private static CrearCuentaRequest IniciarlizarCrearCuentaRequest()
     {
-        var request = new CrearCuentaRequest();
+        var request = new CrearCuentaRequest(new CrearCuentaRequestModel(), new CrearCuentaRequestOptions());
 
         return request;
     }

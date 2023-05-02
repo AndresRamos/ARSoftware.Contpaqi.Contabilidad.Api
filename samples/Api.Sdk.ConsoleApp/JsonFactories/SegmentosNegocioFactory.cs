@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Api.Core.Domain.Common;
 using Api.Core.Domain.Requests;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 
 namespace Api.Sdk.ConsoleApp.JsonFactories;
 
@@ -41,21 +42,22 @@ public sealed class SegmentosNegocioFactory
         Directory.CreateDirectory(directory);
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarSegmentosNegocioRequest)}_Todo.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarTodo(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarTodo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarSegmentosNegocioRequest)}_PorId.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorId(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorId(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarSegmentosNegocioRequest)}_PorCodigo.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorCodigo(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorCodigo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarSegmentosNegocioRequest)}_PorSql.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorSql(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorSql(), options));
     }
 
     private static BuscarSegmentosNegocioRequest IniciarlizarBuscarSegmentosNegocioRequest()
     {
-        var request = new BuscarSegmentosNegocioRequest();
+        var request = new BuscarSegmentosNegocioRequest(new BuscarSegmentosNegocioRequestModel(),
+            new BuscarSegmentosNegocioRequestOptions());
 
         return request;
     }

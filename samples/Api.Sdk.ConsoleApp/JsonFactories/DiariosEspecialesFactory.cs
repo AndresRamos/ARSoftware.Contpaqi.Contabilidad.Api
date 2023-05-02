@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Api.Core.Domain.Common;
 using Api.Core.Domain.Requests;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 
 namespace Api.Sdk.ConsoleApp.JsonFactories;
 
@@ -41,21 +42,22 @@ public sealed class DiariosEspecialesFactory
         Directory.CreateDirectory(directory);
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarDiariosEspecialesRequest)}_Todo.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarTodo(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarTodo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarDiariosEspecialesRequest)}_PorId.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorId(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorId(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarDiariosEspecialesRequest)}_PorCodigo.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorCodigo(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorCodigo(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarDiariosEspecialesRequest)}_PorSql.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorSql(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorSql(), options));
     }
 
     private static BuscarDiariosEspecialesRequest IniciarlizarBuscarDiariosEspecialesRequest()
     {
-        var request = new BuscarDiariosEspecialesRequest();
+        var request = new BuscarDiariosEspecialesRequest(new BuscarDiariosEspecialesRequestModel(),
+            new BuscarDiariosEspecialesRequestOptions());
 
         return request;
     }

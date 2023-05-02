@@ -3,6 +3,7 @@ using Api.Core.Domain.Common;
 using Api.Core.Domain.Models;
 using Api.Core.Domain.Models.Enums;
 using Api.Core.Domain.Requests;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 
 namespace Api.Sdk.ConsoleApp.JsonFactories;
 
@@ -84,30 +85,30 @@ public static class PolizaFactory
         Directory.CreateDirectory(directory);
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(CrearPolizaRequest)}.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(Crear(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(Crear(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarPolizasRequest)}_PorId.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorId(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorId(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarPolizasRequest)}_PorRangoFecha.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorRangoFecha(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorRangoFecha(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarPolizasRequest)}_PorNumero.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorNumero(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorNumero(), options));
 
         File.WriteAllText(Path.Combine(directory, $"{nameof(BuscarPolizasRequest)}_PorSql.json"),
-            JsonSerializer.Serialize<IContpaqiRequest>(BuscarPorSql(), options));
+            JsonSerializer.Serialize<ContpaqiRequest>(BuscarPorSql(), options));
     }
 
     private static CrearPolizaRequest InicializarCrearPolizaRequest()
     {
-        var request = new CrearPolizaRequest();
+        var request = new CrearPolizaRequest(new CrearPolizaRequestModel(), new CrearPolizaRequestOptions());
         return request;
     }
 
     private static BuscarPolizasRequest InicializarBuscarPolizasRequest()
     {
-        var request = new BuscarPolizasRequest();
+        var request = new BuscarPolizasRequest(new BuscarPolizasRequestModel(), new BuscarPolizasRequestOptions());
         return request;
     }
 }
