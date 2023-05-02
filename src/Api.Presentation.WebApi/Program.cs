@@ -6,6 +6,7 @@ using Api.Core.Domain.Requests;
 using Api.Infrastructure;
 using Api.Infrastructure.Persistence;
 using Api.Presentation.WebApi.Authentication;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -47,6 +48,21 @@ builder.Services.AddSwaggerGen(c =>
 
     c.UseAllOfForInheritance();
     c.UseOneOfForPolymorphism();
+
+    c.SelectSubTypesUsing(baseType =>
+    {
+        if (baseType == typeof(ContpaqiRequest))
+            return typeof(BuscarEmpresasRequest).Assembly.GetTypes()
+                .Where(type => typeof(ContpaqiRequest).IsAssignableFrom(type) && type != typeof(ContpaqiRequest) && !type.IsAbstract)
+                .ToArray();
+
+        if (baseType == typeof(ContpaqiResponse))
+            return typeof(BuscarEmpresasRequest).Assembly.GetTypes()
+                .Where(type => typeof(ContpaqiResponse).IsAssignableFrom(type) && type != typeof(ContpaqiResponse) && !type.IsAbstract)
+                .ToArray();
+
+        return Enumerable.Empty<Type>();
+    });
 });
 
 builder.Host.UseSerilog();
