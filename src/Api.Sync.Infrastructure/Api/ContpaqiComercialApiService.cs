@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using Api.Core.Domain.Common;
 using Api.Sync.Core.Application.Api.Interfaces;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 using Microsoft.Extensions.Logging;
 
 namespace Api.Sync.Infrastructure.Api;
@@ -21,7 +22,7 @@ public sealed class ContpaqiComercialApiService : IContpaqiComercialApiService
 
     public async Task<IEnumerable<ApiRequest>> GetPendingRequestsAsync(CancellationToken cancellationToken)
     {
-        HttpResponseMessage message = await _httpClient.GetAsync("api/Requests/Pending", cancellationToken);
+        HttpResponseMessage message = await _httpClient.GetAsync("/api/Requests/Pending", cancellationToken);
 
         message.EnsureSuccessStatusCode();
 
@@ -46,7 +47,7 @@ public sealed class ContpaqiComercialApiService : IContpaqiComercialApiService
         var data = new StringContent(json, Encoding.UTF8, "application/json");
 
         HttpResponseMessage httpResponseMessage =
-            await _httpClient.PostAsync($"api/requests/{apiRequestId}/response", data, cancellationToken);
+            await _httpClient.PostAsync($"/api/requests/{apiRequestId}/response", data, cancellationToken);
 
         httpResponseMessage.EnsureSuccessStatusCode();
     }

@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
-using Api.Core.Domain.Common;
 using Api.Sync.Core.Application.Common.Behaviors;
 using Api.Sync.Core.Application.Common.Models;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Services;
+using ARSoftware.Contpaqi.Api.Common.Domain;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +22,7 @@ public static class ConfigureServices
             serviceConfiguration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             serviceConfiguration.RegisterServicesFromAssemblyContaining<ApiRequest>();
             serviceConfiguration.AddOpenBehavior(typeof(PerformanceBehaviour<,>));
+            serviceConfiguration.AddOpenBehavior(typeof(ValidationBehaviour<,>));
         });
 
         serviceCollection.Configure<ApiSyncConfig>(configuration.GetSection(nameof(ApiSyncConfig)));

@@ -1,5 +1,4 @@
-﻿using Api.Core.Domain.Common;
-using Api.Core.Domain.Models;
+﻿using Api.Core.Domain.Models;
 using Api.Core.Domain.Requests;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using MediatR;
@@ -8,7 +7,7 @@ using SDKCONTPAQNGLib;
 
 namespace Api.Sync.Core.Application.Requests.Polizas.Validators;
 
-public sealed class EliminarPolizaRequestHandler : IRequestHandler<EliminarPolizaRequest, ApiResponse>
+public sealed class EliminarPolizaRequestHandler : IRequestHandler<EliminarPolizaRequest, EliminarPolizaResponse>
 {
     private readonly ILogger<EliminarPolizaRequestHandler> _logger;
     private readonly IPolizaRepository _polizaRepository;
@@ -22,28 +21,21 @@ public sealed class EliminarPolizaRequestHandler : IRequestHandler<EliminarPoliz
         _logger = logger;
     }
 
-    public async Task<ApiResponse> Handle(EliminarPolizaRequest request, CancellationToken cancellationToken)
+    public async Task<EliminarPolizaResponse> Handle(EliminarPolizaRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            Poliza poliza = (await _polizaRepository.BuscarPorLlaveAsync(request.Model.LlavePoliza, request.Options, cancellationToken))!;
+        Poliza poliza = (await _polizaRepository.BuscarPorLlaveAsync(request.Model.LlavePoliza, request.Options, cancellationToken))!;
 
-            _sdkPoliza.iniciarInfo();
-            _sdkPoliza.buscaPorId(poliza.Id);
-            int sdkResult = _sdkPoliza.borra();
-            if (sdkResult == 0)
-            {
-                string codigoError = _sdkPoliza.getCodigoError();
-                string mensajeError = _sdkPoliza.getMensajeError();
-                _logger.LogError("No se pudo eliminar la poliza. Error: {codigoError} - {mensajeError}", codigoError, mensajeError);
-                throw new Exception($"No se pude eliminar la poliza. Error: {codigoError} - {mensajeError}");
-            }
-
-            return ApiResponse.CreateSuccessfull(new EliminarPolizaResponse());
-        }
-        catch (Exception e)
+        _sdkPoliza.iniciarInfo();
+        _sdkPoliza.buscaPorId(poliza.Id);
+        int sdkResult = _sdkPoliza.borra();
+        if (sdkResult == 0)
         {
-            return ApiResponse.CreateFailed(e.Message);
+            string codigoError = _sdkPoliza.getCodigoError();
+            string mensajeError = _sdkPoliza.getMensajeError();
+            _logger.LogError("No se pudo eliminar la poliza. Error: {codigoError} - {mensajeError}", codigoError, mensajeError);
+            throw new Exception($"No se pude eliminar la poliza. Error: {codigoError} - {mensajeError}");
         }
+
+        return EliminarPolizaResponse.CreateInstance();
     }
 }

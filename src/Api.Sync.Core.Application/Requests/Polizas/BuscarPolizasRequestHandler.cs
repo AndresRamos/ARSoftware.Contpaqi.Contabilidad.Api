@@ -1,12 +1,11 @@
-﻿using Api.Core.Domain.Common;
-using Api.Core.Domain.Models;
+﻿using Api.Core.Domain.Models;
 using Api.Core.Domain.Requests;
 using Api.Sync.Core.Application.ContpaqiContabilidad.Interfaces;
 using MediatR;
 
 namespace Api.Sync.Core.Application.Requests.Polizas;
 
-public sealed class BuscarPolizasRequestHandler : IRequestHandler<BuscarPolizasRequest, ApiResponse>
+public sealed class BuscarPolizasRequestHandler : IRequestHandler<BuscarPolizasRequest, BuscarPolizasResponse>
 {
     private readonly IPolizaRepository _polizaRepository;
 
@@ -15,21 +14,11 @@ public sealed class BuscarPolizasRequestHandler : IRequestHandler<BuscarPolizasR
         _polizaRepository = polizaRepository;
     }
 
-    public async Task<ApiResponse> Handle(BuscarPolizasRequest request, CancellationToken cancellationToken)
+    public async Task<BuscarPolizasResponse> Handle(BuscarPolizasRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            List<Poliza> polizas = (await _polizaRepository.BuscarPorRequestModelAsync(request.Model, request.Options, cancellationToken))
-                .ToList();
+        List<Poliza> polizas = (await _polizaRepository.BuscarPorRequestModelAsync(request.Model, request.Options, cancellationToken))
+            .ToList();
 
-            return ApiResponse.CreateSuccessfull(new BuscarPolizasResponse
-            {
-                Model = new BuscarPolizasResponseModel { Polizas = polizas }
-            });
-        }
-        catch (Exception e)
-        {
-            return ApiResponse.CreateFailed(e.Message);
-        }
+        return BuscarPolizasResponse.CreateInstance(polizas);
     }
 }
