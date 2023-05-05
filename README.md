@@ -2,12 +2,16 @@
 
 **[AR Software - CONTPAQi Contabilidad API](https://www.arsoft.net/contpaqi-contabilidad-api)** te permite hacer interfaz con el sistema de CONTPAQi Contabilidad a travez de un servicio web en la nube. En pocas palabras convierte el sistema de CONTPAQi Contabilidad en una aplicación nube. 
 
-Esta API te permitira seguir gozando de los beneficios del sistema el SDK para crear, modificar, y consultar los diferentes documentos y catálogos.
+Esta API te permitira seguir gozando de los beneficios del sistema de CONTPAQi Contabilidad haciendo uso del SDK para crear, modificar, y consultar los diferentes documentos y catálogos.
 
 ## Demo
+Proximamente...
+
+## Descarga La Ultima Version Del Sincronizador
+Puedes descargar la ultima version del sincronizador en [Releases](https://github.com/AndresRamos/ARSoftware.Contpaqi.Contabilidad.Api/releases)
 
 ## Documentacion
-En el [Wiki](https://github.com/AndresRamos/ARSoftware.Contpaqi.Contabilidad.Api/wiki) podras encontrar la documentacion de este proyecto.
+En el [Wiki](https://github.com/AndresRamos/ARSoftware.Contpaqi.Contabilidad.Api/wiki) de este repositorio podras encontrar documentacion de como funciona esta API.
 
 ## Errores
 Puedes reportar errores en [Issues](https://github.com/AndresRamos/ARSoftware.Contpaqi.Contabilidad.Api/issues).
