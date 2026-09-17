@@ -7,7 +7,7 @@ using Api.Infrastructure;
 using Api.Infrastructure.Persistence;
 using Api.Presentation.WebApi.Authentication;
 using ARSoftware.Contpaqi.Api.Common.Domain;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration().MinimumLevel.Information()

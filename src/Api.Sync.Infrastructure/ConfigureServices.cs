@@ -47,7 +47,8 @@ public static class ConfigureServices
             builder =>
             {
                 builder.UseSqlServer(ContpaqiContabilidadSqlConnectionStringFactory.CreateContpaqiContabilidadGeneralesConnectionString(
-                    configuration.GetConnectionString("Contpaqi")));
+                    configuration.GetConnectionString("Contpaqi") ??
+                    throw new InvalidOperationException("Connection string 'Contpaqi' is not configured.")));
             }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
         serviceCollection.AddDbContext<ContpaqiContabilidadEmpresaDbContext>((provider, builder) =>
@@ -56,7 +57,8 @@ public static class ConfigureServices
 
             builder.UseSqlServer(
                 ContpaqiContabilidadSqlConnectionStringFactory.CreateContpaqiContabilidadEmpresaConnectionString(
-                    configuration.GetConnectionString("Contpaqi"), config.Empresa.BaseDatos));
+                    configuration.GetConnectionString("Contpaqi") ??
+                    throw new InvalidOperationException("Connection string 'Contpaqi' is not configured."), config.Empresa.BaseDatos));
         }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
         serviceCollection.AddTransient<IAgrupadorSatRepository, AgrupadorSatRepository>();
