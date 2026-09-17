@@ -62,7 +62,8 @@ public sealed class EmpresaRepository : IEmpresaRepository
     {
         var optionsBuilder = new DbContextOptionsBuilder<ContpaqiContabilidadEmpresaDbContext>();
         string empresaConnectionString = ContpaqiContabilidadSqlConnectionStringFactory.CreateContpaqiContabilidadEmpresaConnectionString(
-            _configuration.GetConnectionString("Contpaqi"), empresa.BaseDatos);
+            _configuration.GetConnectionString("Contpaqi") ??
+            throw new InvalidOperationException("Connection string 'Contpaqi' is not configured."), empresa.BaseDatos);
         optionsBuilder.UseSqlServer(empresaConnectionString);
 
         _empresaContext.Database.SetConnectionString(empresaConnectionString);
